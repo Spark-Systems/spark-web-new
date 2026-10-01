@@ -44,7 +44,7 @@ src/
 ├── content/home.ts            All home-page copy, images and lists (typed data)
 ├── config/site.ts             Site-wide config: nav, socials, offices, partners
 ├── types/content.ts           Content model types (Solution, Project, Testimonial…)
-├── hooks/                     useFrame, useViewport, useWheelSteps, useInViewOnce…
+├── hooks/                     useFrame, useViewport, useInViewOnce…
 ├── lib/
 │   ├── motion/                Easing/math helpers, shared rAF ticker
 │   ├── scroll/                ScrollController (smooth wheel, anchor links, tweens)
@@ -70,8 +70,7 @@ The design's fluid sizing uses container-query units (`cqw`) relative to the sit
 | --- | --- |
 | `lib/motion/ticker.ts` | One shared `requestAnimationFrame` loop; components subscribe through `useFrame` |
 | `MotionProvider` / `useMotion()` | Respects `prefers-reduced-motion`; every animation checks it |
-| `ScrollController` | Adapter over [Lenis](https://lenis.dev): smooth scrolling (driven by the shared ticker), `#anchor` links and eased tweens |
-| `useWheelSteps` | Turns wheel gestures in a pinned scene into one-step-per-gesture snaps (Solutions) |
+| `ScrollController` | Adapter over [Lenis](https://lenis.dev): smooth scrolling (driven by the shared ticker), `#anchor` links and interruptible glides (e.g. settling Solutions on the nearest slide) |
 | `<Reveal>` + `RevealObserver` | Declarative fade-up on scroll; works inside Server Components |
 | `useViewport` | SSR-safe viewport size and mobile flag (`< 760px`, which is also Tailwind's `md`) |
 

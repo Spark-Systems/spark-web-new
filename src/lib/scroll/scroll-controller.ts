@@ -2,41 +2,33 @@ import Lenis from "lenis";
 import { easeInOutCubic } from "@/lib/motion/math";
 import { subscribeFrame } from "@/lib/motion/ticker";
 
-const WHEEL_QUIET_MS = 160;
 const ANCHOR_OFFSET = 60;
-const TWEEN_SECONDS = 0.8;
+const GLIDE_SECONDS = 0.8;
 
 /**
  * Owns window scrolling. Smooth (inertial) scrolling is delegated to Lenis;
- * this class adapts it to the app: in-page anchor links, eased programmatic
- * tweens, and the wheel bookkeeping shared by step-snapping sections.
- *
- * Sections that snap between steps (see `useWheelSteps`) listen for wheel
- * events on their own element and call `preventDefault()` to take over a
- * gesture. Those listeners run before Lenis's window listener, and Lenis is
- * told to ignore any event that has already been prevented.
+ * this class adapts it to the app: in-page anchor links and eased,
+ * interruptible programmatic glides (used e.g. to settle a pinned scene on
+ * its nearest slide).
  */
 export class ScrollController {
   private lenis: Lenis | null = null;
   private unsubscribeFrame: (() => void) | null = null;
 
-  /** True while a programmatic tween owns the scroll position. */
-  tweening = false;
-  /** Shared wheel-gesture bookkeeping for step-snapping sections. */
-  lastWheelAt = 0;
-  gestureConsumed = false;
+  /** True while a programmatic glide is running. */
+  gliding = false;
 
   /**
    * Start smooth scrolling. With `smooth: false` (reduced motion) the
-   * browser's native scrolling is left untouched and tweens jump.
+   * browser's native scrolling is left untouched and glides jump.
    */
   attach({ smooth }: { smooth: boolean }) {
     if (!smooth) return;
 
-    this.lenis = new Lenis({
-      lerp: 0.1,
-      autoRaf: false,
-      virtualScroll: ({ event }) => !event.defaultPrevented,
+    this.lenis = new Lenis({ lerp: 0.1, autoRaf: false });
+    // User input interrupts a glide without firing its onComplete.
+    this.lenis.on("virtual-scroll", () => {
+      this.gliding = false;
     });
     // Drive Lenis from the shared ticker, ahead of the scroll scenes, so they
     // read the updated position in the same frame.
@@ -50,39 +42,31 @@ export class ScrollController {
     this.unsubscribeFrame = null;
     this.lenis?.destroy();
     this.lenis = null;
-    this.tweening = false;
+    this.gliding = false;
   }
 
-  /** Eased scroll to an absolute Y position. */
-  tweenTo(to: number) {
+  /** True while a finger is on the screen (touch devices). */
+  get touching() {
+    return this.lenis?.isTouching ?? false;
+  }
+
+  /**
+   * Eased scroll to an absolute Y position. Any wheel or touch input from the
+   * user takes over immediately.
+   */
+  glideTo(to: number, duration = GLIDE_SECONDS) {
     if (!this.lenis) {
       window.scrollTo(0, to);
       return;
     }
-    this.tweening = true;
+    this.gliding = true;
     this.lenis.scrollTo(to, {
-      duration: TWEEN_SECONDS,
+      duration,
       easing: easeInOutCubic,
-      lock: true,
-      force: true,
       onComplete: () => {
-        this.tweening = false;
-        this.lastWheelAt = performance.now();
+        this.gliding = false;
       },
     });
-  }
-
-  /**
-   * Gate for step-snapping sections: returns true when this wheel event
-   * belongs to a gesture that already advanced a step (trackpads fire many
-   * events per swipe) and should just be swallowed.
-   */
-  shouldSwallowWheel(now: number) {
-    const quiet = now - this.lastWheelAt > WHEEL_QUIET_MS;
-    this.lastWheelAt = now;
-    if (this.tweening || (!quiet && this.gestureConsumed)) return true;
-    this.gestureConsumed = false;
-    return false;
   }
 
   /** Smooth-scroll same-page `#hash` links instead of jumping. */
