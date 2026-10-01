@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { clamp, hexToRgb, mixRgb, type Rgb } from "@/lib/motion/math";
+import { clamp, hexToRgb, mixRgb, seededRandom, type Rgb } from "@/lib/motion/math";
 
 interface Ball {
   col: number;
@@ -39,12 +39,6 @@ const WHITE = hexToRgb("#F2F2F0");
 /** Depth gap between spheres; larger than any diameter so overlapping balls layer instead of intersecting. */
 const LAYER_GAP = 100;
 const PALETTE = ["#B9383A", "#D2524F", "#8E2A2D", "#E0716F"].map(hexToRgb);
-
-/** Deterministic Park–Miller PRNG so the layout is the same on every load. */
-function seededRandom(seed: number) {
-  let s = seed;
-  return () => (s = (s * 16807) % 2147483647) / 2147483647;
-}
 
 /**
  * A swarm of glossy 3D spheres rendered with three.js as one instanced mesh.

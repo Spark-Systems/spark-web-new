@@ -97,8 +97,8 @@
 
 /* Frosted glass used by the header and floating nav. */
 @utility glass {
+  /* Only the standard property: the build adds any vendor prefix itself. */
   backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
 }
 
 @utility mask-fade-y {

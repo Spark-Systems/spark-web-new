@@ -10,7 +10,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="@container relative overflow-clip bg-ink text-snow">
       <SiteHeader />
-      <FloatingNav />
+      {/* <FloatingNav /> */}
       <main>{children}</main>
       <SiteFooter />
     </div>

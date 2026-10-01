@@ -23,4 +23,13 @@ export const mixRgb = (a: Rgb, b: Rgb, t: number): Rgb => [
   Math.round(lerp(a[2], b[2], t)),
 ];
 
+/**
+ * Deterministic Park–Miller PRNG: the same seed gives the same sequence on
+ * server and client, so "random" layouts don't cause hydration mismatches.
+ */
+export function seededRandom(seed: number) {
+  let s = seed;
+  return () => (s = (s * 16807) % 2147483647) / 2147483647;
+}
+
 export const rgb = (c: Rgb) => `rgb(${c[0]},${c[1]},${c[2]})`;

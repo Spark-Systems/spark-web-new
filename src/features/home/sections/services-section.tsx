@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { useFrame } from "@/hooks/use-frame";
 import { useViewport } from "@/hooks/use-viewport";
-import { clamp, easeInOutCubic, easeOutCubic, lerp } from "@/lib/motion/math";
+import { clamp, easeInOutCubic, easeOutCubic, lerp, seededRandom } from "@/lib/motion/math";
 import { services, servicesSection } from "@/content/home";
 import { ServiceCard } from "../components/service-card";
 
@@ -15,6 +15,26 @@ const REVEAL_DISTANCE = 1.1;
 /** Share of the reveal used by the image; the text starts once it is mostly in. */
 const MEDIA_SHARE = 0.55;
 const CONTENT_START = 0.5;
+/** Base gap between neighbouring cards in the same row, as a share of card width. */
+const CARD_GAP = 0.14;
+/** Change the seed to reshuffle the scattered card layout. */
+const LAYOUT_SEED = 11;
+
+/**
+ * A fixed "random" placement per card: size, vertical spot within its row's
+ * band, sideways nudge and drift speed (for a touch of parallax).
+ */
+const scatter = (() => {
+  const rnd = seededRandom(LAYOUT_SEED);
+  return services.map(() => ({
+    scale: 0.8 + rnd() * 0.2,
+    y: rnd(),
+    nudge: (rnd() - 0.5) * 0.36,
+    speed: 0.88 + rnd() * 0.24,
+  }));
+})();
+/** Scroll progress over which the "Services" heading fades in (after the circle opens). */
+const TITLE_FADE = [0.1, 0.25] as const;
 
 /** Set a style only when it changed, to avoid needless style recalcs. */
 function setStyle(el: HTMLElement, prop: "opacity" | "transform", value: string) {
@@ -24,8 +44,10 @@ function setStyle(el: HTMLElement, prop: "opacity" | "transform", value: string)
 /**
  * A white circle grows from the centre of a dark stage until it fills the
  * screen, then a huge "Services" title and the service cards drift across it
- * as the user keeps scrolling. As each card slides in from the right, its
- * image fades in first, then its text rises in to full opacity.
+ * as the user keeps scrolling. The heading fades in from transparent once the
+ * circle has opened. Cards are scattered (seeded, so the same on every load)
+ * around two staggered rows, with varied sizes and drift speeds; as each
+ * slides in from the right, its image fades in first, then its text rises in.
  */
 export function ServicesSection() {
   const { vh, vw, isMobile } = useViewport();
@@ -37,7 +59,14 @@ export function ServicesSection() {
   const layers = useRef(new Map<HTMLElement, { media: HTMLElement | null; content: HTMLElement | null }>());
 
   const cardW = Math.round(isMobile ? Math.min(vw * 0.78, vh * 0.64) : Math.min(vw * 0.32, vh * 0.68));
-  const cardH = cardW / 1.6;
+  const width = (i: number) => Math.round(cardW * scatter[i].scale);
+  // Each card keeps its image's native aspect ratio.
+  const height = (i: number) => (width(i) * services[i].image.height) / services[i].image.width;
+  /** Even cards sit in the top band, odd cards in the bottom band, at a random height within it. */
+  const top = (i: number) => {
+    const [from, to] = i % 2 ? [vh * 0.55, vh * 0.97 - height(i)] : [vh * 0.03, vh * 0.45 - height(i)];
+    return Math.round(lerp(from, Math.max(from, to), scatter[i].y));
+  };
 
   useFrame(() => {
     const scene = sceneRef.current;
@@ -59,15 +88,23 @@ export function ServicesSection() {
     const titleW = title.scrollWidth;
     const tx = lerp(W * 0.24, W - titleW - W * 0.04, q);
     title.style.transform = `translate3d(${tx.toFixed(1)}px,-50%,0)`;
+    const titleIn = easeOutCubic(clamp((p - TITLE_FADE[0]) / (TITLE_FADE[1] - TITLE_FADE[0])));
+    setStyle(title, "opacity", String(+titleIn.toFixed(3)));
+
+    // Cards alternate rows half a step apart, each nudged and drifting at its own speed.
+    const cards = cardRefs.current;
+    const stride = (cardW * (1 + CARD_GAP)) / 2;
+    const groupW = (cards.length - 1) * stride + cardW;
+    const groupX = lerp(W * 0.6, W * 0.4 - groupW, q);
 
     // Cards already on screen when the circle opens wait for it to finish.
     const gate = clamp((open - 0.6) / 0.4);
 
-    const cards = cardRefs.current;
     cards.forEach((card, i) => {
       if (!card) return;
       const cw = card.offsetWidth;
-      const x = tx + (titleW * (i + 0.5)) / cards.length - cw / 2;
+      const { nudge, speed } = scatter[i];
+      const x = groupX + (i + nudge) * stride + (speed - 1) * (q - 0.5) * W * 0.3;
       card.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`;
 
       let parts = layers.current.get(card);
@@ -109,6 +146,7 @@ export function ServicesSection() {
               style={{
                 fontSize: Math.round(vh * (isMobile ? 0.42 : 0.64)),
                 transform: "translate3d(30vw,-50%,0)",
+                opacity: 0,
               }}
             >
               {servicesSection.title}
@@ -122,8 +160,9 @@ export function ServicesSection() {
                 }}
                 service={service}
                 style={{
-                  top: Math.round(i % 2 ? vh * 0.97 - cardH : vh * 0.03),
-                  width: cardW,
+                  top: top(i),
+                  width: width(i),
+                  zIndex: Math.round(scatter[i].scale * 10),
                   transform: "translate3d(120vw,0,0)",
                 }}
               />

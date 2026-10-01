@@ -11,16 +11,20 @@ interface ServiceCardProps {
 /**
  * Service card with two layers, `[data-card-media]` (image) and
  * `[data-card-content]` (text), so the parent scene can reveal them in sequence.
+ * The card takes its image's aspect ratio; the image is greyscale until hovered.
  */
 export function ServiceCard({ service, style, ref }: ServiceCardProps) {
   return (
     <a
       ref={ref}
       href="#"
-      className="absolute left-0 aspect-16/10 overflow-hidden rounded-card bg-cloud text-ink shadow-[0_18px_50px_-24px_rgba(11,11,11,0.35)] ring-1 ring-ink/6 will-change-transform"
-      style={style}
+      className="group absolute left-0 overflow-hidden rounded-card bg-cloud text-ink shadow-[0_18px_50px_-24px_rgba(11,11,11,0.35)] ring-1 ring-ink/6 will-change-transform"
+      style={{ aspectRatio: `${service.image.width} / ${service.image.height}`, ...style }}
     >
-      <div data-card-media="" className="absolute inset-0 will-change-[opacity,transform]">
+      <div
+        data-card-media=""
+        className="absolute inset-0 grayscale transition-[filter] duration-500 will-change-[opacity,transform] group-hover:grayscale-0"
+      >
         <Image src={service.image} alt="" fill sizes="(min-width: 760px) 32vw, 78vw" className="object-cover" />
         <div className="absolute inset-0 bg-[rgba(236,236,236,0.45)]" />
       </div>
