@@ -43,7 +43,7 @@ export function FloatingNav() {
     <div className="pointer-events-none sticky top-[calc(100vh-clamp(84px,7cqw,104px))] z-40 flex h-0 justify-center">
       <div
         className={cn(
-          "relative max-w-[calc(100%-24px)] transition-[transform,opacity] duration-[550ms,400ms] ease-spark",
+          "relative max-w-[calc(100%-24px)] transition-[translate,opacity] duration-[550ms,400ms] ease-spark",
           visible ? "pointer-events-auto translate-y-0 opacity-100" : "translate-y-[160%] opacity-0",
         )}
       >
