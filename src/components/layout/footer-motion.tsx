@@ -8,7 +8,13 @@ import { cn } from "@/lib/utils";
 /**
  * Wraps the footer so it rises, scales up and fades in as it is uncovered.
  */
-export function FooterParallax({ className, children }: { className?: string; children: ReactNode }) {
+export function FooterParallax({
+  className,
+  children,
+}: {
+  className?: string;
+  children: ReactNode;
+}) {
   const motion = useMotion();
   const wrapRef = useRef<HTMLDivElement>(null);
   const footRef = useRef<HTMLElement>(null);
@@ -20,7 +26,10 @@ export function FooterParallax({ className, children }: { className?: string; ch
     if (!wrap || !foot) return;
 
     const h = wrap.offsetHeight;
-    const visible = Math.max(0, Math.min(h, window.innerHeight - wrap.getBoundingClientRect().top));
+    const visible = Math.max(
+      0,
+      Math.min(h, window.innerHeight - wrap.getBoundingClientRect().top),
+    );
     const k = h ? visible / h : 1;
     if (k === lastK.current) return;
     lastK.current = k;
@@ -74,7 +83,7 @@ export function FooterSlogan({ text }: { text: string }) {
     <div
       ref={ref}
       aria-label={text}
-      className="flex flex-wrap overflow-hidden pb-[0.08em] text-[clamp(60px,12.4cqw,196px)] font-medium leading-[0.95] tracking-[-0.055em] text-snow"
+      className="flex flex-wrap overflow-hidden pb-[0.08em] text-[clamp(60px,12.4cqw,196px)] font-medium leading-none tracking-[-0.055em] text-snow"
     >
       {chars.map((char, i) => {
         const span = (
@@ -95,7 +104,14 @@ export function FooterSlogan({ text }: { text: string }) {
         );
         if (i !== lastSpace) return span;
         // A full-width flex item forces the line break.
-        return [span, <span key="break" aria-hidden="true" className="basis-full md:hidden" />];
+        return [
+          span,
+          <span
+            key="break"
+            aria-hidden="true"
+            className="basis-full md:hidden"
+          />,
+        ];
       })}
     </div>
   );
