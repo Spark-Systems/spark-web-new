@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useMotion } from "@/components/providers/motion-provider";
+import { useScrollController } from "@/components/providers/smooth-scroll-provider";
 import { useFrame } from "@/hooks/use-frame";
 import { useViewport } from "@/hooks/use-viewport";
 import { clamp, easeInOutCubic, easeOutCubic, lerp } from "@/lib/motion/math";
@@ -18,6 +19,10 @@ const FOLLOW_RATE = 7;
 const REVEAL_RATE = 9;
 /** Share of a step (0–1) over which a card fades in while the swarm flies to it. */
 const REVEAL_SPAN = 0.8;
+/** How far (in steps) the user scrolls before the scene steps. */
+const STEP_THRESHOLD = 0.04;
+/** Duration (s) of the glide to a step; input is locked meanwhile. */
+const STEP_SECONDS = 0.8;
 
 interface Anchor {
   x: number;
@@ -41,12 +46,16 @@ interface AiSceneProps {
  * As the user scrolls and each capability card appears, the swarm flies to
  * that card's top-right corner, tightening into a grid as it goes.
  *
- * On desktop the section pins while this plays out; on mobile (or when the
- * content is taller than the screen) it scrolls normally and progress follows
- * the cards entering the viewport.
+ * On desktop the section pins and works as a stepper: scroll doesn't scrub
+ * the swarm — a small scroll steps it to the next (or previous) card, and the
+ * page glides, input locked, to that step's scroll position. Past either end
+ * the page scrolls normally. On mobile (or when the content is taller than
+ * the screen) it scrolls normally and progress follows the cards entering
+ * the viewport.
  */
 export function AiScene({ heading, capabilities }: AiSceneProps) {
   const motion = useMotion();
+  const controller = useScrollController();
   const { vh, isMobile } = useViewport();
   const seqRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -58,6 +67,7 @@ export function AiScene({ heading, capabilities }: AiSceneProps) {
   const follow = useRef<(Anchor & { order: number }) | null>(null);
   const reveals = useRef<number[]>(capabilities.map(() => 1));
   const lastTime = useRef(0);
+  const stepper = useRef({ step: 0, lockedUntil: 0 });
   const [pinned, setPinned] = useState(false);
   const steps = capabilities.length;
 
@@ -105,6 +115,20 @@ export function AiScene({ heading, capabilities }: AiSceneProps) {
     };
   }, []);
 
+  /** Pinned range (px) the scene scrolls through, from the first step to the last. */
+  const rangeOf = (seq: HTMLElement, section: HTMLElement) => Math.max(1, seq.offsetHeight - section.offsetHeight);
+
+  /** Make `index` the active step and glide the page to it, locking input until it lands. */
+  const stepTo = (index: number) => {
+    const seq = seqRef.current;
+    const section = sectionRef.current;
+    if (!seq || !section) return;
+    stepper.current = { step: index, lockedUntil: performance.now() + STEP_SECONDS * 1000 + 100 };
+    const y = window.scrollY + seq.getBoundingClientRect().top + (index * rangeOf(seq, section)) / steps;
+    if (controller) controller.glideTo(y, STEP_SECONDS, { lock: true });
+    else window.scrollTo(0, y);
+  };
+
   useFrame((now) => {
     const seq = seqRef.current;
     const section = sectionRef.current;
@@ -120,8 +144,18 @@ export function AiScene({ heading, capabilities }: AiSceneProps) {
     if (!motion) {
       progress = steps;
     } else if (pinned) {
-      const range = Math.max(1, seq.offsetHeight - section.offsetHeight);
-      progress = clamp((-seq.getBoundingClientRect().top / range) * steps, 0, steps);
+      // Raw scroll position through the pinned range, in steps (may run past either end).
+      const raw = (-seq.getBoundingClientRect().top / rangeOf(seq, section)) * steps;
+      const s = stepper.current;
+      // Outside the range keep the step in sync with the nearest end;
+      // inside it, a small scroll away from the current step moves one step.
+      if (raw <= 0) s.step = 0;
+      else if (raw >= steps) s.step = steps;
+      else if (now >= s.lockedUntil && !controller?.gliding) {
+        if (raw > s.step + STEP_THRESHOLD) stepTo(Math.min(steps, s.step + 1));
+        else if (raw < s.step - STEP_THRESHOLD) stepTo(Math.max(0, s.step - 1));
+      }
+      progress = s.step;
     } else {
       progress = cardRefs.current.reduce((sum, card) => {
         if (!card) return sum;

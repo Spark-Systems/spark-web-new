@@ -7,11 +7,11 @@ import { useViewport } from "@/hooks/use-viewport";
 import { clamp } from "@/lib/motion/math";
 
 /** Vertical scroll (px) spent per 1px of horizontal travel. Higher = slower track. */
-const SCROLL_RATIO = 1.8;
+const SCROLL_RATIO = 2.2;
 /** Pinned pause after the last card, in viewport heights, before the page scrolls on. */
-const END_HOLD = 0.35;
+const END_HOLD = 0.45;
 /** How quickly the track catches up with scroll (higher = snappier). */
-const FOLLOW_RATE = 6;
+const FOLLOW_RATE = 5;
 
 /** Gentle start and stop: slow at both ends of the track, steady in the middle. */
 const easeInOutSine = (t: number) => 0.5 - 0.5 * Math.cos(Math.PI * t);

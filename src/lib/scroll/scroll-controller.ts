@@ -52,9 +52,10 @@ export class ScrollController {
 
   /**
    * Eased scroll to an absolute Y position. Any wheel or touch input from the
-   * user takes over immediately.
+   * user takes over immediately, unless `lock` is set (used for stepped scenes
+   * that must finish their move before accepting input again).
    */
-  glideTo(to: number, duration = GLIDE_SECONDS) {
+  glideTo(to: number, duration = GLIDE_SECONDS, { lock = false } = {}) {
     if (!this.lenis) {
       window.scrollTo(0, to);
       return;
@@ -62,6 +63,7 @@ export class ScrollController {
     this.gliding = true;
     this.lenis.scrollTo(to, {
       duration,
+      lock,
       easing: easeInOutCubic,
       onComplete: () => {
         this.gliding = false;
@@ -79,7 +81,14 @@ export class ScrollController {
     if (!el) return;
 
     e.preventDefault();
-    this.lenis.scrollTo(el, { offset: id === "top" ? 0 : -ANCHOR_OFFSET });
+    // Flag it as a glide so pinned scenes passed on the way don't react to it.
+    this.gliding = true;
+    this.lenis.scrollTo(el, {
+      offset: id === "top" ? 0 : -ANCHOR_OFFSET,
+      onComplete: () => {
+        this.gliding = false;
+      },
+    });
     history.replaceState(null, "", `#${id}`);
   };
 }

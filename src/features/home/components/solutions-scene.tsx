@@ -9,19 +9,25 @@ import { clamp } from "@/lib/motion/math";
 import type { Solution } from "@/types/content";
 import { SolutionImageSlide, SolutionTextSlide } from "./solution-panels";
 
-/** How quickly the reels catch up with scroll (higher = snappier). */
-const FOLLOW_RATE = 12;
-/** Idle time (ms) after the last scroll movement before settling on a slide. */
-const SETTLE_DELAY = 140;
-/** Duration (s) of the settle glide. */
-const SETTLE_SECONDS = 0.6;
+/** How quickly the reels move to the active slide (higher = snappier). */
+const FOLLOW_RATE = 7;
+/** How far (in slides) the user scrolls before the slide steps. */
+const STEP_THRESHOLD = 0.04;
+/** Duration (s) of the glide to a slide; input is locked meanwhile. */
+const STEP_SECONDS = 0.8;
 
-/** Scroll geometry for the pinned scene, derived from the viewport. */
-function getLayout(vh: number, isMobile: boolean, steps: number) {
+/** Below this width (tablet and mobile) the panels stack: image above, copy below. */
+const STACKED_MAX_WIDTH = 1024;
+
+/**
+ * Scroll geometry for the pinned scene, derived from the viewport.
+ * `stacked` is the single-column layout; tablets get a taller stage than phones.
+ */
+function getLayout(vh: number, isMobile: boolean, stacked: boolean, steps: number) {
   const titleH = isMobile ? 140 : 96;
   const head = titleH + 16;
   const stageH = Math.round(
-    isMobile ? clamp(vh - head - 48, 380, 520) : clamp(vh - head - 72, 360, 560),
+    stacked ? clamp(vh - head - 48, 380, isMobile ? 520 : 760) : clamp(vh - head - 72, 360, 560),
   );
   const stagePin = Math.round(head + Math.max(20, (vh - head - stageH) / 2));
   const range = steps * Math.round(vh * 0.6);
@@ -41,24 +47,25 @@ interface SolutionsSceneProps {
 }
 
 /**
- * Pinned two-panel slider, scrubbed by scroll: the image reel slides down
- * while the copy reel slides up. Motion is continuous (no wheel hijacking);
- * when the user stops between two slides, the page glides to the nearest one.
+ * Pinned two-panel stepper: the image reel slides down while the copy reel
+ * slides up. Scroll doesn't scrub the reels — a small scroll inside the scene
+ * steps to the next (or previous) slide, and the page glides, input locked,
+ * to that slide's scroll position. Past either end the page scrolls normally.
  * Off-centre slides zoom and dim, and their copy fades, for a sense of depth.
  */
 export function SolutionsScene({ solutions, heading, footer }: SolutionsSceneProps) {
   const motion = useMotion();
   const controller = useScrollController();
-  const { vh, isMobile } = useViewport();
+  const { vh, vw, isMobile } = useViewport();
   const steps = solutions.length - 1;
-  const layout = getLayout(vh, isMobile, steps);
+  const layout = getLayout(vh, isMobile, vw < STACKED_MAX_WIDTH, steps);
 
   const sceneRef = useRef<HTMLDivElement>(null);
   const imageReelRef = useRef<HTMLDivElement>(null);
   const copyReelRef = useRef<HTMLDivElement>(null);
   const dotRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const layers = useRef<SlideLayers>({ media: [], shade: [], copy: [] });
-  const state = useRef({ progress: -1, lastY: 0, lastMoveAt: 0, lastTime: 0, armed: false });
+  const state = useRef({ progress: -1, step: 0, lockedUntil: 0, lastTime: 0 });
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -73,6 +80,17 @@ export function SolutionsScene({ solutions, heading, footer }: SolutionsScenePro
   const toScrollY = (index: number, scene: HTMLElement) =>
     window.scrollY + scene.getBoundingClientRect().top - layout.pinTop + (index * layout.range) / steps;
 
+  /** Make `index` the active slide and glide the page to it, locking input until it lands. */
+  const stepTo = (index: number) => {
+    const scene = sceneRef.current;
+    if (!scene) return;
+    const s = state.current;
+    s.step = index;
+    s.lockedUntil = performance.now() + STEP_SECONDS * 1000 + 100;
+    if (controller) controller.glideTo(toScrollY(index, scene), motion ? STEP_SECONDS : 0, { lock: true });
+    else window.scrollTo(0, toScrollY(index, scene));
+  };
+
   useFrame((now) => {
     const scene = sceneRef.current;
     const imageReel = imageReelRef.current;
@@ -85,31 +103,18 @@ export function SolutionsScene({ solutions, heading, footer }: SolutionsScenePro
 
     // Raw position through the pinned scene, in slides (may run past either end).
     const raw = ((layout.pinTop - scene.getBoundingClientRect().top) / layout.range) * steps;
-    const target = clamp(raw, 0, steps);
 
-    // Settle on the nearest slide once the user stops scrolling mid-scene.
-    const y = window.scrollY;
-    if (Math.abs(y - s.lastY) > 0.5) {
-      s.lastMoveAt = now;
-      s.armed = true;
-    }
-    s.lastY = y;
-    const inside = raw > 0.02 && raw < steps - 0.02;
-    if (
-      motion &&
-      controller &&
-      s.armed &&
-      inside &&
-      !controller.gliding &&
-      !controller.touching &&
-      now - s.lastMoveAt > SETTLE_DELAY
-    ) {
-      s.armed = false;
-      const nearest = Math.round(raw);
-      if (Math.abs(raw - nearest) > 0.005) controller.glideTo(y + ((nearest - raw) * layout.range) / steps, SETTLE_SECONDS);
+    // Outside the pinned range keep the step in sync with the nearest end;
+    // inside it, a small scroll away from the current slide steps once.
+    if (raw <= 0) s.step = 0;
+    else if (raw >= steps) s.step = steps;
+    else if (now >= s.lockedUntil && !controller?.gliding) {
+      if (raw > s.step + STEP_THRESHOLD) stepTo(Math.min(steps, s.step + 1));
+      else if (raw < s.step - STEP_THRESHOLD) stepTo(Math.max(0, s.step - 1));
     }
 
-    // Ease the visual progress towards scroll so the reels glide.
+    // Ease the visual progress towards the active slide so the reels glide.
+    const target = s.step;
     const prev = s.progress;
     const p = prev < 0 || !motion ? target : prev + (target - prev) * (1 - Math.exp(-dt * FOLLOW_RATE));
     if (Math.abs(p - prev) < 1e-4) return;
@@ -140,12 +145,6 @@ export function SolutionsScene({ solutions, heading, footer }: SolutionsScenePro
     if (nextActive !== active) setActive(nextActive);
   });
 
-  const goTo = (index: number) => {
-    const scene = sceneRef.current;
-    if (!scene) return;
-    if (controller) controller.glideTo(toScrollY(index, scene));
-    else window.scrollTo({ top: toScrollY(index, scene), behavior: "smooth" });
-  };
 
   return (
     <section id="solutions" className="px-gutter bg-ink py-[clamp(64px,7cqw,112px)] text-snow">
@@ -159,7 +158,7 @@ export function SolutionsScene({ solutions, heading, footer }: SolutionsScenePro
           </div>
 
           <div
-            className="relative grid auto-rows-fr grid-cols-1 gap-[clamp(10px,1.2cqw,18px)] md:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)]"
+            className="relative grid auto-rows-fr grid-cols-1 gap-[clamp(10px,1.2cqw,18px)] lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)]"
             style={{ height: layout.stageH }}
           >
             <div className="relative overflow-hidden rounded-card bg-surface">
@@ -185,7 +184,7 @@ export function SolutionsScene({ solutions, heading, footer }: SolutionsScenePro
                     type="button"
                     aria-label={s.title}
                     aria-current={i === active}
-                    onClick={() => goTo(i)}
+                    onClick={() => stepTo(i)}
                     className="h-2 rounded-full border-0 bg-snow p-0"
                     style={{ width: i === 0 ? 28 : 8, opacity: i === 0 ? 1 : 0.4 }}
                   />

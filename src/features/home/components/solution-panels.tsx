@@ -21,7 +21,7 @@ export function SolutionImageSlide({ solution, index }: { solution: Solution; in
           src={solution.image}
           alt={solution.imageAlt}
           fill
-          sizes="(min-width: 760px) 62vw, 100vw"
+          sizes="(min-width: 1024px) 62vw, 100vw"
           placeholder="blur"
           className="object-cover"
         />

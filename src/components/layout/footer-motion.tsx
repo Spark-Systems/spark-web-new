@@ -3,6 +3,7 @@
 import { useRef, useState, type ReactNode } from "react";
 import { useMotion } from "@/components/providers/motion-provider";
 import { useFrame } from "@/hooks/use-frame";
+import { cn } from "@/lib/utils";
 
 /**
  * Wraps the footer so it rises, scales up and fades in as it is uncovered.
@@ -66,6 +67,8 @@ export function FooterSlogan({ text }: { text: string }) {
 
   const on = !motion || shown === true;
   const chars = text.split("");
+  // On mobile the last word drops to its own line ("Let wow" / "begin.").
+  const lastSpace = text.lastIndexOf(" ");
 
   return (
     <div
@@ -73,19 +76,27 @@ export function FooterSlogan({ text }: { text: string }) {
       aria-label={text}
       className="flex flex-wrap overflow-hidden pb-[0.08em] text-[clamp(60px,12.4cqw,196px)] font-medium leading-[0.95] tracking-[-0.055em] text-snow"
     >
-      {chars.map((char, i) => (
-        <span
-          key={i}
-          aria-hidden="true"
-          className="inline-block whitespace-pre transition-[transform,color] duration-[900ms,300ms] ease-spark hover:text-brand"
-          style={{
-            transform: on ? "none" : "translateY(110%)",
-            transitionDelay: `${(on ? i : chars.length - 1 - i) * CHAR_STAGGER_MS}ms`,
-          }}
-        >
-          {char}
-        </span>
-      ))}
+      {chars.map((char, i) => {
+        const span = (
+          <span
+            key={i}
+            aria-hidden="true"
+            className={cn(
+              "inline-block whitespace-pre transition-[transform,color] duration-[900ms,300ms] ease-spark hover:text-brand",
+              i === lastSpace && "max-md:hidden",
+            )}
+            style={{
+              transform: on ? "none" : "translateY(110%)",
+              transitionDelay: `${(on ? i : chars.length - 1 - i) * CHAR_STAGGER_MS}ms`,
+            }}
+          >
+            {char}
+          </span>
+        );
+        if (i !== lastSpace) return span;
+        // A full-width flex item forces the line break.
+        return [span, <span key="break" aria-hidden="true" className="basis-full md:hidden" />];
+      })}
     </div>
   );
 }

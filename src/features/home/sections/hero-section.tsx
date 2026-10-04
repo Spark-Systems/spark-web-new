@@ -8,11 +8,12 @@ export function HeroSection() {
   return (
     <section
       id="top"
-      className="px-gutter relative flex min-h-[max(760px,100vh)] flex-col justify-end overflow-hidden pb-[clamp(40px,5cqw,72px)] pt-[clamp(120px,14cqw,220px)]"
+      className="px-gutter relative overflow-hidden"
     >
       <HeroBackground videoSrc={hero.videoSrc} />
 
-      <div className="relative flex flex-col gap-[clamp(48px,7cqw,112px)]">
+      {/* Screen 1: heading, vertically centred, left-aligned. */}
+      <div className="relative flex min-h-[max(600px,100vh)] flex-col items-start justify-center py-[clamp(120px,14cqw,220px)]">
         <Reveal
           as="h1"
           className="m-0 max-w-[14ch] text-balance text-[clamp(46px,7.6cqw,124px)] font-medium leading-[0.98] tracking-[-0.045em]"
@@ -27,7 +28,10 @@ export function HeroSection() {
           <br />
           {hero.titleEnd}
         </Reveal>
+      </div>
 
+      {/* Screen 2: paragraphs + stats, vertically centred, left-aligned. */}
+      <div className="relative flex min-h-[max(600px,100vh)] flex-col justify-center gap-[clamp(48px,7cqw,112px)] py-[clamp(80px,10cqw,160px)]">
         <div className="grid max-w-[1180px] grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-[clamp(20px,4cqw,72px)]">
           {hero.paragraphs.map((text, i) => (
             <Reveal

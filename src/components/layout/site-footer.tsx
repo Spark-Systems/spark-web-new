@@ -2,13 +2,14 @@ import type { ReactNode } from "react";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { PartnerBadge } from "@/components/ui/partner-badge";
 import { SmartLink } from "@/components/ui/smart-link";
-import { companyNav, offices, partners, siteConfig, socialLinks, solutionNames } from "@/config/site";
+import { companyNav, contactCta, offices, partners, siteConfig, socialLinks, solutionNames } from "@/config/site";
 import { footerContent } from "@/content/home";
+import { cn } from "@/lib/utils";
 import { FooterParallax, FooterSlogan } from "./footer-motion";
 
-function FooterColumn({ title, children }: { title: string; children: ReactNode }) {
+function FooterColumn({ title, className, children }: { title: string; className?: string; children: ReactNode }) {
   return (
-    <div className="flex flex-col gap-3.5">
+    <div className={cn("flex flex-col gap-3.5", className)}>
       <span className="text-xs tracking-[0.04em] text-fog-700">{title}</span>
       {children}
     </div>
@@ -17,6 +18,11 @@ function FooterColumn({ title, children }: { title: string; children: ReactNode 
 
 const linkClass = "text-fog-200 transition-colors hover:text-brand-bright";
 
+/**
+ * Site footer. On mobile it slims down: the solutions list and offices are
+ * hidden, company links sit in two columns, and a big "Let's Talk" button
+ * takes the offices' place.
+ */
 export function SiteFooter() {
   return (
     <FooterParallax className="bg-texture px-gutter flex min-h-[clamp(500px,100vh,1100px)] flex-col justify-center gap-[clamp(48px,6cqw,96px)] border-t border-white/8 pb-8 pt-[clamp(56px,6cqw,96px)] text-fog-400 will-change-transform">
@@ -28,7 +34,7 @@ export function SiteFooter() {
           <p className="max-w-[30ch] text-sm leading-relaxed text-fog-500">{footerContent.blurb}</p>
         </div>
 
-        <FooterColumn title="Solutions">
+        <FooterColumn title="Solutions" className="max-md:hidden">
           <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm">
             {solutionNames.map((name) => (
               <a key={name} href="#" className={linkClass}>
@@ -39,16 +45,21 @@ export function SiteFooter() {
         </FooterColumn>
 
         <FooterColumn title="Company">
-          <div className="flex flex-col gap-2.5 text-sm">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm md:flex md:flex-col">
             {companyNav.map((item) => (
-              <SmartLink key={item.label} href={item.href} className={linkClass}>
+              <SmartLink
+                key={item.label}
+                href={item.href}
+                // On mobile "Contact" is covered by the "Let's Talk" button.
+                className={cn(linkClass, item.label === "Contact" && "max-md:hidden")}
+              >
                 {item.label}
               </SmartLink>
             ))}
           </div>
         </FooterColumn>
 
-        <FooterColumn title="Offices">
+        <FooterColumn title="Offices" className="max-md:hidden">
           <address className="flex flex-col gap-2.5 text-sm not-italic text-fog-200">
             {offices.map((office) => (
               <span key={office}>{office}</span>
@@ -58,6 +69,19 @@ export function SiteFooter() {
             </a>
           </address>
         </FooterColumn>
+
+        {/* Mobile only: replaces the offices column. */}
+        <div className="flex flex-col gap-3 md:hidden">
+          <SmartLink
+            href={contactCta.href}
+            className="flex items-center justify-center whitespace-nowrap rounded-full border-2 border-brand px-7 py-8 text-[clamp(30px,9vw,56px)] font-bold uppercase leading-none tracking-[0.08em] text-white transition-colors hover:bg-brand"
+          >
+            Let&apos;s Talk
+          </SmartLink>
+          <a href={`mailto:${siteConfig.email}`} className={cn(linkClass, "self-center text-sm")}>
+            {siteConfig.email}
+          </a>
+        </div>
       </div>
 
       <div className="mt-[clamp(48px,5cqw,80px)] flex flex-wrap items-center justify-between gap-5 border-t border-white/8 pt-6">
