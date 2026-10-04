@@ -7,7 +7,7 @@ import { clamp, easeInOutCubic, easeOutCubic, lerp } from "@/lib/motion/math";
 import { services, servicesSection } from "@/content/home";
 import { ServiceCard } from "../components/service-card";
 
-const SCENE_LENGTH = 6.4; // in viewport heights
+const SCENE_LENGTH = 4.6; // in viewport heights
 /** Scene length on tablet (two columns) and mobile (one longer column), where the cards scroll vertically. */
 const SCENE_LENGTH_TABLET = 4.2;
 const SCENE_LENGTH_MOBILE = 5.6;
@@ -20,8 +20,10 @@ const REVEAL_DISTANCE = 1.1;
 /** Share of the reveal used by the image; the text starts once it is mostly in. */
 const MEDIA_SHARE = 0.55;
 const CONTENT_START = 0.5;
-/** Gap (px) between the screen edges and the heading at the start and end of its travel. */
-const EDGE = 60;
+/** Gap (px) from the left edge to the heading and first card at the start of their travel. */
+const START_EDGE = 200;
+/** Gap (px) from the right edge to the heading's last letter and the last card at the end. */
+const END_EDGE = 120;
 /** Column layout: where each column's travel starts/ends, as a share of the viewport height. */
 const COLUMN_BAND = [0.3, 0.7] as const;
 /** Scroll progress over which the "Services" heading fades in (after the circle opens). */
@@ -96,8 +98,8 @@ export function ServicesSection() {
 
     const q = clamp((p - 0.03) / 0.97);
     const titleW = title.scrollWidth;
-    // Starts EDGE px from the left; ends with its last letter EDGE px from the right.
-    const tx = lerp(EDGE, W - titleW - EDGE, q);
+    // Starts START_EDGE px from the left; ends with its last letter (and the last card) END_EDGE px from the right.
+    const tx = lerp(START_EDGE, W - titleW - END_EDGE, q);
     title.style.transform = `translate3d(${tx.toFixed(1)}px,-50%,0)`;
     const titleIn = easeOutCubic(clamp((p - TITLE_FADE[0]) / (TITLE_FADE[1] - TITLE_FADE[0])));
     setStyle(title, "opacity", String(+titleIn.toFixed(3)));
@@ -178,7 +180,7 @@ export function ServicesSection() {
               className="absolute left-0 top-1/2 m-0 whitespace-nowrap bg-night-glow bg-clip-text pb-[0.12em] font-medium leading-none tracking-[-0.04em] text-transparent will-change-transform"
               style={{
                 fontSize: Math.round(vh * (isMobile ? 0.42 : 0.64)),
-                transform: `translate3d(${EDGE}px,-50%,0)`,
+                transform: `translate3d(${START_EDGE}px,-50%,0)`,
                 opacity: 0,
               }}
             >
