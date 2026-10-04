@@ -176,35 +176,6 @@
   }
 }
 
-/* ------------------------------------------------------------------ */
-/* Client orbit: each ring of logos sways around the orbit's centre;    */
-/* the bubbles counter-rotate on the same timing so they stay upright.  */
-/* ------------------------------------------------------------------ */
-@media (prefers-reduced-motion: no-preference) {
-  .orbit-sway,
-  .orbit-sway-counter {
-    animation: orbit-sway var(--sway-duration, 20s) ease-in-out var(--sway-delay, 0s) infinite;
-  }
-
-  .orbit-sway {
-    animation-direction: var(--sway-direction, alternate);
-  }
-
-  .orbit-sway-counter {
-    animation-direction: var(--sway-counter, alternate-reverse);
-  }
-}
-
-@keyframes orbit-sway {
-  from {
-    rotate: calc(var(--sway, 6deg) * -1);
-  }
-
-  to {
-    rotate: var(--sway, 6deg);
-  }
-}
-
 /* Content awaiting confirmation; outlined when NEXT_PUBLIC_HIGHLIGHT_TBC=true. */
 [data-highlight-tbc] [data-tbc] {
   outline: 2px solid var(--color-tbc);
