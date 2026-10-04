@@ -6,14 +6,18 @@ import { useMotion } from "@/components/providers/motion-provider";
 import { useViewport } from "@/hooks/use-viewport";
 import type { ClientLogo } from "@/types/content";
 
-const CYCLE_MS = 3200;
-const STAGGER_MS = 140;
+/** Time between logo swaps, and the delay between neighbouring cells within a swap. */
+export const CYCLE_MS = 3200;
+export const STAGGER_MS = 140;
 const EASE = "cubic-bezier(.4,0,.2,1)";
 
 type Layer = "a" | "b";
 
-/** Swap a cell's visible logo layer with the hidden one (slide up + blur). */
-function swapCell(cell: HTMLElement) {
+/**
+ * Swap a cell's visible logo layer with the hidden one (slide up + blur).
+ * A cell holds two `[data-layer="a"|"b"]` children; "a" starts visible.
+ */
+export function swapCell(cell: HTMLElement) {
   const current = (cell.dataset.on as Layer) || "a";
   const next: Layer = current === "a" ? "b" : "a";
   const out = cell.querySelector<HTMLElement>(`[data-layer="${current}"]`);

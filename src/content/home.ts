@@ -150,6 +150,10 @@ export const services: Service[] = [
 ];
 
 export const clientsSection = {
+  eyebrow: "Clients",
+  /** Draft copy (title and lead), awaiting confirmation. */
+  title: "Trusted across the region",
+  lead: "From ministries and national railways to the region's biggest events, the organisations we work with depend on Spark every day.",
   moreLink: { label: "and over a hundred organisations since 2008", href: "#" },
   partnersLabel: "Certified partners",
 };

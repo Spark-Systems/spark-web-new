@@ -138,10 +138,10 @@
 
 /* ------------------------------------------------------------------ */
 /* Scroll reveal ([data-reveal] is toggled by <RevealObserver />)       */
-/* The `js` class is set before paint, so content stays visible without JS. */
+/* `scripting: enabled` keeps content visible when JS is off.          */
 /* ------------------------------------------------------------------ */
-@media (prefers-reduced-motion: no-preference) {
-  .js [data-reveal] {
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  [data-reveal] {
     opacity: 0;
     transform: translate3d(0, 28px, 0);
     transition:
@@ -149,7 +149,7 @@
       transform 1.1s var(--ease-reveal) var(--reveal-delay, 0ms);
   }
 
-  .js [data-reveal][data-revealed] {
+  [data-reveal][data-revealed] {
     opacity: 1;
     transform: none;
   }
@@ -173,6 +173,35 @@
 
   to {
     transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Client orbit: each ring of logos sways around the orbit's centre;    */
+/* the bubbles counter-rotate on the same timing so they stay upright.  */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  .orbit-sway,
+  .orbit-sway-counter {
+    animation: orbit-sway var(--sway-duration, 20s) ease-in-out var(--sway-delay, 0s) infinite;
+  }
+
+  .orbit-sway {
+    animation-direction: var(--sway-direction, alternate);
+  }
+
+  .orbit-sway-counter {
+    animation-direction: var(--sway-counter, alternate-reverse);
+  }
+}
+
+@keyframes orbit-sway {
+  from {
+    rotate: calc(var(--sway, 6deg) * -1);
+  }
+
+  to {
+    rotate: var(--sway, 6deg);
   }
 }
 
