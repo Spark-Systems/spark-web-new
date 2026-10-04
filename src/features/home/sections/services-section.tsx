@@ -7,10 +7,17 @@ import { clamp, easeInOutCubic, easeOutCubic, lerp } from "@/lib/motion/math";
 import { services, servicesSection } from "@/content/home";
 import { ServiceCard } from "../components/service-card";
 
-const SCENE_LENGTH = 4.6; // in viewport heights
-/** Scene length on tablet (two columns) and mobile (one longer column), where the cards scroll vertically. */
-const SCENE_LENGTH_TABLET = 4.2;
-const SCENE_LENGTH_MOBILE = 5.6;
+/** Scroll (in viewport heights) over which the white circle opens — and closes again when scrolling back up. */
+const OPEN_LENGTH = 1.4;
+/** The cards start moving once the circle is this far open (0–1). */
+const CARDS_START = 0.5;
+/**
+ * Scroll (in viewport heights) over which the cards travel, per layout:
+ * desktop (horizontal), tablet (two columns) and mobile (one longer column).
+ */
+const CARDS_LENGTH = 3.6;
+const CARDS_LENGTH_TABLET = 3.1;
+const CARDS_LENGTH_MOBILE = 4.5;
 /** Below this width (tablet and mobile) the cards use the column layout. */
 const COMPACT_MAX_WIDTH = 1024;
 const INK = "#0B0B0B";
@@ -26,8 +33,8 @@ const START_EDGE = 200;
 const END_EDGE = 120;
 /** Column layout: where each column's travel starts/ends, as a share of the viewport height. */
 const COLUMN_BAND = [0.3, 0.7] as const;
-/** Scroll progress over which the "Services" heading fades in (after the circle opens). */
-const TITLE_FADE = [0.1, 0.25] as const;
+/** Circle-opening progress over which the "Services" heading fades in (it runs past 1 into the card travel). */
+const TITLE_FADE = [0.5, 1.25] as const;
 
 /** Set a style only when it changed, to avoid needless style recalcs. */
 function setStyle(el: HTMLElement, prop: "opacity" | "transform", value: string) {
@@ -57,6 +64,8 @@ export function ServicesSection() {
   const layers = useRef(new Map<HTMLElement, { media: HTMLElement | null; content: HTMLElement | null }>());
 
   const compact = vw < COMPACT_MAX_WIDTH;
+  const cardsLength = isMobile ? CARDS_LENGTH_MOBILE : compact ? CARDS_LENGTH_TABLET : CARDS_LENGTH;
+  const sceneLength = 1 + OPEN_LENGTH * CARDS_START + cardsLength; // in viewport heights
 
   const cardW = Math.round(isMobile ? Math.min(vw * 0.78, vh * 0.64) : Math.min(vw * 0.32, vh * 0.68));
   // Each card keeps its image's native aspect ratio.
@@ -87,21 +96,23 @@ export function ServicesSection() {
     const title = titleRef.current;
     if (!scene || !stage || !layer || !title) return;
 
-    const travel = scene.offsetHeight - window.innerHeight;
-    const p = travel > 0 ? clamp(-scene.getBoundingClientRect().top / travel) : 0;
-    const open = easeInOutCubic(clamp(p / 0.2));
+    const H = stage.offsetHeight;
+    const scrolled = Math.max(0, -scene.getBoundingClientRect().top);
+    // Circle opening (0–1, may run past 1) and card travel (0–1), each over its own length of scroll.
+    const o = scrolled / (OPEN_LENGTH * H);
+    const open = easeInOutCubic(clamp(o));
+    const q = clamp((scrolled - OPEN_LENGTH * CARDS_START * H) / (cardsLength * H));
     const W = stage.offsetWidth;
 
-    const maxRadius = Math.hypot(W, stage.offsetHeight) / 2 + 4;
+    const maxRadius = Math.hypot(W, H) / 2 + 4;
     layer.style.clipPath = `circle(${(6 + (maxRadius - 6) * open).toFixed(1)}px at 50% 50%)`;
     stage.style.background = open > 0.995 ? WHITE : INK;
 
-    const q = clamp((p - 0.03) / 0.97);
     const titleW = title.scrollWidth;
     // Starts START_EDGE px from the left; ends with its last letter (and the last card) END_EDGE px from the right.
     const tx = lerp(START_EDGE, W - titleW - END_EDGE, q);
     title.style.transform = `translate3d(${tx.toFixed(1)}px,-50%,0)`;
-    const titleIn = easeOutCubic(clamp((p - TITLE_FADE[0]) / (TITLE_FADE[1] - TITLE_FADE[0])));
+    const titleIn = easeOutCubic(clamp((o - TITLE_FADE[0]) / (TITLE_FADE[1] - TITLE_FADE[0])));
     setStyle(title, "opacity", String(+titleIn.toFixed(3)));
 
     // Cards span the heading: the first starts at its left edge, the last ends at its right edge.
@@ -109,7 +120,6 @@ export function ServicesSection() {
     const stride = cards.length > 1 ? (titleW - cardW) / (cards.length - 1) : 0;
 
     // Column layout: the left (or only) column rises while the right one sinks.
-    const H = stage.offsetHeight;
     const [bandTop, bandBottom] = [H * COLUMN_BAND[0], H * COLUMN_BAND[1]];
     const colY = [lerp(bandTop, bandBottom - columns.colH[0], q), lerp(bandBottom - columns.colH[1], bandTop, q)];
 
@@ -167,7 +177,7 @@ export function ServicesSection() {
         ref={sceneRef}
         className="relative"
         style={{
-          height: Math.round(vh * (isMobile ? SCENE_LENGTH_MOBILE : compact ? SCENE_LENGTH_TABLET : SCENE_LENGTH)),
+          height: Math.round(vh * sceneLength),
         }}
       >
         <div ref={stageRef} className="sticky top-0 overflow-hidden bg-ink" style={{ height: vh }}>
