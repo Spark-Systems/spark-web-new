@@ -7,6 +7,8 @@ export const easeInOutCubic = (t: number) =>
 
 export const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
+export const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
 export const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
 export type Rgb = readonly [number, number, number];

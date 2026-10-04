@@ -155,6 +155,27 @@
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* Hero headline: each line rises out of a mask once the page loads.   */
+/* Lines are staggered via --line (0, 1, 2…).                          */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-line {
+    animation: hero-line-rise 1.4s cubic-bezier(0.19, 1, 0.22, 1) both;
+    animation-delay: calc(250ms + var(--line, 0) * 140ms);
+  }
+}
+
+@keyframes hero-line-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
 /* Content awaiting confirmation; outlined when NEXT_PUBLIC_HIGHLIGHT_TBC=true. */
 [data-highlight-tbc] [data-tbc] {
   outline: 2px solid var(--color-tbc);
