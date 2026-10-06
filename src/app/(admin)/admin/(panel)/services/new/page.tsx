@@ -2,20 +2,20 @@ import type { Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 
 import { PageHeader } from "@admin/components/layout/page-header"
-import { ServiceForm } from "@admin/components/services/service-form"
+import { ServiceEditor } from "@admin/components/services/service-editor"
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Services")
   return { title: t("newTitle") }
 }
 
-export default async function NewServicePage() {
+export default async function NewServicesPage() {
   const t = await getTranslations("Services")
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader title={t("newTitle")} crumbs={[{ label: t("newTitle") }]} />
-      <ServiceForm />
+      <ServiceEditor />
     </div>
   )
 }

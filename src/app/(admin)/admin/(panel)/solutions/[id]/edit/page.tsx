@@ -2,14 +2,14 @@ import type { Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 
 import { PageHeader } from "@admin/components/layout/page-header"
-import { EditSolution } from "@admin/components/solutions/edit-solution"
+import { EditSolution } from "@admin/components/solutions/solution-editor"
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Solutions")
   return { title: t("editTitle") }
 }
 
-export default async function EditSolutionPage({ params }: PageProps<"/admin/solutions/[id]/edit">) {
+export default async function EditSolutionsPage({ params }: PageProps<"/admin/solutions/[id]/edit">) {
   const { id } = await params
   const t = await getTranslations("Solutions")
 

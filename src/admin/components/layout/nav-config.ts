@@ -1,23 +1,28 @@
 import {
+  Activity,
   Boxes,
   BriefcaseBusiness,
+  FileText,
   Handshake,
-  House,
-  Info,
+  Inbox,
   Layers,
   LayoutDashboard,
-  Mail,
   MapPin,
   Settings,
+  UserCog,
   Users,
   type LucideIcon,
 } from "lucide-react"
 import type { Messages } from "next-intl"
 
-import { ADMIN_BASE } from "@admin/lib/auth/constants"
+import type { UserRole } from "@admin/lib/api/types"
+import { adminPaths } from "@admin/lib/paths"
 
 /** Key under the `Nav` namespace in messages/*.json. */
 export type NavLabelKey = Exclude<keyof Messages["Nav"], "main" | "toggleSidebar" | "breadcrumb">
+
+/** Live counts a menu item can show as a pill (see useNavBadge). */
+export type NavBadge = "newEnquiries"
 
 export interface NavItem {
   labelKey: NavLabelKey
@@ -25,47 +30,51 @@ export interface NavItem {
   href?: string
   /** Shown on top-level items only. */
   icon?: LucideIcon
-  /** Optional count shown as a red pill, e.g. unread enquiries. */
-  badge?: number
+  /** Live count shown as a red pill, e.g. unread enquiries. */
+  badge?: NavBadge
+  /** Hidden from users below this role. */
+  role?: UserRole
   children?: NavItem[]
 }
 
-const at = (path: string) => `${ADMIN_BASE}${path}`
-
 // The sidebar renders this tree in order; nesting can go as deep as needed.
-// Mirrors the website: one entry per page or content type it shows.
+// Mirrors the website: its pages, then the lists they show, then the inbox and admin tools.
 export const mainNav: NavItem[] = [
-  { labelKey: "dashboard", href: at("/dashboard"), icon: LayoutDashboard },
+  { labelKey: "dashboard", href: adminPaths.dashboard, icon: LayoutDashboard },
+  {
+    labelKey: "pages",
+    icon: FileText,
+    children: [
+      { labelKey: "home", href: adminPaths.home },
+      { labelKey: "about", href: adminPaths.about },
+      { labelKey: "contact", href: adminPaths.contact },
+      { labelKey: "layout", href: adminPaths.layout },
+    ],
+  },
+  { labelKey: "solutions", href: adminPaths.solutions, icon: Boxes },
+  { labelKey: "services", href: adminPaths.services, icon: Layers },
+  { labelKey: "work", href: adminPaths.work, icon: BriefcaseBusiness },
+  { labelKey: "clients", href: adminPaths.clients, icon: Users },
+  { labelKey: "partners", href: adminPaths.partners, icon: Handshake },
+  { labelKey: "offices", href: adminPaths.offices, icon: MapPin },
+  { labelKey: "enquiries", href: adminPaths.enquiries, icon: Inbox, badge: "newEnquiries" },
+  { labelKey: "activity", href: adminPaths.activity, icon: Activity },
+  { labelKey: "users", href: adminPaths.users, icon: UserCog, role: "admin" },
   {
     labelKey: "settings",
     icon: Settings,
-    children: [{ labelKey: "configuration", href: at("/settings/configuration") }],
+    children: [{ labelKey: "configuration", href: adminPaths.configuration }],
   },
-  {
-    labelKey: "home",
-    icon: House,
-    children: [
-      { labelKey: "homeHero", href: at("/home/hero") },
-      { labelKey: "homeAi", href: at("/home/ai") },
-      { labelKey: "homeTestimonials", href: at("/home/testimonials") },
-    ],
-  },
-  { labelKey: "about", href: at("/about"), icon: Info },
-  { labelKey: "solutions", href: at("/solutions"), icon: Boxes },
-  { labelKey: "services", href: at("/services"), icon: Layers },
-  {
-    labelKey: "work",
-    icon: BriefcaseBusiness,
-    children: [
-      { labelKey: "projects", href: at("/work/projects") },
-      { labelKey: "caseStudies", href: at("/work/case-studies") },
-    ],
-  },
-  { labelKey: "clients", href: at("/clients"), icon: Users },
-  { labelKey: "partners", href: at("/partners"), icon: Handshake },
-  { labelKey: "offices", href: at("/offices"), icon: MapPin },
-  { labelKey: "enquiries", href: at("/enquiries"), icon: Mail },
 ]
+
+const RANK: Record<UserRole, number> = { viewer: 0, editor: 1, admin: 2 }
+
+/** The menu as `role` sees it (items needing a higher role removed). */
+export function navFor(role: UserRole | undefined, items: NavItem[] = mainNav): NavItem[] {
+  return items
+    .filter((item) => !item.role || (role !== undefined && RANK[role] >= RANK[item.role]))
+    .map((item) => (item.children ? { ...item, children: navFor(role, item.children) } : item))
+}
 
 export function isPathActive(href: string, pathname: string) {
   return pathname === href || pathname.startsWith(`${href}/`)

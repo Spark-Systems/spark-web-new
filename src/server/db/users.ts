@@ -14,6 +14,9 @@ export interface StoredUser extends User {
 export const users = defineRecords<StoredUser>("users", { label: "User" });
 
 /** Strips the login secrets. */
-export function publicUser({ password_hash: _hash, token_version: _version, ...user }: StoredUser): User {
-  return user;
+export function publicUser(stored: StoredUser): User {
+  const user: Partial<StoredUser> = { ...stored };
+  delete user.password_hash;
+  delete user.token_version;
+  return user as User;
 }

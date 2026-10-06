@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
-import { useForm, type DefaultValues, type FieldPath, type UseFormReturn } from "react-hook-form"
+import { useForm, useWatch, type DefaultValues, type FieldPath, type UseFormReturn } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
 
@@ -26,7 +26,8 @@ type Row<K extends CollectionKey> = CollectionRow<Values<K>>
 
 /** A row's editable fields (drops its id and publication details). */
 function toValues<K extends CollectionKey>(row: Row<K>): Values<K> {
-  const { id: _id, status: _s, created_at: _c, updated_at: _u, published_at: _p, updated_by: _b, ...values } = row
+  const values: Record<string, unknown> = { ...row }
+  for (const key of ["id", "status", "created_at", "updated_at", "published_at", "updated_by"]) delete values[key]
   return values as unknown as Values<K>
 }
 
@@ -83,7 +84,7 @@ export function CollectionEditor<K extends CollectionKey>({
   })
   useSlugFromName(form, slug?.from ?? ("" as FieldPath<Values<K>>), slug?.to ?? ("" as FieldPath<Values<K>>), Boolean(slug && !row))
   const editorTabs = useEditorTabs(form.control, tabs(form))
-  const values = form.watch()
+  const values = useWatch({ control: form.control }) as Values<K>
 
   const settle = (saved: Row<K>, message: string) => {
     setRow(saved)

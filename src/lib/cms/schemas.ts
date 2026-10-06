@@ -223,8 +223,6 @@ export const officeSchema = z.object({
 
 // ---- Pages ------------------------------------------------------------------
 
-const uploadedAsset = z.object({ src: uploadedImage, alt: optionalText(300) });
-
 export const homeContentSchema = z.object({
   hero: z.object({
     titleStart: text(80),

@@ -733,8 +733,8 @@
       },
       "created_at": "2026-10-06T13:02:06.492Z",
       "updated_at": "2026-10-06T13:02:06.492Z",
-      "published_at": "2026-10-06T13:02:06.492Z",
-      "updated_by": "Initial content"
+      "published_at": "2026-10-06T16:33:53.935Z",
+      "updated_by": "Spark Admin"
     },
     {
       "id": "sol_e-commerce",
@@ -775,51 +775,6 @@
         "has_detail": false,
         "detail": null,
         "order": 70
-      },
-      "created_at": "2026-10-06T13:02:06.492Z",
-      "updated_at": "2026-10-06T13:02:06.492Z",
-      "published_at": "2026-10-06T13:02:06.492Z",
-      "updated_by": "Initial content"
-    },
-    {
-      "id": "sol_medical",
-      "draft": {
-        "slug": "medical",
-        "name": "Medical",
-        "image": {
-          "src": "/uploads/images/services/ai-b49b9818.webp",
-          "width": 510,
-          "height": 319,
-          "blurDataURL": "data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAABQAQCdASoKAAYAA4BaJaQABHQAAP7xQ8q0ttn60tAAAA==",
-          "blurWidth": 10,
-          "blurHeight": 6
-        },
-        "flagship": false,
-        "description": "",
-        "tags": [],
-        "icon": "plugs-connected",
-        "has_detail": false,
-        "detail": null,
-        "order": 80
-      },
-      "published": {
-        "slug": "medical",
-        "name": "Medical",
-        "image": {
-          "src": "/uploads/images/services/ai-b49b9818.webp",
-          "width": 510,
-          "height": 319,
-          "blurDataURL": "data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAABQAQCdASoKAAYAA4BaJaQABHQAAP7xQ8q0ttn60tAAAA==",
-          "blurWidth": 10,
-          "blurHeight": 6
-        },
-        "flagship": false,
-        "description": "",
-        "tags": [],
-        "icon": "plugs-connected",
-        "has_detail": false,
-        "detail": null,
-        "order": 80
       },
       "created_at": "2026-10-06T13:02:06.492Z",
       "updated_at": "2026-10-06T13:02:06.492Z",
@@ -1000,51 +955,6 @@
         "has_detail": false,
         "detail": null,
         "order": 120
-      },
-      "created_at": "2026-10-06T13:02:06.492Z",
-      "updated_at": "2026-10-06T13:02:06.492Z",
-      "published_at": "2026-10-06T13:02:06.492Z",
-      "updated_by": "Initial content"
-    },
-    {
-      "id": "sol_custom",
-      "draft": {
-        "slug": "custom",
-        "name": "Custom",
-        "image": {
-          "src": "/uploads/images/services/development-96f42b28.webp",
-          "width": 510,
-          "height": 319,
-          "blurDataURL": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAACwAQCdASoKAAYAA4BaJaQAAp1UiKCAAP7039d8b2cQwGuAkH8AAA==",
-          "blurWidth": 10,
-          "blurHeight": 6
-        },
-        "flagship": false,
-        "description": "",
-        "tags": [],
-        "icon": "code",
-        "has_detail": false,
-        "detail": null,
-        "order": 130
-      },
-      "published": {
-        "slug": "custom",
-        "name": "Custom",
-        "image": {
-          "src": "/uploads/images/services/development-96f42b28.webp",
-          "width": 510,
-          "height": 319,
-          "blurDataURL": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAACwAQCdASoKAAYAA4BaJaQAAp1UiKCAAP7039d8b2cQwGuAkH8AAA==",
-          "blurWidth": 10,
-          "blurHeight": 6
-        },
-        "flagship": false,
-        "description": "",
-        "tags": [],
-        "icon": "code",
-        "has_detail": false,
-        "detail": null,
-        "order": 130
       },
       "created_at": "2026-10-06T13:02:06.492Z",
       "updated_at": "2026-10-06T13:02:06.492Z",

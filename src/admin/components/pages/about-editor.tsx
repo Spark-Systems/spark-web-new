@@ -22,7 +22,7 @@ type Form = UseFormReturn<PageContentMap["about"]>
 function StepKindSync({ form, index }: { form: Form; index: number }) {
   const kind = useWatch({ control: form.control, name: `mvv.steps.${index}.kind` })
   useEffect(() => {
-    const step = form.getValues(`mvv.steps.${index}`) as Record<string, unknown>
+    const step = form.getValues(`mvv.steps.${index}`) as unknown as Record<string, unknown>
     if (kind === "statement" && typeof step.text !== "string") form.setValue(`mvv.steps.${index}` as never, { ...step, text: "" } as never)
     if (kind === "values" && !Array.isArray(step.values)) form.setValue(`mvv.steps.${index}` as never, { ...step, values: [] } as never)
   }, [kind, form, index])

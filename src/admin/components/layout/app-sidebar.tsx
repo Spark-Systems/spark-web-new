@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { AdaptiveLogo, LogoMark } from "@admin/components/logo";
@@ -39,14 +40,23 @@ import {
   SidebarRail,
   useSidebar,
 } from "@admin/components/ui/sidebar";
+import { enquiriesQueries } from "@admin/lib/api/services/records";
+import { useAuth } from "@admin/lib/auth/auth-provider";
 import { HOME_PATH } from "@admin/lib/auth/constants";
 import { cn } from "@admin/lib/utils";
 import {
   isItemActive,
   isPathActive,
-  mainNav,
+  navFor,
+  type NavBadge,
   type NavItem,
 } from "./nav-config";
+
+/** The live count behind a menu badge (0 hides it). */
+function useNavBadge(badge: NavBadge | undefined) {
+  const { data } = useQuery({ ...enquiriesQueries.stats(), enabled: badge === "newEnquiries" });
+  return badge === "newEnquiries" ? (data?.new ?? 0) : 0;
+}
 
 const menuButtonClass =
   "text-muted-foreground hover:text-foreground h-10 gap-3 rounded-lg px-3 data-active:bg-accent data-active:text-accent-foreground data-active:hover:bg-accent data-active:hover:text-accent-foreground [&[data-active]>svg]:text-primary";
@@ -197,6 +207,7 @@ function NavTopItem({
   const active = isItemActive(item, pathname);
   const [open, setOpen] = useSectionOpen(active);
   const closeOnNavigate = useCloseOnNavigate();
+  const badge = useNavBadge(item.badge);
   const Icon = item.icon;
 
   if (!item.children) {
@@ -211,9 +222,9 @@ function NavTopItem({
           {Icon && <Icon />}
           <span>{label}</span>
         </SidebarMenuButton>
-        {item.badge ? (
+        {badge ? (
           <SidebarMenuBadge className="bg-primary text-primary-foreground peer-hover/menu-button:text-primary-foreground peer-data-active/menu-button:text-primary-foreground end-2 top-2.5! rounded-full">
-            {format.number(item.badge)}
+            {format.number(badge)}
           </SidebarMenuBadge>
         ) : null}
       </SidebarMenuItem>
@@ -287,6 +298,7 @@ export function AppSidebar({ dir }: { dir: "ltr" | "rtl" }) {
   const side = dir === "rtl" ? "right" : "left";
   const tooltipSide = dir === "rtl" ? "left" : "right";
   const closeOnNavigate = useCloseOnNavigate();
+  const { user } = useAuth();
 
   return (
     <Sidebar side={side} dir={dir} collapsible="icon">
@@ -312,7 +324,7 @@ export function AppSidebar({ dir }: { dir: "ltr" | "rtl" }) {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="gap-1">
-              {mainNav.map((item) => (
+              {navFor(user?.role).map((item) => (
                 <NavTopItem
                   key={item.labelKey}
                   item={item}

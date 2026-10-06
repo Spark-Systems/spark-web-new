@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useWatch, type UseFormReturn } from "react-hook-form"
 
 import { CollectionEditor, EditCollectionItem } from "@admin/components/cms/collection-editor"
@@ -35,12 +35,18 @@ function lineHref(type: string, value: string) {
   return digits ? `tel:${digits}` : ""
 }
 
-/** Keeps a contact line's link in step with its type and value. */
+/**
+ * Rebuilds a contact line's link when its type or value is edited. Stored
+ * links are left alone on load (they may carry a country code the displayed
+ * number omits), and the link stays editable.
+ */
 function LineHref({ form, path }: { form: UseFormReturn<OfficeRecord>; path: `lines.${number}` }) {
   const [type, value] = useWatch({ control: form.control, name: [`${path}.type`, `${path}.value`] })
+  const previous = useRef({ type, value })
   useEffect(() => {
-    const href = lineHref(type, value ?? "")
-    if (form.getValues(`${path}.href`) !== href) form.setValue(`${path}.href`, href, { shouldDirty: true })
+    if (previous.current.type === type && previous.current.value === value) return
+    previous.current = { type, value }
+    form.setValue(`${path}.href`, lineHref(type, value ?? ""), { shouldDirty: true, shouldValidate: form.formState.isSubmitted })
   }, [type, value, form, path])
   return null
 }
@@ -79,7 +85,8 @@ function OfficeFields({ form }: { form: UseFormReturn<OfficeRecord> }) {
               <LineHref form={form} path={`lines.${index}`} />
               <FormSelect control={control} name={`lines.${index}.type`} label={t("lineKind")} options={lineTypes} required />
               <FormInput control={control} name={`lines.${index}.label`} label={tf("label")} description={t("lineLabelHint")} required maxLength={40} />
-              <FormInput control={control} name={`lines.${index}.value`} label={t("lineValue")} required dir="ltr" maxLength={120} className="lg:col-span-2" />
+              <FormInput control={control} name={`lines.${index}.value`} label={t("lineValue")} required dir="ltr" maxLength={120} />
+              <FormInput control={control} name={`lines.${index}.href`} label={t("lineHref")} description={t("lineHrefHint")} required dir="ltr" maxLength={200} />
             </>
           )}
         </FormRepeater>

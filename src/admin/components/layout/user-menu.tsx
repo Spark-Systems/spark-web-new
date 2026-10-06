@@ -1,6 +1,7 @@
 "use client"
 
-import { ChevronDown, LogOut } from "lucide-react"
+import { ChevronDown, LogOut, UserRound } from "lucide-react"
+import Link from "next/link"
 import { useTranslations } from "next-intl"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@admin/components/ui/avatar"
@@ -16,6 +17,7 @@ import {
 } from "@admin/components/ui/dropdown-menu"
 import { Skeleton } from "@admin/components/ui/skeleton"
 import { useAuth } from "@admin/lib/auth/auth-provider"
+import { adminPaths } from "@admin/lib/paths"
 import { getInitials } from "@admin/lib/utils"
 
 export function UserMenu() {
@@ -50,6 +52,11 @@ export function UserMenu() {
             <span className="truncate">{user.email}</span>
           </DropdownMenuLabel>
         </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem render={<Link href={adminPaths.profile} />}>
+          <UserRound />
+          {t("profile")}
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onClick={logout}>
           <LogOut />

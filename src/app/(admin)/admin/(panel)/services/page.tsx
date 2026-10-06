@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server"
 import { Suspense } from "react"
 
 import { PageHeader } from "@admin/components/layout/page-header"
+import { ListingNav } from "@admin/components/pages/listing-nav"
 import { ServicesTable } from "@admin/components/services/services-table"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,6 +17,7 @@ export default async function ServicesPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader title={t("title")} description={t("description")} />
+      <ListingNav section="services" />
       {/* The table keeps its page/sort/search in the URL (useSearchParams needs Suspense). */}
       <Suspense>
         <ServicesTable />

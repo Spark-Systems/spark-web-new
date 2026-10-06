@@ -44,7 +44,11 @@ export async function uploadPendingImages<T>(values: T, folder: string): Promise
     if (!files.has(image.file)) {
       files.set(
         image.file,
-        uploadsApi.upload(image.file, folder).then(({ url: _url, ...stored }) => stored),
+        uploadsApi.upload(image.file, folder).then((result) => {
+          const stored: Partial<typeof result> = { ...result }
+          delete stored.url // same as src; not part of a stored picture
+          return stored as UploadedImage
+        }),
       )
     }
     return image

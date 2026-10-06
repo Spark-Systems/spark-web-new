@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import { useFormatter, useTranslations } from "next-intl"
+import { useFormatter, useNow, useTranslations } from "next-intl"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
@@ -34,6 +34,8 @@ export function UsersTable() {
   const t = useTranslations("Users")
   const tTable = useTranslations("DataTable")
   const format = useFormatter()
+  // Relative times ("2 hours ago") need a reference "now"; refreshed every minute.
+  const now = useNow({ updateInterval: 60_000 })
   const queryClient = useQueryClient()
   const { user: me } = useAuth()
   const [query, setQuery] = useDataTableQuery({ sort: { id: "name", desc: false } })
@@ -77,7 +79,7 @@ export function UsersTable() {
           cell: ({ row }) =>
             row.original.last_login_at ? (
               <span className="text-muted-foreground text-sm">
-                {format.relativeTime(new Date(row.original.last_login_at))}
+                {format.relativeTime(new Date(row.original.last_login_at), now)}
               </span>
             ) : (
               <span className="text-muted-foreground">{t("never")}</span>
@@ -99,7 +101,7 @@ export function UsersTable() {
           meta: { className: "w-20", align: "center" },
         }),
       ]),
-    [t, tTable, format, me?.id],
+    [t, tTable, format, now, me?.id],
   )
 
   if (isError && !data) return <QueryError message={t("loadError")} onRetry={() => refetch()} />
