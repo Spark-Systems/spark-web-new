@@ -1,0 +1,1940 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spark Admin &amp; API</title>
+<style>
+:root{--bg:#f7f7f8;--panel:#fff;--text:#16161a;--muted:#5b5b66;--line:#e4e4e9;--accent:#d81f26;--accent-soft:#fdecec;--code:#f1f1f4;--ok:#1a7f4b;--ok-soft:#e6f5ec;--warn:#9a6200;--warn-soft:#fdf3dc}
+@media (prefers-color-scheme:dark){:root{--bg:#0e0e11;--panel:#16161b;--text:#ececf1;--muted:#a1a1ad;--line:#2a2a33;--accent:#ff4d52;--accent-soft:#2a1416;--code:#1d1d24;--ok:#5fd394;--ok-soft:#12291d;--warn:#f5c060;--warn-soft:#2b220f}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);max-width:1240px;margin:0 auto;gap:40px;padding:32px 24px 96px}
+nav.toc{position:sticky;top:24px;align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px}
+nav.toc .brand{font-weight:700;margin-bottom:12px;letter-spacing:.02em}
+nav.toc a{color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px}
+nav.toc a:hover{background:var(--panel);color:var(--text)}
+main{min-width:0}
+section,.hero{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px 32px;margin-bottom:24px}
+.hero{background:linear-gradient(135deg,var(--accent-soft),var(--panel) 60%)}
+.eyebrow{color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:12px;margin:0}
+h1{font-size:36px;line-height:1.15;margin:8px 0 12px;letter-spacing:-.02em}
+h2{font-size:24px;margin:0 0 16px;letter-spacing:-.01em}
+h3{font-size:17px;margin:28px 0 10px}
+.lead{font-size:18px;color:var(--muted);max-width:70ch;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.meta span{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--panel)}
+p,li{max-width:80ch}ul,ol{padding-inline-start:22px}li{margin:4px 0}
+code{font:13px/1.5 ui-monospace,"Cascadia Code",Consolas,monospace;background:var(--code);padding:1px 6px;border-radius:5px;word-break:break-word}
+pre.code{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto;max-height:560px;margin:12px 0}
+pre.code code{background:none;padding:0;font-size:12.5px;white-space:pre;word-break:normal}
+.table-wrap{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:start;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--code);font-weight:600;white-space:nowrap}tr:last-child td{border-bottom:0}
+table.endpoints td:nth-child(2){white-space:nowrap}
+.m{display:inline-block;font:700 11px ui-monospace,monospace;padding:2px 7px;border-radius:5px;min-width:56px;text-align:center}
+.m-get{background:var(--ok-soft);color:var(--ok)}.m-post{background:var(--accent-soft);color:var(--accent)}
+.m-put,.m-patch{background:var(--warn-soft);color:var(--warn)}.m-delete{background:var(--code);color:var(--muted)}
+.badge{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:2px 10px;background:var(--code);color:var(--muted)}
+.badge.ok{background:var(--ok-soft);color:var(--ok)}.badge.warn{background:var(--warn-soft);color:var(--warn)}
+details{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:var(--panel)}
+details>summary{cursor:pointer;padding:10px 14px;font-weight:600;font-size:14px}details[open]>summary{border-bottom:1px solid var(--line)}
+details>pre.code{margin:0;border:0;border-radius:0 0 10px 10px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}
+.flow .box{border:1px solid var(--line);border-radius:12px;padding:10px 16px;display:flex;flex-direction:column;background:var(--panel)}
+.flow .box span{font-size:12px;color:var(--muted)}.flow .box.accent{border-color:var(--accent);background:var(--accent-soft)}
+.flow .arrow{font-size:13px;color:var(--muted)}
+.note{border-inline-start:3px solid var(--accent);padding:6px 14px;background:var(--accent-soft);border-radius:0 8px 8px 0}
+ol.check li::marker{color:var(--accent);font-weight:700}
+@media (max-width:900px){.layout{grid-template-columns:1fr;gap:16px;padding:16px}nav.toc{position:static;flex-direction:row;flex-wrap:wrap}section,.hero{padding:20px 16px}h1{font-size:28px}}
+@media print{nav.toc{display:none}.layout{grid-template-columns:1fr}details{break-inside:avoid}pre.code{max-height:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc"><div class="brand">Spark Admin &amp; API</div><a href="#intro">1. Overview</a><a href="#admin">2. Using the admin</a><a href="#conventions">3. API conventions</a><a href="#auth">3.4 Authentication</a><a href="#drafts">4. Drafts &amp; publishing</a><a href="#admin-api">5. Admin API</a><a href="#uploads">6. Uploads</a><a href="#public-api">7. Website (public) API</a><a href="#revalidate">8. Revalidation webhook</a><a href="#models">9. Data models</a><a href="#seed">10. Starting content</a><a href="#handover">11. Handover checklist</a></nav>
+<main>
+<header class="hero" id="intro">
+  <p class="eyebrow">Spark Systems · Website &amp; Admin</p>
+  <h1>Admin guide &amp; API specification</h1>
+  <p class="lead">How the content admin works, and the exact API a backend must provide so the website and admin can run on it.
+  Written for content editors (section 2) and the backend team (sections 3–11).</p>
+  <div class="meta"><span>Frontend: Next.js 16 (website + <code>/admin</code>)</span><span>Content language: English</span><span>Admin UI: English / Arabic</span></div>
+</header>
+
+<section>
+<h2>1. Overview</h2>
+<p>The project has two faces in one Next.js app:</p>
+<ul>
+  <li><b>The website</b> (<code>/</code>, <code>/about</code>, <code>/solutions</code>, <code>/services</code>, <code>/work</code>, <code>/contact</code> and the detail pages). Pages are pre-rendered and only re-rendered when content is published.</li>
+  <li><b>The admin</b> (<code>/admin</code>). A browser app that edits every piece of website content through a JSON API.</li>
+</ul>
+<p>Today that API runs inside the same app (<code>/api/admin/*</code>, <code>/api/v1/*</code>) and stores content as JSON files (Vercel Blob in production). It is a <b>working reference implementation</b>: a backend that implements the contract below can replace it without changing the admin screens or the website pages.</p>
+<div class="flow">
+  <div class="box"><b>Admin</b><span>browser, /admin</span></div>
+  <div class="arrow">→ Admin API (Bearer token) →</div>
+  <div class="box accent"><b>Backend</b><span>your stack</span></div>
+  <div class="arrow">→ Public API (published only) →</div>
+  <div class="box"><b>Website</b><span>Next.js, pre-rendered</span></div>
+</div>
+<p class="note">On publish the backend calls the website’s revalidation webhook, so the new content appears within seconds.</p>
+</section>
+
+<section id="admin">
+<h2>2. Using the admin</h2>
+<h3>2.1 Signing in</h3>
+<ol>
+  <li>Open <code>https://&lt;site&gt;/admin</code> and sign in with your email and password.</li>
+  <li>The first admin account is created from the <code>ADMIN_EMAIL</code> / <code>ADMIN_PASSWORD</code> settings the first time someone signs in with them. Change the password under <b>Profile</b> (avatar menu, top right).</li>
+  <li>Switch language (English / العربية) and light/dark from the top bar.</li>
+</ol>
+<h3>2.2 Roles</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>Role</th><th>Can</th></tr></thead><tbody><tr><td><b>viewer</b></td><td>Read everything in the admin except users and advanced settings. No changes.</td></tr><tr><td><b>editor</b></td><td>Everything a viewer can, plus create / save / publish / unpublish / delete content, upload pictures, manage enquiries.</td></tr><tr><td><b>admin</b></td><td>Everything, plus users and all settings.</td></tr></tbody></table></div>
+<h3>2.3 Draft, publish, preview</h3>
+<p>Nothing you type reaches the website until you publish it.</p>
+<div class="table-wrap"><table class=""><thead><tr><th>Button</th><th>What it does</th></tr></thead><tbody><tr><td><b>Save draft</b></td><td>Saves your changes. The website still shows the published version.</td></tr><tr><td><b>Save &amp; publish</b> / <b>Publish</b></td><td>Saves and puts it live. The website updates within seconds.</td></tr><tr><td><b>Preview</b></td><td>Opens the real website showing your saved drafts, with an “Exit preview” button at the bottom. Only you see it.</td></tr><tr><td><b>⋯ → Discard unpublished changes</b></td><td>Throws away saved drafts and goes back to what’s live.</td></tr><tr><td><b>⋯ → Unpublish</b></td><td>Takes a list item (a solution, project, logo…) off the website without deleting it.</td></tr><tr><td><b>⋯ → Delete</b></td><td>Removes it everywhere. Can’t be undone.</td></tr></tbody></table></div>
+<p>Status badges: <span class="badge ok">Published</span> live and up to date · <span class="badge warn">Unpublished changes</span> live, but newer edits are saved as draft · <span class="badge">Draft</span> not on the website.</p>
+<h3>2.4 Where things are</h3>
+<div class="table-wrap"><table><thead><tr><th>Menu</th><th>Edits</th></tr></thead><tbody><tr><td><b>Pages → Home</b></td><td>Every home section in tabs: Hero, Solutions panels, Services cards, Clients, Work carousel, Testimonials, AI.</td></tr><tr><td><b>Pages → About / Contact</b></td><td>Page text, pictures, timeline, mission/vision/values, the contact form wording.</td></tr><tr><td><b>Pages → Menu &amp; footer</b></td><td>Company email/phone, the full-screen menu entries (with picture and brief), footer slogan, and the “Let’s talk” section shown at the end of most pages.</td></tr><tr><td><b>Solutions / Services / Work</b></td><td>Two tabs at the top: <b>List</b> (the items) and <b>Page text</b> (hero, SEO and headings of /solutions, /services, /work). Each item has a <b>Detail page</b> / <b>Case study</b> tab; switch it on to give the item its own page.</td></tr><tr><td><b>Clients / Partners</b></td><td>Logos. Partners appear on the home page, the footer and the About page (first two).</td></tr><tr><td><b>Offices</b></td><td>Shown on the contact page, in the menu and footer. Phone links are filled in from the number; add the country code in the Link field if needed.</td></tr><tr><td><b>Enquiries</b></td><td>Messages from the website’s contact forms. Opening one marks it read. Reply by email, archive or delete. Excel export.</td></tr><tr><td><b>Activity</b></td><td>Who changed what and when.</td></tr><tr><td><b>Users</b></td><td>Admins only. Add people as admin, editor or viewer.</td></tr><tr><td><b>Settings → Configuration</b></td><td>Site name, meta description, keywords, social links, advanced (mail, reCAPTCHA, analytics).</td></tr></tbody></table></div>
+<h3>2.5 Pictures</h3>
+<ul>
+  <li>Drop or pick a JPEG, PNG, WebP or GIF up to <b>4 MB</b> (logos may also be SVG). Pictures are resized to at most 2400 px and converted to WebP automatically.</li>
+  <li>Fill in <b>Alt text</b> to describe the picture for screen readers; leave it empty for decorative pictures.</li>
+  <li>A new picture is uploaded when you save.</li>
+</ul>
+<h3>2.6 Lists that repeat (features, steps, figures…)</h3>
+<p>Use <b>Add …</b> to add an entry, the arrows to reorder, the bin to remove. Long lists start collapsed; click an entry to open it. A red dot marks entries with errors.</p>
+</section>
+
+<section id="conventions">
+<h2>3. API conventions</h2>
+<h3>3.1 Base URLs</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>API</th><th>Today (reference)</th><th>Used by</th><th>Auth</th></tr></thead><tbody><tr><td>Admin API</td><td><code>/api/admin</code></td><td>The admin (browser)</td><td>Bearer access token</td></tr><tr><td>Public API</td><td><code>/api/v1</code></td><td>The website (server side) and any other client</td><td>None (published content only)</td></tr></tbody></table></div>
+<p>Paths below are relative to those bases. Please keep them; only the host/base prefix may change.</p>
+<h3>3.2 Format</h3>
+<ul>
+  <li>JSON in and out, UTF-8. Dates are ISO-8601 strings in UTC (<code>2026-10-06T13:02:06.492Z</code>).</li>
+  <li><b>Top-level record fields are snake_case</b> (<code>has_detail</code>, <code>created_at</code>). <b>Page content blocks are camelCase</b> (<code>titleLines</code>, <code>ctaLabel</code>) because they reuse the website’s own types unchanged. Keep both exactly as specified.</li>
+  <li>IDs are opaque strings with a readable prefix (<code>sol_…</code>, <code>svc_…</code>, <code>prj_…</code>, <code>cli_…</code>, <code>par_…</code>, <code>off_…</code>, <code>usr_…</code>, <code>enq_…</code>, <code>act_…</code>). Keep the existing IDs when importing.</li>
+  <li>Writes are <b>full replacements</b> (PUT sends the whole record/page), not patches.</li>
+  <li>Empty optional text is <code>""</code>; optional objects are omitted (not <code>null</code>) unless the model says <code>| null</code>.</li>
+</ul>
+<h3>3.3 Lists, errors</h3>
+<p>Every admin list endpoint takes the same query and returns the same shape:</p>
+<pre class="code" data-lang="http"><code>GET /solutions?page=1&amp;page_size=10&amp;sort=order&amp;order=asc&amp;q=tick&amp;status=published,changed&amp;flagship=yes
+
+{
+  &quot;data&quot;: [ /* rows of this page */ ],
+  &quot;total&quot;: 13            // rows matching search + filters, across all pages
+}</code></pre>
+<ul>
+  <li><code>page</code> 1-based; <code>page_size</code> 1–100 (default 10).</li>
+  <li><code>sort</code> is any row field; <code>order</code> <code>asc|desc</code>.</li>
+  <li><code>q</code> is a case-insensitive “contains” search over the fields listed per endpoint.</li>
+  <li>Facet filters are comma lists; values within one facet are OR, different facets are AND.</li>
+</ul>
+<p>Every error has this body (fields other than <code>message</code> are optional):</p>
+<pre class="code" data-lang="json"><code>{
+  &quot;message&quot;: &quot;Some fields are invalid&quot;,     // human-readable, shown in the admin
+  &quot;code&quot;: &quot;validation&quot;,                     // machine-readable reason
+  &quot;field&quot;: &quot;slug&quot;,                          // for single-field errors (409 slug_taken…)
+  &quot;issues&quot;: [                               // for 422 validation
+    { &quot;path&quot;: &quot;detail.features.items.0.title&quot;, &quot;message&quot;: &quot;Required&quot; }
+  ]
+}</code></pre>
+<p>The admin highlights the field at each <code>path</code> (dotted, array indexes as numbers; page paths are prefixed <code>content.</code>).</p>
+<div class="table-wrap"><table class=""><thead><tr><th>Status</th><th>code</th><th>When</th></tr></thead><tbody><tr><td>400</td><td><code>bad_json</code></td><td>Body isn't JSON</td></tr><tr><td>401</td><td>—</td><td>No/invalid/expired access token (the client then calls <code>/auth/refresh</code> once and retries)</td></tr><tr><td>403</td><td>—</td><td>Role too low, or wrong current password</td></tr><tr><td>404</td><td><code>not_found</code></td><td>Unknown id, slug, page or action</td></tr><tr><td>409</td><td><code>slug_taken</code>, <code>email_taken</code> (+ <code>field</code>)</td><td>Unique value already used</td></tr><tr><td>409</td><td><code>conflict</code></td><td>Someone else saved the same document in between (optimistic locking)</td></tr><tr><td>413 / 415</td><td><code>too_large</code>, <code>unsupported_type</code>, <code>unsafe_svg</code></td><td>Upload rejected</td></tr><tr><td>422</td><td><code>validation</code> + <code>issues</code></td><td>Field validation failed</td></tr><tr><td>422</td><td><code>last_admin</code>, <code>self_delete</code>, <code>nothing_published</code></td><td>Action not allowed in this state</td></tr><tr><td>429</td><td><code>rate_limited</code></td><td>Too many enquiries / login attempts</td></tr><tr><td>503</td><td><code>read_only</code></td><td>Storage can't be written</td></tr></tbody></table></div>
+
+<h3 id="auth">3.4 Authentication</h3>
+<ul>
+  <li><code>POST /auth/login</code> returns an access token (15 min) and a refresh token (7 days). JWTs are fine; the admin treats them as opaque strings.</li>
+  <li>The admin sends <code>Authorization: Bearer &lt;access_token&gt;</code>. On a 401 it calls <code>/auth/refresh</code> once, retries, and signs the user out if that fails.</li>
+  <li>Changing a password must invalidate all older tokens of that user.</li>
+  <li>Please rate-limit failed logins per email (the reference locks an email for 15 min after 8 failures).</li>
+</ul>
+<pre class="code" data-lang="json"><code>// AuthTokens
+{
+  &quot;access_token&quot;: &quot;eyJ…&quot;,
+  &quot;refresh_token&quot;: &quot;eyJ…&quot;,
+  &quot;token_type&quot;: &quot;Bearer&quot;,
+  &quot;expires_in&quot;: 900,            // seconds
+  &quot;refresh_expires_in&quot;: 604800  // seconds
+}</code></pre>
+<div class="table-wrap"><table class="endpoints"><thead><tr><th>Method</th><th>Path</th><th>Role</th><th>Description</th></tr></thead><tbody><tr><td><span class="m m-post">POST</span></td><td><code>/auth/login</code></td><td>public</td><td>Body <code>{ email, password }</code> → <code>AuthTokens</code>. 401 on wrong credentials.</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/auth/refresh</code></td><td>public</td><td>Body <code>{ refresh_token }</code> → a new <code>AuthTokens</code> pair. 401 when expired/revoked.</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/auth/logout</code></td><td>any</td><td>204. Tokens are stateless; the client deletes them.</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/auth/me</code></td><td>any</td><td>→ <code>User</code> (the signed-in user).</td></tr><tr><td><span class="m m-put">PUT</span></td><td><code>/auth/me</code></td><td>any</td><td>Body <code>{ name, email }</code> → <code>User</code>. 409 <code>email_taken</code>.</td></tr><tr><td><span class="m m-put">PUT</span></td><td><code>/auth/password</code></td><td>any</td><td>Body <code>{ current_password, new_password }</code> → new <code>AuthTokens</code>. Revokes every other session. 403 when the current password is wrong.</td></tr></tbody></table></div>
+</section>
+
+<section id="drafts">
+<h2>4. Drafts &amp; publishing</h2>
+<p>Every list item and every page is stored as an envelope with two copies of its content:</p>
+<pre class="code" data-lang="json"><code>{
+  &quot;id&quot;: &quot;cli_001&quot;,            // list items only
+  &quot;draft&quot;:     { /* T: what the admin edits */ },
+  &quot;published&quot;: { /* T: what the website shows */ } | null,
+  &quot;created_at&quot;: &quot;…&quot;, &quot;updated_at&quot;: &quot;…&quot;,
+  &quot;published_at&quot;: &quot;…&quot; | null,
+  &quot;updated_by&quot;: &quot;Spark Admin&quot;  // name of the last person who saved
+}</code></pre>
+<ul>
+  <li><b>Save</b> (PUT) replaces <code>draft</code>, sets <code>updated_at</code>/<code>updated_by</code>.</li>
+  <li><b>publish</b> copies <code>draft</code> → <code>published</code>, sets <code>published_at</code>.</li>
+  <li><b>unpublish</b> sets <code>published</code> to <code>null</code> (lists only).</li>
+  <li><b>discard</b> copies <code>published</code> → <code>draft</code>.</li>
+  <li><code>status</code> is derived on read: <code>draft</code> when <code>published</code> is null; <code>published</code> when both copies are deep-equal; otherwise <code>changed</code>.</li>
+</ul>
+<p>The admin API returns the <b>draft</b> flattened with the publication fields (<code>CollectionRow&lt;T&gt;</code>); the public API returns only <b>published</b> copies, sorted by <code>order</code> ascending.</p>
+<pre class="code" data-lang="json"><code>{
+  &quot;name&quot;: &quot;Ministry of Foreign Affairs&quot;,
+  &quot;logo&quot;: {
+    &quot;src&quot;: &quot;/uploads/images/clients/mofa-6d5a47b7.webp&quot;,
+    &quot;width&quot;: 289,
+    &quot;height&quot;: 91,
+    &quot;blurDataURL&quot;: &quot;data:image/webp;base64,…&quot;,
+    &quot;blurWidth&quot;: 10,
+    &quot;blurHeight&quot;: 3
+  },
+  &quot;link&quot;: &quot;&quot;,
+  &quot;show_name&quot;: false,
+  &quot;invert&quot;: false,
+  &quot;order&quot;: 10,
+  &quot;id&quot;: &quot;cli_001&quot;,
+  &quot;status&quot;: &quot;published&quot;,
+  &quot;created_at&quot;: &quot;2026-10-06T13:02:06.492Z&quot;,
+  &quot;updated_at&quot;: &quot;2026-10-06T13:02:06.492Z&quot;,
+  &quot;published_at&quot;: &quot;2026-10-06T13:02:06.492Z&quot;,
+  &quot;updated_by&quot;: &quot;Initial content&quot;
+}</code></pre>
+<p>Please also keep a few previous versions of each document (the reference keeps the last 10) and an <b>activity log</b> entry for each create / update / publish / unpublish / discard / delete / login (<code>ActivityEntry</code>).</p>
+</section>
+
+<section id="admin-api">
+<h2>5. Admin API</h2>
+<h3>5.1 Lists (draft/publish)</h3>
+<div class="table-wrap"><table class=""><thead><tr><th>Path</th><th>Item model T</th><th>Facets</th></tr></thead><tbody><tr><td><code>/solutions</code></td><td><code>SolutionRecord</code></td><td>status, flagship=yes|no, detail=yes|no</td></tr><tr><td><code>/services</code></td><td><code>ServiceRecord</code></td><td>status, detail=yes|no</td></tr><tr><td><code>/projects</code></td><td><code>ProjectRecord</code></td><td>status, detail=yes|no, category</td></tr><tr><td><code>/clients</code></td><td><code>LogoRecord</code></td><td>status</td></tr><tr><td><code>/partners</code></td><td><code>LogoRecord</code></td><td>status</td></tr><tr><td><code>/offices</code></td><td><code>OfficeRecord</code></td><td>status</td></tr></tbody></table></div>
+<p>Each list has the same operations (<code>{list}</code> = path above). Search <code>q</code> covers <code>name</code> and <code>slug</code> (projects also <code>category</code>; offices <code>city</code>, <code>country</code>, <code>address</code>).</p>
+<div class="table-wrap"><table class="endpoints"><thead><tr><th>Method</th><th>Path</th><th>Role</th><th>Description</th></tr></thead><tbody><tr><td><span class="m m-get">GET</span></td><td><code>/{list}</code></td><td>viewer</td><td>Paginated list → <code>Paginated&lt;CollectionRow&lt;T&gt;&gt;</code>. Query: <code>page, page_size, sort, order, q</code> + facets.</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/{list}</code></td><td>editor</td><td>Body <code>T</code> → 201 <code>CollectionRow&lt;T&gt;</code> (a draft). <code>?publish=true</code> publishes at once.</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/{list}/:id</code></td><td>viewer</td><td>→ <code>CollectionRow&lt;T&gt;</code>. 404 when unknown.</td></tr><tr><td><span class="m m-put">PUT</span></td><td><code>/{list}/:id</code></td><td>editor</td><td>Body <code>T</code> (full replace) → <code>CollectionRow&lt;T&gt;</code>. Saves the <b>draft</b> only.</td></tr><tr><td><span class="m m-delete">DELETE</span></td><td><code>/{list}/:id</code></td><td>editor</td><td>204. Removed from the website too.</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/{list}/:id/publish</code></td><td>editor</td><td>Copies draft → published. → <code>CollectionRow&lt;T&gt;</code>.</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/{list}/:id/unpublish</code></td><td>editor</td><td>Clears the published copy (item disappears from the site).</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/{list}/:id/discard</code></td><td>editor</td><td>Resets the draft to the published copy. 422 <code>nothing_published</code> if never published.</td></tr></tbody></table></div>
+<p><b>Rules:</b> <code>slug</code> is unique per list (case-insensitive, across draft and published copies) → 409 <code>slug_taken</code> with <code>field: "slug"</code>.
+The <code>detail</code> page content is validated only while <code>has_detail</code> is true; while false, store whatever is sent (it’s kept so switching back restores it) and never show it.</p>
+<h3>5.2 Pages</h3>
+<p><code>:page</code> is one of <code>home</code>, <code>about</code>, <code>solutions</code>, <code>services</code>, <code>work</code>, <code>contact</code>, <code>layout</code>. Content models: <code>PageContentMap</code> in section 9.</p>
+<div class="table-wrap"><table class="endpoints"><thead><tr><th>Method</th><th>Path</th><th>Role</th><th>Description</th></tr></thead><tbody><tr><td><span class="m m-get">GET</span></td><td><code>/pages/:page</code></td><td>viewer</td><td>→ <code>PageDocument</code> = <code>{ content, status, created_at, updated_at, published_at, updated_by }</code>.</td></tr><tr><td><span class="m m-put">PUT</span></td><td><code>/pages/:page</code></td><td>editor</td><td>Body <code>{ content }</code> (full page content) → <code>PageDocument</code>. Saves the draft.</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/pages/:page/publish</code></td><td>editor</td><td>Publishes the draft → <code>PageDocument</code>.</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/pages/:page/discard</code></td><td>editor</td><td>Back to the published content → <code>PageDocument</code>. (Pages can't be unpublished.)</td></tr></tbody></table></div>
+<h3>5.3 Settings, uploads, enquiries, activity, users</h3>
+<div class="table-wrap"><table class="endpoints"><thead><tr><th>Method</th><th>Path</th><th>Role</th><th>Description</th></tr></thead><tbody><tr><td><span class="m m-get">GET</span></td><td><code>/settings/meta</code></td><td>viewer</td><td>→ <code>MetaSettings</code></td></tr><tr><td><span class="m m-put">PUT</span></td><td><code>/settings/meta</code></td><td>admin</td><td>Body <code>MetaSettings</code> → same. Live immediately (no draft).</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/settings/social</code></td><td>viewer</td><td>→ <code>SocialLinks</code></td></tr><tr><td><span class="m m-put">PUT</span></td><td><code>/settings/social</code></td><td>admin</td><td>Body <code>SocialLinks</code> → same.</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/settings/advanced</code></td><td>admin</td><td>→ <code>AdvancedSettings</code>: secrets returned as <code>""</code> plus <code>smtp_password_set</code> / <code>recaptcha_secret_set</code> flags.</td></tr><tr><td><span class="m m-put">PUT</span></td><td><code>/settings/advanced</code></td><td>admin</td><td>Body <code>AdvancedSettingsRecord</code>. An empty <code>smtp_password</code> / <code>recaptcha_secret_key</code> keeps the stored value.</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/uploads</code></td><td>editor</td><td>multipart/form-data: <code>file</code>, <code>folder</code> → 201 <code>UploadResult</code>. See Uploads.</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/enquiries</code></td><td>viewer</td><td>Paginated <code>Enquiry</code> list, newest first. Facet <code>status=new,read,archived</code>; search covers name, company, email, message.</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/enquiries/stats</code></td><td>viewer</td><td>→ <code>{ new, total }</code> (sidebar badge, polled every 60 s).</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/enquiries/:id</code></td><td>viewer</td><td>→ <code>Enquiry</code></td></tr><tr><td><span class="m m-patch">PATCH</span></td><td><code>/enquiries/:id</code></td><td>editor</td><td>Body <code>{ status }</code> → <code>Enquiry</code>.</td></tr><tr><td><span class="m m-delete">DELETE</span></td><td><code>/enquiries/:id</code></td><td>editor</td><td>204</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/activity</code></td><td>viewer</td><td>Paginated <code>ActivityEntry</code> list, newest first. Facets <code>action</code>, <code>resource</code> (<code>pages</code> matches every <code>pages/*</code>).</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/users</code></td><td>admin</td><td>Paginated <code>User</code> list. Facet <code>role</code>.</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/users</code></td><td>admin</td><td>Body <code>{ name, email, role, password }</code> → 201 <code>User</code>. 409 <code>email_taken</code>.</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/users/:id</code></td><td>admin</td><td>→ <code>User</code></td></tr><tr><td><span class="m m-put">PUT</span></td><td><code>/users/:id</code></td><td>admin</td><td>Body <code>{ name, email, role, password }</code>; <code>password: ""</code> keeps it. A new password revokes that user's sessions. 422 <code>last_admin</code>.</td></tr><tr><td><span class="m m-delete">DELETE</span></td><td><code>/users/:id</code></td><td>admin</td><td>204. 422 <code>self_delete</code> / <code>last_admin</code>.</td></tr></tbody></table></div>
+</section>
+
+<section id="uploads">
+<h2>6. Uploads</h2>
+<pre class="code" data-lang="http"><code>POST /uploads            (multipart/form-data)
+  file   = &lt;binary&gt;
+  folder = &quot;solutions&quot; | &quot;services&quot; | &quot;work&quot; | &quot;clients&quot; | &quot;partners&quot; | &quot;offices&quot; | &quot;pages&quot; | …   ([a-z0-9-], ≤ 40)
+
+201 →
+{
+  &quot;url&quot;: &quot;https://cdn…/images/solutions/ticketing-958ca756.webp&quot;,  // same as src
+  &quot;src&quot;: &quot;https://cdn…/images/solutions/ticketing-958ca756.webp&quot;,
+  &quot;width&quot;: 2400,
+  &quot;height&quot;: 1350,
+  &quot;blurDataURL&quot;: &quot;data:image/webp;base64,UklGR…&quot;,   // ~10px WebP, raster images only
+  &quot;blurWidth&quot;: 10,
+  &quot;blurHeight&quot;: 6
+}</code></pre>
+<ul>
+  <li>Max <b>4 MB</b>. Detect the type from the file’s bytes, not its name: JPEG, PNG, WebP, GIF, AVIF, TIFF, or SVG.</li>
+  <li>Raster images: apply EXIF rotation, fit inside 2400×2400 (never enlarge), save as WebP (quality ~82), return the real output width/height and a tiny blur preview.</li>
+  <li>SVG: reject files containing <code>&lt;script</code>, <code>&lt;foreignObject</code>, <code>on…=</code> handlers, <code>javascript:</code>, <code>&lt;iframe|embed|object</code>. Return the SVG’s width/height (viewBox). No blur.</li>
+  <li>File names must be unique and immutable (cache for a year). The returned object (minus <code>url</code>) is stored as-is wherever the models say <code>UploadedImage</code>; the website uses width/height for layout and the blur for placeholders.</li>
+</ul>
+</section>
+
+<section id="public-api">
+<h2>7. Website (public) API</h2>
+<h3>7.1 Endpoints</h3>
+<p>These return <b>published</b> content already <b>assembled</b> into the website’s page models (section 9 “Website models”). How each page is assembled:</p>
+<ul>
+  <li><b>home</b> = <code>pages/home</code> + <code>clients.clients</code> (all clients) + <code>clients.partners</code> (all partners) + <code>contact</code> (from <code>pages/layout.contact</code>).</li>
+  <li><b>about</b> = <code>pages/about</code> + client logos + <code>partnerships.partners</code> = the first two partners, each with <code>label</code> = <code>pages/about.partnerships.label</code> (omit <code>partnerships</code> if fewer than two) + contact copy.</li>
+  <li><b>solutions</b> = page copy + <code>flagships.items</code> (solutions with <code>flagship</code>) + <code>catalog.items</code> (all solutions).</li>
+  <li><b>services</b> / <b>work</b> = page copy + all services / projects as summaries.</li>
+  <li><b>contact</b> = page copy + offices + <code>enquiry.email</code> (from layout) + <code>enquiry.socials</code> (settings social links that have a URL).</li>
+  <li><b>layout</b> = company (<code>name</code>, <code>description</code> from settings meta; <code>email</code>, <code>phone</code>, <code>foundedYear</code> from layout), keywords, menu, footer, contact copy, solutions, offices, partners, socials.</li>
+  <li>An item’s <code>hasDetail</code> is <code>has_detail &amp;&amp; detail != null</code>. Detail pages take <code>slug</code> and <code>overview.name</code> from the item and <code>contact</code> from the layout.</li>
+  <li><b>next</b> project (work detail): the next published project that has a case study, wrapping around; if it’s the only one, <code>{ name: "All work", category: "See every project", image: &lt;another project's image&gt;, href: "/work" }</code>.</li>
+</ul>
+<div class="table-wrap"><table class="endpoints"><thead><tr><th>Method</th><th>Path</th><th>Auth</th><th>Response</th></tr></thead><tbody><tr><td><span class="m m-get">GET</span></td><td><code>/v1/pages/home</code></td><td>public</td><td>→ <code>HomePageData</code></td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/pages/about</code></td><td>public</td><td>→ <code>AboutPageData</code></td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/pages/solutions</code></td><td>public</td><td>→ <code>SolutionsPageData</code></td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/pages/services</code></td><td>public</td><td>→ <code>ServicesPageData</code></td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/pages/work</code></td><td>public</td><td>→ <code>WorkPageData</code></td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/pages/contact</code></td><td>public</td><td>→ <code>ContactPageData</code></td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/pages/layout</code></td><td>public</td><td>→ <code>SiteLayoutData</code> (menu, footer, company, offices, partners, socials).</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/solutions/:slug</code></td><td>public</td><td>→ <code>SolutionDetail</code> (= <code>OfferingDetail</code>), 404 when none.</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/services/:slug</code></td><td>public</td><td>→ <code>ServiceDetail</code> (= <code>OfferingDetail</code>), 404 when none.</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/work/:slug</code></td><td>public</td><td>→ <code>ProjectDetail &amp; { next: NextProject }</code>, 404 when none.</td></tr><tr><td><span class="m m-get">GET</span></td><td><code>/v1/{solutions|services|work}/slugs</code></td><td>public</td><td><b>New, needed</b> → <code>string[]</code>: slugs of published items with a detail page (pre-rendering at build time).</td></tr><tr><td><span class="m m-post">POST</span></td><td><code>/v1/enquiries</code></td><td>public</td><td>Body <code>{ name, company, email, message, source?, website? }</code> → 201 <code>{ ok: true }</code>. <code>website</code> is a honeypot: when filled, answer 201 but don't store. 429 <code>rate_limited</code>.</td></tr></tbody></table></div>
+<p>Field mapping from stored records to website models (snake_case → camelCase): <code>has_detail → hasDetail</code>, <code>time_zone → timeZone</code>, <code>map_url → mapUrl</code>, <code>show_name → showName</code>; list images become <code>{ src: image, alt: name }</code>. The reference code for this mapping is <code>src/server/content/mappers.ts</code> and <code>pages.ts</code>.</p>
+<h3>7.2 Preview (drafts)</h3>
+<p>For preview mode the website needs the same public endpoints to return <b>drafts</b> (unpublished items included) when called with an editor’s token, e.g. <code>GET /v1/pages/home?preview=true</code> + <code>Authorization: Bearer …</code>. Responses must not be cached by a CDN in that case.</p>
+<h3>7.3 Caching</h3>
+<p>The website caches public responses until you call the revalidation webhook, so they can be served with normal caching headers.</p>
+</section>
+
+<section id="revalidate">
+<h2>8. Revalidation webhook (backend → website)</h2>
+<p>After anything that changes published content (publish, unpublish, delete of a published item, settings change), call:</p>
+<pre class="code" data-lang="http"><code>POST https://&lt;website&gt;/api/revalidate
+Authorization: Bearer &lt;REVALIDATE_SECRET&gt;      // shared secret, agreed between teams
+Content-Type: application/json
+
+{ &quot;resource&quot;: &quot;solutions&quot;, &quot;id&quot;: &quot;sol_ticketing&quot;, &quot;action&quot;: &quot;publish&quot; }
+
+→ 200 { &quot;revalidated&quot;: true }</code></pre>
+<p>The website refreshes all pages (they share the menu/footer data). We will add this endpoint when switching to your backend; until then the reference implementation revalidates internally.</p>
+</section>
+
+<section id="models">
+<h2>9. Data models</h2>
+<p>These are the actual TypeScript source files from the project, so they can't drift from the frontend. <code>UploadedImage</code> = <code>{ src, width, height, blurDataURL?, blurWidth?, blurHeight? }</code>; <code>ImageSource</code> = <code>UploadedImage | string</code> (a plain URL, used for some stock hero photos).</p>
+<h3>9.1 Stored / admin models</h3>
+<p>Lists, pages, settings, users, enquiries, activity. Start here.</p>
+<details open><summary><code>src/types/cms.ts</code></summary><pre class="code" data-lang="ts"><code>import type { StaticImageData } from &quot;next/image&quot;;
+import type { AboutPageData } from &quot;./about&quot;;
+import type { ContactLine, ContactPageData } from &quot;./contact&quot;;
+import type { ContactContent, IconName, MenuItem, NavLink, PageHeroContent, PageSeo, SectionIntro } from &quot;./content&quot;;
+import type {
+  HomeAiSection,
+  HomeHero,
+  HomeServicesSection,
+  HomeSolutionsSection,
+  HomeTestimonialsSection,
+  HomeWorkSection,
+} from &quot;./home&quot;;
+import type { OfferingDetail } from &quot;./offering&quot;;
+import type { ServicesPageData } from &quot;./services&quot;;
+import type { ProjectDetail, WorkPageData } from &quot;./work&quot;;
+
+/**
+ * The stored content model: what the database keeps and the admin API reads
+ * and writes. The website never sees these directly; server/content turns
+ * them into the page types in this folder.
+ *
+ * Top-level record fields are snake_case (API convention); page content
+ * blocks reuse the website&#x27;s own camelCase types so they need no mapping.
+ */
+
+// ---- Shared -----------------------------------------------------------------
+
+/**
+ * An uploaded picture: its URL, intrinsic size and blur preview. Same shape as
+ * a static image import, so website components take it as `src` unchanged.
+ */
+export type UploadedImage = StaticImageData;
+
+/**
+ * Where a draft/publish document stands:
+ * - draft: never published, or unpublished (not on the website)
+ * - published: the website shows exactly the saved version
+ * - changed: published, with saved edits not yet published
+ */
+export type PublishStatus = &quot;draft&quot; | &quot;published&quot; | &quot;changed&quot;;
+
+/** Publication details the admin API adds to every draft/publish document. */
+export interface PublishInfo {
+  status: PublishStatus;
+  created_at: string;
+  updated_at: string;
+  published_at: string | null;
+  /** Name of the last person to save it. */
+  updated_by: string | null;
+}
+
+/** Actions on a draft/publish document besides saving. */
+export type PublishAction = &quot;publish&quot; | &quot;unpublish&quot; | &quot;discard&quot;;
+
+/** A row from a draft/publish list: its saved (draft) fields plus id and publication details. */
+export type CollectionRow&lt;T&gt; = T &amp; PublishInfo &amp; { id: string };
+
+// ---- Lists ------------------------------------------------------------------
+
+/** A solution or service detail page, minus what comes from its list entry (slug, name) or is shared (contact copy). */
+export interface OfferingContent {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  overview: Omit&lt;OfferingDetail[&quot;overview&quot;], &quot;name&quot;&gt;;
+  features: OfferingDetail[&quot;features&quot;];
+  process: OfferingDetail[&quot;process&quot;];
+  inUse: OfferingDetail[&quot;inUse&quot;];
+}
+
+/** A case study, minus its slug and the shared contact copy. */
+export type CaseStudyContent = Omit&lt;ProjectDetail, &quot;slug&quot; | &quot;contact&quot;&gt;;
+
+export interface SolutionRecord {
+  /** URL segment, e.g. &quot;ticketing&quot; for /solutions/ticketing. */
+  slug: string;
+  name: string;
+  image: UploadedImage;
+  /** Shown as a large card in &quot;Flagship platforms&quot;. */
+  flagship: boolean;
+  /** Flagship card text. */
+  description: string;
+  tags: string[];
+  icon: IconName;
+  /** Has its own page; otherwise links go to the contact form. */
+  has_detail: boolean;
+  detail: OfferingContent | null;
+  /** Display order, lowest first. */
+  order: number;
+}
+
+export interface ServiceRecord {
+  slug: string;
+  name: string;
+  /** One-line pitch, shown large. */
+  summary: string;
+  description: string;
+  capabilities: string[];
+  icon: IconName;
+  image: UploadedImage;
+  has_detail: boolean;
+  detail: OfferingContent | null;
+  order: number;
+}
+
+export interface ProjectRecord {
+  slug: string;
+  name: string;
+  /** Portfolio filter (&quot;Development&quot;, &quot;Mobile&quot;, …). */
+  category: string;
+  summary: string;
+  image: UploadedImage;
+  /** Has a case study page. */
+  has_detail: boolean;
+  detail: CaseStudyContent | null;
+  order: number;
+}
+
+/** A company shown by its logo: a client or a partner. */
+export interface LogoRecord {
+  name: string;
+  logo: UploadedImage;
+  /** The company&#x27;s website; &quot;&quot; when there&#x27;s none. */
+  link: string;
+  /** Partners: print the name beside a symbol-only logo. */
+  show_name: boolean;
+  /** Draw the logo in white (for dark marks on a transparent background). */
+  invert: boolean;
+  order: number;
+}
+
+export interface OfficeRecord {
+  city: string;
+  country: string;
+  hq: boolean;
+  /** IANA time zone for the live clock, e.g. &quot;Africa/Cairo&quot;. */
+  time_zone: string;
+  address: string;
+  map_url: string;
+  lines: ContactLine[];
+  order: number;
+}
+
+/** Draft/publish lists, by API path. */
+export interface CollectionMap {
+  solutions: SolutionRecord;
+  services: ServiceRecord;
+  projects: ProjectRecord;
+  clients: LogoRecord;
+  partners: LogoRecord;
+  offices: OfficeRecord;
+}
+export type CollectionKey = keyof CollectionMap;
+
+// ---- Pages ------------------------------------------------------------------
+
+export interface HomeContent {
+  hero: HomeHero;
+  solutions: HomeSolutionsSection;
+  services: HomeServicesSection;
+  clients: { moreLink: NavLink; partnersLabel: string };
+  work: HomeWorkSection;
+  testimonials: HomeTestimonialsSection;
+  ai: HomeAiSection;
+}
+
+export interface AboutContent extends Omit&lt;AboutPageData, &quot;clients&quot; | &quot;partnerships&quot; | &quot;contact&quot;&gt; {
+  /** Logos come from the clients list. */
+  clients: SectionIntro;
+  /** The first two partners from the partners list, each captioned with `label`. */
+  partnerships: SectionIntro &amp; { label: string };
+}
+
+export interface SolutionsPageContent {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  flagships: SectionIntro &amp; { lead: string };
+  catalog: SectionIntro;
+}
+
+export interface ServicesPageContent {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  areas: SectionIntro;
+  approach: ServicesPageData[&quot;approach&quot;];
+}
+
+export interface WorkPageContent {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  portfolio: SectionIntro &amp; { allLabel: string };
+  featured: WorkPageData[&quot;featured&quot;];
+}
+
+export interface ContactPageContent {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  offices: { eyebrow: string };
+  /** The email comes from the layout&#x27;s company details, the social links from the settings. */
+  enquiry: Omit&lt;ContactPageData[&quot;enquiry&quot;], &quot;email&quot; | &quot;socials&quot;&gt;;
+}
+
+/** Site-wide content: the menu, footer and shared contact copy. */
+export interface LayoutContent {
+  email: string;
+  phone: NavLink;
+  foundedYear: number;
+  menu: MenuItem[];
+  footer: { slogan: string; blurb: string };
+  contact: ContactContent;
+}
+
+/** Draft/publish page documents, by API path. */
+export interface PageContentMap {
+  home: HomeContent;
+  about: AboutContent;
+  solutions: SolutionsPageContent;
+  services: ServicesPageContent;
+  work: WorkPageContent;
+  contact: ContactPageContent;
+  layout: LayoutContent;
+}
+export type PageKey = keyof PageContentMap;
+
+/** A page document as the admin API returns it: the saved (draft) content plus publication details. */
+export type PageDocument&lt;K extends PageKey = PageKey&gt; = PublishInfo &amp; { content: PageContentMap[K] };
+
+// ---- Settings ---------------------------------------------------------------
+
+export interface MetaSettings {
+  site_name: string;
+  /** Default meta description for search engines and link previews. */
+  description: string;
+  keywords: string[];
+}
+
+export const socialPlatforms = [&quot;facebook&quot;, &quot;instagram&quot;, &quot;x&quot;, &quot;linkedin&quot;, &quot;youtube&quot;] as const;
+export type SocialPlatform = (typeof socialPlatforms)[number];
+
+export interface SocialLinkSetting {
+  url: string;
+  /** Uploaded icon (SVG) URL, or null to use the built-in icon. */
+  icon_url: string | null;
+}
+
+export type SocialLinks = Record&lt;SocialPlatform, SocialLinkSetting&gt;;
+
+/** Stored form, secrets included; the API never returns the secrets. */
+export interface AdvancedSettingsRecord {
+  website_url: string;
+  smtp_host: string;
+  smtp_port: number;
+  smtp_username: string;
+  smtp_password: string;
+  smtp_use_ssl: boolean;
+  default_email_address: string;
+  default_email_name: string;
+  notification_email: string;
+  recaptcha_site_key: string;
+  recaptcha_secret_key: string;
+  google_analytics_code: string;
+  google_analytics_emails: string[];
+  seo_scripts: string;
+}
+
+export interface SettingsRecord {
+  meta: MetaSettings;
+  social: SocialLinks;
+  advanced: AdvancedSettingsRecord;
+}
+
+// ---- Records without drafts -------------------------------------------------
+
+export type EnquiryStatus = &quot;new&quot; | &quot;read&quot; | &quot;archived&quot;;
+
+/** A message sent through the website&#x27;s contact form. */
+export interface Enquiry {
+  id: string;
+  name: string;
+  company: string;
+  email: string;
+  message: string;
+  status: EnquiryStatus;
+  created_at: string;
+  /** The page it was sent from. */
+  source: string;
+}
+
+export type UserRole = &quot;admin&quot; | &quot;editor&quot; | &quot;viewer&quot;;
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  avatar_url: string | null;
+  created_at: string;
+  last_login_at: string | null;
+}
+
+export type ActivityAction = &quot;create&quot; | &quot;update&quot; | &quot;delete&quot; | &quot;publish&quot; | &quot;unpublish&quot; | &quot;discard&quot; | &quot;login&quot;;
+
+/** One entry in the activity log. */
+export interface ActivityEntry {
+  id: string;
+  at: string;
+  user_id: string;
+  user_name: string;
+  action: ActivityAction;
+  /** What was changed, e.g. &quot;solutions&quot;, &quot;pages/home&quot;, &quot;settings&quot;. */
+  resource: string;
+  resource_id: string | null;
+  /** Human-readable name of the item at the time, e.g. &quot;Ticketing&quot;. */
+  label: string;
+}</code></pre></details>
+<h3>9.2 Website models</h3>
+<p>Used inside page content blocks and returned by the public API.</p>
+<details><summary><code>src/types/content.ts</code></summary><pre class="code" data-lang="ts"><code>import type { StaticImageData } from &quot;next/image&quot;;
+
+/** A static import today; a URL string once content comes from the API (allow its host in next.config). */
+export type ImageSource = StaticImageData | string;
+
+/** An image plus its alt text. Components render it with `fill`, so no intrinsic size is needed. */
+export interface ImageAsset {
+  src: ImageSource;
+  alt: string;
+}
+
+/** Icon keys content can reference by name; mapped to icon components in &lt;Icon /&gt;. */
+export type IconName =
+  | &quot;armchair&quot;
+  | &quot;arrow-left&quot;
+  | &quot;arrow-right&quot;
+  | &quot;arrow-up-right&quot;
+  | &quot;arrows-left-right&quot;
+  | &quot;bank&quot;
+  | &quot;chart-bar&quot;
+  | &quot;chart-line-up&quot;
+  | &quot;cloud&quot;
+  | &quot;code&quot;
+  | &quot;cube&quot;
+  | &quot;cursor-click&quot;
+  | &quot;device-mobile&quot;
+  | &quot;envelope&quot;
+  | &quot;facebook&quot;
+  | &quot;flag&quot;
+  | &quot;flow-arrow&quot;
+  | &quot;globe&quot;
+  | &quot;handshake&quot;
+  | &quot;identification-badge&quot;
+  | &quot;identification-card&quot;
+  | &quot;instagram&quot;
+  | &quot;layout&quot;
+  | &quot;linkedin&quot;
+  | &quot;magnifying-glass&quot;
+  | &quot;map-pin&quot;
+  | &quot;map-trifold&quot;
+  | &quot;paint-brush&quot;
+  | &quot;pen-nib&quot;
+  | &quot;phone&quot;
+  | &quot;plugs-connected&quot;
+  | &quot;qr-code&quot;
+  | &quot;scan&quot;
+  | &quot;shield-check&quot;
+  | &quot;shopping-cart&quot;
+  | &quot;sparkle&quot;
+  | &quot;storefront&quot;
+  | &quot;ticket&quot;
+  | &quot;tree-structure&quot;
+  | &quot;trophy&quot;
+  | &quot;truck&quot;
+  | &quot;x&quot;
+  | &quot;x-close&quot;
+  | &quot;youtube&quot;;
+
+/** SEO fields every page provides. */
+export interface PageSeo {
+  title: string;
+  description: string;
+}
+
+/** Eyebrow + heading pair that opens most sections. */
+export interface SectionIntro {
+  eyebrow: string;
+  title: string;
+}
+
+/** Full-screen inner-page hero: eyebrow, a headline split into lines, and a background image. */
+export interface PageHeroContent {
+  eyebrow: string;
+  titleLines: string[];
+  image: ImageAsset;
+}
+
+/** One step of a numbered process (&quot;Buy&quot;, &quot;Receive&quot;, &quot;Scan&quot;, …). */
+export interface ProcessStep {
+  icon: IconName;
+  title: string;
+  body: string;
+}
+
+/** Copy for the shared contact section. */
+export interface ContactContent {
+  title: string;
+  lead: string;
+  submitLabel: string;
+}
+
+export interface NavLink {
+  label: string;
+  href: string;
+}
+
+/** Full-screen menu entry: a link with the preview shown while it is hovered. */
+export interface MenuItem extends NavLink {
+  brief: string;
+  image: StaticImageData;
+}
+
+export interface Stat {
+  value: number;
+  suffix?: string;
+  label: string;
+}
+
+export type SolutionTheme = &quot;brand&quot; | &quot;navy&quot;;
+
+export interface Solution {
+  id: string;
+  title: string;
+  /** Mono caption above the title, e.g. &quot;01 — 40M tickets issued to date&quot;. */
+  caption: string;
+  description: string;
+  image: StaticImageData;
+  imageAlt: string;
+  theme: SolutionTheme;
+  href: string;
+}
+
+export interface Service {
+  name: string;
+  description: string;
+  image: StaticImageData;
+}
+
+export interface ClientLogo {
+  name: string;
+  logo: StaticImageData;
+}
+
+export interface Project {
+  title: string;
+  subtitle: string;
+  /** Marks copy still awaiting client confirmation. */
+  subtitleTbc?: boolean;
+  tags: string[];
+  metric: { value: string; label: string };
+  image: StaticImageData;
+  href: string;
+}
+
+export interface Testimonial {
+  quote: string;
+  author: string;
+  /** Omit while the job title is unconfirmed; renders a TBC marker. */
+  role?: string;
+  company: string;
+  logo?: StaticImageData;
+}
+
+export interface AiCapability {
+  title: string;
+  description: string;
+}
+
+export interface Partner {
+  name: string;
+  logo: StaticImageData;
+  /** Render the name next to the mark (for logos that are only a symbol). */
+  showName?: boolean;
+  /** Force a monochrome white logo. */
+  invert?: boolean;
+}</code></pre></details><details><summary><code>src/types/home.ts</code></summary><pre class="code" data-lang="ts"><code>import type { StaticImageData } from &quot;next/image&quot;;
+import type {
+  AiCapability,
+  ClientLogo,
+  ContactContent,
+  NavLink,
+  Partner,
+  Project,
+  Service,
+  Solution,
+  Stat,
+  Testimonial,
+} from &quot;./content&quot;;
+
+/** Opening screens: headline, intro paragraphs and headline figures over the video. */
+export interface HomeHero {
+  titleStart: string;
+  titleEnd: string;
+  videoSrc: string;
+  paragraphs: string[];
+  stats: Stat[];
+}
+
+export interface HomeSolutionsSection {
+  title: string;
+  /** Headline figure beside the title; `tbc` marks it as awaiting confirmation. */
+  highlight: { value: string; label: string; tbc: string };
+  cta: NavLink;
+  items: Solution[];
+}
+
+export interface HomeServicesSection {
+  title: string;
+  items: Service[];
+}
+
+export interface HomeClientsSection {
+  moreLink: NavLink;
+  partnersLabel: string;
+  /** Filled from the clients and partners lists. */
+  clients: ClientLogo[];
+  partners: Partner[];
+}
+
+export interface HomeWorkSection {
+  intro: { before: string; after: string; image: StaticImageData; imageAlt: string };
+  title: string;
+  cta: NavLink;
+  items: Project[];
+}
+
+export interface HomeTestimonialsSection {
+  eyebrow: string;
+  title: string;
+  items: Testimonial[];
+}
+
+export interface HomeAiSection {
+  title: string;
+  lead: string;
+  capabilities: AiCapability[];
+}
+
+/** Everything the home page renders; mirrors `GET /api/v1/pages/home`. */
+export interface HomePageData {
+  hero: HomeHero;
+  solutions: HomeSolutionsSection;
+  services: HomeServicesSection;
+  clients: HomeClientsSection;
+  work: HomeWorkSection;
+  testimonials: HomeTestimonialsSection;
+  ai: HomeAiSection;
+  contact: ContactContent;
+}</code></pre></details><details><summary><code>src/types/about.ts</code></summary><pre class="code" data-lang="ts"><code>import type {
+  ClientLogo,
+  ContactContent,
+  IconName,
+  ImageAsset,
+  PageHeroContent,
+  PageSeo,
+  SectionIntro,
+  Stat,
+} from &quot;./content&quot;;
+
+/** A point on the &quot;Our story&quot; timeline. */
+export interface Milestone {
+  /** Display year; may be a placeholder like &quot;20XX&quot; while unconfirmed. */
+  year: string;
+  title: string;
+  body: string;
+  icon: IconName;
+  /** Marks a year still awaiting client confirmation. */
+  tbc?: boolean;
+}
+
+export interface CompanyValue {
+  title: string;
+  body: string;
+}
+
+interface MvvStepBase {
+  id: string;
+  /** Short label in the step list (&quot;Mission&quot;). */
+  label: string;
+  /** Kicker above the step&#x27;s copy (&quot;Our mission&quot;). */
+  eyebrow: string;
+  image: ImageAsset;
+}
+
+/** One step of the mission / vision / values scene: either a statement or a list of values. */
+export type MvvStep =
+  | (MvvStepBase &amp; { kind: &quot;statement&quot;; text: string })
+  | (MvvStepBase &amp; { kind: &quot;values&quot;; values: CompanyValue[] });
+
+export interface PartnerCard {
+  name: string;
+  /** Small caption under the name (&quot;Partner&quot;). */
+  label: string;
+  logo: ImageAsset;
+  /** Render the logo as monochrome white (for dark-on-transparent marks). */
+  invert?: boolean;
+}
+
+/** Everything the About page renders; mirrors the future `GET /pages/about` response. */
+export interface AboutPageData {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  intro: {
+    /** Statement that fills in word by word as it scrolls into view. */
+    statement: string;
+    stats: Stat[];
+  };
+  mvv: {
+    title: string;
+    steps: MvvStep[];
+  };
+  story: SectionIntro &amp; { milestones: Milestone[] };
+  clients: SectionIntro &amp; { logos: ClientLogo[] };
+  /** Left out when there are fewer than two partners. */
+  partnerships?: SectionIntro &amp; { partners: [PartnerCard, PartnerCard] };
+  contact: ContactContent;
+}</code></pre></details><details><summary><code>src/types/solutions.ts</code></summary><pre class="code" data-lang="ts"><code>import type { ContactContent, IconName, ImageAsset, PageHeroContent, PageSeo, SectionIntro } from &quot;./content&quot;;
+import type { OfferingDetail } from &quot;./offering&quot;;
+
+/** A solution in the catalogue: enough to list and link it. */
+export interface SolutionSummary {
+  slug: string;
+  name: string;
+  image: ImageAsset;
+  /** True when /solutions/[slug] has a detail page; otherwise links go to the contact form. */
+  hasDetail: boolean;
+}
+
+/** A flagship platform shown as a large card on the solutions overview. */
+export interface FlagshipSolution extends SolutionSummary {
+  icon: IconName;
+  description: string;
+  tags: string[];
+}
+
+/** Everything the solutions overview renders; mirrors the future `GET /pages/solutions` response. */
+export interface SolutionsPageData {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  flagships: SectionIntro &amp; { lead: string; items: FlagshipSolution[] };
+  catalog: SectionIntro &amp; { items: SolutionSummary[] };
+  contact: ContactContent;
+}
+
+/** A solution detail page (/solutions/[slug]); same shape as a service detail page. */
+export type SolutionDetail = OfferingDetail;</code></pre></details><details><summary><code>src/types/services.ts</code></summary><pre class="code" data-lang="ts"><code>import type { ContactContent, IconName, ImageAsset, PageHeroContent, PageSeo, SectionIntro } from &quot;./content&quot;;
+import type { OfferingDetail } from &quot;./offering&quot;;
+
+/** One service area on the services overview. */
+export interface ServiceArea {
+  slug: string;
+  name: string;
+  icon: IconName;
+  image: ImageAsset;
+  /** One-line pitch, shown large. */
+  summary: string;
+  /** A longer paragraph under the pitch. */
+  description: string;
+  /** What the area covers (&quot;UX research&quot;, &quot;UI design&quot;, …). */
+  capabilities: string[];
+  /** True when /services/[slug] has a detail page; otherwise links go to the contact form. */
+  hasDetail: boolean;
+}
+
+/** One stage of how Spark runs a project. */
+export interface ApproachStep {
+  title: string;
+  body: string;
+}
+
+/** Everything the services overview renders; mirrors the future `GET /pages/services` response. */
+export interface ServicesPageData {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  areas: SectionIntro &amp; { items: ServiceArea[] };
+  approach: SectionIntro &amp; { lead: string; steps: ApproachStep[] };
+  contact: ContactContent;
+}
+
+/** A service detail page (/services/[slug]); same shape as a solution detail page. */
+export type ServiceDetail = OfferingDetail;</code></pre></details><details><summary><code>src/types/offering.ts</code></summary><pre class="code" data-lang="ts"><code>import type {
+  ContactContent,
+  IconName,
+  ImageAsset,
+  PageHeroContent,
+  PageSeo,
+  ProcessStep,
+  SectionIntro,
+  Stat,
+} from &quot;./content&quot;;
+
+/**
+ * &quot;Offering&quot; covers anything Spark sells that gets its own detail page:
+ * solutions (/solutions/[slug]) and services (/services/[slug]) share one
+ * page layout and one data shape.
+ */
+
+/** One capability, paired with the image shown while it is in focus. */
+export interface OfferingFeature {
+  icon: IconName;
+  title: string;
+  body: string;
+  image: ImageAsset;
+}
+
+/** A project or client where the offering is used, linking to its case study. */
+export interface CaseLink {
+  name: string;
+  image: ImageAsset;
+  href: string;
+}
+
+/** A solution or service detail page; mirrors the future `GET /solutions/:slug` and `GET /services/:slug` responses. */
+export interface OfferingDetail {
+  slug: string;
+  seo: PageSeo;
+  hero: PageHeroContent;
+  overview: {
+    name: string;
+    tags: string[];
+    /** Statement that fills in word by word as it scrolls into view. */
+    statement: string;
+  };
+  features: SectionIntro &amp; { items: OfferingFeature[] };
+  process: SectionIntro &amp; { steps: ProcessStep[] };
+  /** Where it&#x27;s used: an optional headline figure, then linked cases. */
+  inUse: SectionIntro &amp; { stat?: Stat; cases: CaseLink[] };
+  contact: ContactContent;
+}</code></pre></details><details><summary><code>src/types/work.ts</code></summary><pre class="code" data-lang="ts"><code>import type { ContactContent, ImageAsset, NavLink, PageHeroContent, PageSeo, SectionIntro, Stat } from &quot;./content&quot;;
+
+/** A project in the portfolio: enough to list, filter and link it. */
+export interface ProjectSummary {
+  slug: string;
+  name: string;
+  /** Portfolio filter it belongs to (&quot;Development&quot;, &quot;Mobile&quot;, …). */
+  category: string;
+  /** One line under the card. */
+  summary: string;
+  image: ImageAsset;
+  /** True when /work/[slug] has a case study; otherwise the card links to the contact form. */
+  hasDetail: boolean;
+}
+
+/** Everything the work overview renders; mirrors the future `GET /pages/work` response. */
+export interface WorkPageData {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  portfolio: SectionIntro &amp; {
+    /** Label of the filter that shows every project. */
+    allLabel: string;
+    items: ProjectSummary[];
+  };
+  featured: {
+    eyebrow: string;
+    /** The featured project&#x27;s case study. */
+    slug: string;
+    name: string;
+    summary: string;
+    ctaLabel: string;
+    stats: Stat[];
+  };
+  contact: ContactContent;
+}
+
+/** A label/value fact (&quot;Client: Saudi Tickets&quot;). */
+export interface ProjectFact {
+  label: string;
+  value: string;
+}
+
+/** A titled paragraph (challenge, approach, outcome). */
+export interface StoryBlock {
+  title: string;
+  body: string;
+}
+
+/** A key feature with the screen shown while it is active. */
+export interface ProjectFeature {
+  title: string;
+  body: string;
+  image: ImageAsset;
+}
+
+export interface GalleryImage {
+  image: ImageAsset;
+  caption: string;
+}
+
+/** Device frame a screen is shown in. */
+export type DeviceKind = &quot;web&quot; | &quot;mobile&quot; | &quot;tablet&quot; | &quot;pos&quot;;
+
+export interface DeviceScreen {
+  kind: DeviceKind;
+  label: string;
+  image: ImageAsset;
+}
+
+/** A results figure; without a value it renders as a marked placeholder. */
+export interface ResultFigure {
+  label: string;
+  value?: number;
+  suffix?: string;
+}
+
+export interface ProjectTestimonial {
+  quote: string;
+  author: string;
+  role: string;
+  logo?: ImageAsset;
+  /** Marks a quote still awaiting the client. */
+  placeholder?: boolean;
+}
+
+/** A case study page (/work/[slug]); mirrors the future `GET /work/:slug` response. */
+export interface ProjectDetail {
+  slug: string;
+  seo: PageSeo;
+  hero: PageHeroContent;
+  facts: ProjectFact[];
+  /** Overview statement that fills in word by word as it scrolls into view. */
+  statement: string;
+  /** Wide image that opens out from a rounded inset as it scrolls in. */
+  showcase: ImageAsset;
+  story: StoryBlock[];
+  features: SectionIntro &amp; { items: ProjectFeature[] };
+  gallery: { title: string; items: GalleryImage[] };
+  devices: SectionIntro &amp; { items: DeviceScreen[] };
+  comparison?: SectionIntro &amp; { hint: string; before: ImageAsset; after: ImageAsset };
+  results: {
+    eyebrow: string;
+    headline: Stat;
+    /** The Spark solution the project runs on. */
+    builtOn?: NavLink &amp; { eyebrow: string };
+    figures: ResultFigure[];
+  };
+  testimonial?: ProjectTestimonial &amp; { eyebrow: string };
+  contact: ContactContent;
+}
+
+/** The &quot;Next&quot; panel at the end of a case study. */
+export interface NextProject {
+  name: string;
+  category: string;
+  image: ImageAsset;
+  href: string;
+}</code></pre></details><details><summary><code>src/types/contact.ts</code></summary><pre class="code" data-lang="ts"><code>import type { IconName, NavLink, PageHeroContent, PageSeo } from &quot;./content&quot;;
+
+/** One way to reach an office (&quot;Tel&quot;, &quot;Mobile&quot;, &quot;Email&quot;). */
+export interface ContactLine {
+  /** Kind of contact; picks the line&#x27;s icon. */
+  type: &quot;phone&quot; | &quot;mobile&quot; | &quot;email&quot;;
+  label: string;
+  value: string;
+  /** `tel:` / `mailto:` link. */
+  href: string;
+}
+
+/** A Spark office: where it is, its local time zone, and how to reach it. */
+export interface Office {
+  id: string;
+  city: string;
+  country: string;
+  /** Headquarters are marked &quot;HQ&quot;. */
+  hq?: boolean;
+  /** IANA time zone for the live local clock, e.g. &quot;Africa/Cairo&quot;. */
+  timeZone: string;
+  /** Street address; also what the embedded map searches for. */
+  address: string;
+  /** Link that opens the office in Google Maps. */
+  mapUrl: string;
+  lines: ContactLine[];
+}
+
+export interface SocialLink extends NavLink {
+  icon: IconName;
+}
+
+/** One sentence-style form field: &quot;Hi Spark, my name is ___&quot;. */
+export interface FormPrompt {
+  prompt: string;
+  placeholder: string;
+}
+
+/** Copy for the conversational enquiry form. */
+export interface EnquiryFormCopy {
+  name: FormPrompt;
+  company: FormPrompt;
+  email: FormPrompt;
+  message: FormPrompt;
+  submitLabel: string;
+  successMessage: string;
+  resetLabel: string;
+}
+
+/** Everything the contact page renders; mirrors the future `GET /pages/contact` response. */
+export interface ContactPageData {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  offices: { eyebrow: string; items: Office[] };
+  enquiry: {
+    eyebrow: string;
+    lead: string;
+    emailPrompt: string;
+    email: string;
+    socials: SocialLink[];
+    form: EnquiryFormCopy;
+  };
+}</code></pre></details><details><summary><code>src/types/layout.ts</code></summary><pre class="code" data-lang="ts"><code>import type { Office, SocialLink } from &quot;./contact&quot;;
+import type { ContactContent, MenuItem, NavLink, Partner } from &quot;./content&quot;;
+import type { SolutionSummary } from &quot;./solutions&quot;;
+
+/** Company details shown across the site (header, menu, footer, contact page). */
+export interface CompanyInfo {
+  name: string;
+  description: string;
+  email: string;
+  phone: NavLink;
+  foundedYear: number;
+}
+
+/**
+ * What the shared header, menu and footer render on every page; mirrors
+ * `GET /api/v1/pages/layout`.
+ */
+export interface SiteLayoutData {
+  company: CompanyInfo;
+  /** SEO keywords from the site settings. */
+  keywords: string[];
+  menu: MenuItem[];
+  footer: { slogan: string; blurb: string };
+  /** Copy for the enquiry section most pages end with. */
+  contact: ContactContent;
+  solutions: SolutionSummary[];
+  offices: Office[];
+  partners: Partner[];
+  socials: SocialLink[];
+}</code></pre></details>
+<h3>9.3 Validation rules</h3>
+<p>The exact rules the API enforces (lengths, required fields, formats). Written with Zod; each line reads naturally: <code>text(120)</code> = required trimmed string ≤ 120 chars, <code>optionalText(n)</code> = may be empty, <code>slug</code> = <code>^[a-z0-9]+(-[a-z0-9]+)*$</code> ≤ 80, <code>href</code> must start with <code>/</code>, <code>#</code>, <code>https://</code>, <code>mailto:</code> or <code>tel:</code>.</p>
+<details><summary><code>src/lib/cms/fields.ts</code></summary><pre class="code" data-lang="ts"><code>import { z } from &quot;zod&quot;;
+
+import { contentIcons } from &quot;./icons&quot;;
+
+/**
+ * Building blocks for the content schemas. Shared by the API (validating
+ * what&#x27;s saved) and the admin forms (validating as you type), so both apply
+ * the same rules.
+ */
+
+/** A URL segment: lowercase letters and numbers separated by single hyphens. */
+export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+export const SLUG_MAX = 80;
+
+/** Required text, trimmed. */
+export const text = (max = 200) =&gt; z.string().trim().min(1).max(max);
+
+/** Text that may be left empty. */
+export const optionalText = (max = 200) =&gt; z.string().trim().max(max);
+
+export const slug = z.string().trim().min(1).max(SLUG_MAX).regex(SLUG_PATTERN, &quot;Use lowercase letters, numbers and hyphens&quot;);
+
+/** Where a link may point: a site path, a section (#contact), a web address, mailto: or tel:. */
+export const href = z
+  .string()
+  .trim()
+  .min(1)
+  .max(500)
+  .regex(/^(\/|#|https?:\/\/|mailto:|tel:)/, &quot;Start with /, #, https://, mailto: or tel:&quot;);
+
+export const webUrl = z.string().trim().max(500).url();
+
+/** An uploaded picture with its intrinsic size and optional blur preview (see UploadedImage). */
+export const uploadedImage = z.object({
+  src: z.string().trim().min(1).max(2000),
+  width: z.number().int().positive(),
+  height: z.number().int().positive(),
+  blurDataURL: z.string().max(10_000).optional(),
+  blurWidth: z.number().optional(),
+  blurHeight: z.number().optional(),
+});
+
+/** An uploaded picture or an external image URL (e.g. stock photography). */
+export const imageSource = z.union([uploadedImage, webUrl]);
+
+/** A picture plus its alt text (&quot;&quot; for decorative pictures). */
+export const imageAsset = z.object({ src: imageSource, alt: optionalText(300) });
+
+export const icon = z.enum(contentIcons);
+
+export const tags = (max = 12, length = 60) =&gt; z.array(text(length)).max(max);
+
+export const order = z.number().int().min(-9999).max(9999);
+
+export const navLink = z.object({ label: text(120), href });
+
+export const stat = z.object({
+  value: z.number().finite(),
+  suffix: optionalText(12).optional(),
+  label: text(160),
+});
+
+export const seo = z.object({ title: text(120), description: text(320) });
+
+export const sectionIntro = z.object({ eyebrow: text(80), title: text(240) });
+
+export const pageHero = z.object({
+  eyebrow: text(120),
+  titleLines: z.array(text(80)).min(1).max(6),
+  image: imageAsset,
+});
+
+export const processStep = z.object({ icon, title: text(120), body: text(600) });
+
+export const contactContent = z.object({ title: text(240), lead: text(400), submitLabel: text(120) });</code></pre></details>
+<details><summary><code>src/lib/cms/schemas.ts</code></summary><pre class="code" data-lang="ts"><code>import { z } from &quot;zod&quot;;
+
+import type {
+  AboutContent,
+  AdvancedSettingsRecord,
+  CaseStudyContent,
+  ContactPageContent,
+  HomeContent,
+  LayoutContent,
+  LogoRecord,
+  MetaSettings,
+  OfferingContent,
+  OfficeRecord,
+  PageContentMap,
+  PageKey,
+  ProjectRecord,
+  ServiceRecord,
+  ServicesPageContent,
+  SocialLinks,
+  SolutionRecord,
+  SolutionsPageContent,
+  WorkPageContent,
+} from &quot;@/types/cms&quot;;
+import { socialPlatforms } from &quot;@/types/cms&quot;;
+import {
+  contactContent,
+  href,
+  icon,
+  imageAsset,
+  imageSource,
+  navLink,
+  optionalText,
+  order,
+  pageHero,
+  processStep,
+  sectionIntro,
+  seo,
+  slug,
+  stat,
+  tags,
+  text,
+  uploadedImage,
+  webUrl,
+} from &quot;./fields&quot;;
+
+/**
+ * Validation for everything the admin API saves. Each schema is checked
+ * against its TypeScript type (`satisfies`), so the two can&#x27;t drift apart.
+ */
+
+// ---- Detail pages -----------------------------------------------------------
+
+export const offeringContentSchema = z.object({
+  seo,
+  hero: pageHero,
+  overview: z.object({ tags: tags(10), statement: text(600) }),
+  features: sectionIntro.extend({
+    items: z.array(z.object({ icon, title: text(120), body: text(600), image: imageAsset })).min(1).max(12),
+  }),
+  process: sectionIntro.extend({ steps: z.array(processStep).min(1).max(8) }),
+  inUse: sectionIntro.extend({
+    stat: stat.optional(),
+    cases: z.array(z.object({ name: text(120), image: imageAsset, href })).max(12),
+  }),
+}) satisfies z.ZodType&lt;OfferingContent&gt;;
+
+const deviceKind = z.enum([&quot;web&quot;, &quot;mobile&quot;, &quot;tablet&quot;, &quot;pos&quot;]);
+
+export const caseStudyContentSchema = z.object({
+  seo,
+  hero: pageHero,
+  facts: z.array(z.object({ label: text(60), value: text(160) })).max(8),
+  statement: text(600),
+  showcase: imageAsset,
+  story: z.array(z.object({ title: text(120), body: text(1200) })).max(6),
+  features: sectionIntro.extend({
+    items: z.array(z.object({ title: text(120), body: text(600), image: imageAsset })).min(1).max(12),
+  }),
+  gallery: z.object({
+    title: text(200),
+    items: z.array(z.object({ image: imageAsset, caption: optionalText(200) })).min(1).max(20),
+  }),
+  devices: sectionIntro.extend({
+    items: z.array(z.object({ kind: deviceKind, label: text(60), image: imageAsset })).min(1).max(8),
+  }),
+  comparison: sectionIntro.extend({ hint: text(80), before: imageAsset, after: imageAsset }).optional(),
+  results: z.object({
+    eyebrow: text(80),
+    headline: stat,
+    builtOn: navLink.extend({ eyebrow: text(80) }).optional(),
+    figures: z
+      .array(
+        z.object({
+          label: text(160),
+          // Left empty (null in the form) while the figure is unconfirmed.
+          value: z.number().finite().nullish().transform((v) =&gt; v ?? undefined),
+          suffix: optionalText(12).optional(),
+        }),
+      )
+      .max(8),
+  }),
+  testimonial: z
+    .object({
+      eyebrow: text(80),
+      quote: text(1000),
+      author: text(120),
+      role: text(160),
+      logo: imageAsset.nullish().transform((v) =&gt; v ?? undefined),
+      placeholder: z.boolean().optional(),
+    })
+    .optional(),
+}) satisfies z.ZodType&lt;CaseStudyContent&gt;;
+
+// ---- Lists ------------------------------------------------------------------
+
+/**
+ * The detail page of a list item (`detail`) is validated only while it&#x27;s
+ * switched on (`has_detail`). Switched off, whatever was there is kept as is
+ * (so switching back restores it) and the website ignores it.
+ */
+function withDetailPage&lt;D extends z.ZodType&gt;(detail: D) {
+  return &lt;S extends { has_detail: boolean; detail: unknown }&gt;(value: S, ctx: z.RefinementCtx) =&gt; {
+    if (!value.has_detail) return { ...value, detail: (value.detail ?? null) as z.output&lt;D&gt; | null };
+    if (value.detail === null || value.detail === undefined) {
+      ctx.addIssue({ code: &quot;custom&quot;, path: [&quot;detail&quot;], message: &quot;Add the detail page content, or turn off the detail page&quot; });
+      return z.NEVER;
+    }
+    const parsed = detail.safeParse(value.detail);
+    if (!parsed.success) {
+      for (const issue of parsed.error.issues) {
+        ctx.addIssue({ code: &quot;custom&quot;, path: [&quot;detail&quot;, ...issue.path], message: issue.message });
+      }
+      return z.NEVER;
+    }
+    return { ...value, detail: parsed.data as z.output&lt;D&gt; };
+  };
+}
+
+const detailFields = { has_detail: z.boolean(), detail: z.unknown() };
+
+export const solutionSchema = z
+  .object({
+    slug,
+    name: text(120),
+    image: uploadedImage,
+    flagship: z.boolean(),
+    description: optionalText(400),
+    tags: tags(8),
+    icon,
+    ...detailFields,
+    order,
+  })
+  .superRefine((value, ctx) =&gt; {
+    if (value.flagship &amp;&amp; !value.description) {
+      ctx.addIssue({ code: &quot;custom&quot;, path: [&quot;description&quot;], message: &quot;Flagship solutions need a description&quot; });
+    }
+  })
+  .transform(withDetailPage(offeringContentSchema)) satisfies z.ZodType&lt;SolutionRecord&gt;;
+
+export const serviceSchema = z
+  .object({
+    slug,
+    name: text(120),
+    summary: text(240),
+    description: text(800),
+    capabilities: tags(10),
+    icon,
+    image: uploadedImage,
+    ...detailFields,
+    order,
+  })
+  .transform(withDetailPage(offeringContentSchema)) satisfies z.ZodType&lt;ServiceRecord&gt;;
+
+export const projectSchema = z
+  .object({
+    slug,
+    name: text(120),
+    category: text(60),
+    summary: text(300),
+    image: uploadedImage,
+    ...detailFields,
+    order,
+  })
+  .transform(withDetailPage(caseStudyContentSchema)) satisfies z.ZodType&lt;ProjectRecord&gt;;
+
+export const logoSchema = z.object({
+  name: text(160),
+  logo: uploadedImage,
+  link: z.union([z.literal(&quot;&quot;), webUrl]),
+  show_name: z.boolean(),
+  invert: z.boolean(),
+  order,
+}) satisfies z.ZodType&lt;LogoRecord&gt;;
+
+const isTimeZone = (value: string) =&gt; {
+  try {
+    new Intl.DateTimeFormat(&quot;en&quot;, { timeZone: value });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const officeSchema = z.object({
+  city: text(80),
+  country: text(80),
+  hq: z.boolean(),
+  time_zone: z.string().trim().min(1).refine(isTimeZone, &quot;Unknown time zone, e.g. Africa/Cairo&quot;),
+  address: text(300),
+  map_url: webUrl,
+  lines: z
+    .array(
+      z.object({
+        type: z.enum([&quot;phone&quot;, &quot;mobile&quot;, &quot;email&quot;]),
+        label: text(40),
+        value: text(120),
+        href: z.string().trim().regex(/^(tel:\+?[\d]+|mailto:\S+@\S+)$/, &quot;Use tel:+201234567 or mailto:name@example.com&quot;),
+      }),
+    )
+    .max(8),
+  order,
+}) satisfies z.ZodType&lt;OfficeRecord&gt;;
+
+// ---- Pages ------------------------------------------------------------------
+
+export const homeContentSchema = z.object({
+  hero: z.object({
+    titleStart: text(80),
+    titleEnd: text(80),
+    videoSrc: webUrl,
+    paragraphs: z.array(text(600)).min(1).max(4),
+    stats: z.array(stat).max(4),
+  }),
+  solutions: z.object({
+    title: text(200),
+    highlight: z.object({ value: text(20), label: text(80), tbc: optionalText(80) }),
+    cta: navLink,
+    items: z
+      .array(
+        z.object({
+          id: text(60),
+          title: text(80),
+          caption: text(120),
+          description: text(300),
+          image: uploadedImage,
+          imageAlt: optionalText(300),
+          theme: z.enum([&quot;brand&quot;, &quot;navy&quot;]),
+          href,
+        }),
+      )
+      .min(1)
+      .max(8),
+  }),
+  services: z.object({
+    title: text(120),
+    items: z.array(z.object({ name: text(80), description: text(300), image: uploadedImage })).min(1).max(12),
+  }),
+  clients: z.object({ moreLink: navLink, partnersLabel: text(80) }),
+  work: z.object({
+    intro: z.object({ before: text(40), after: text(40), image: uploadedImage, imageAlt: optionalText(300) }),
+    title: text(120),
+    cta: navLink,
+    items: z
+      .array(
+        z.object({
+          title: text(120),
+          subtitle: text(200),
+          subtitleTbc: z.boolean().optional(),
+          tags: tags(6),
+          metric: z.object({ value: text(30), label: text(80) }),
+          image: uploadedImage,
+          href,
+        }),
+      )
+      .min(1)
+      .max(8),
+  }),
+  testimonials: z.object({
+    eyebrow: text(80),
+    title: text(200),
+    items: z
+      .array(
+        z.object({
+          quote: text(1000),
+          author: text(120),
+          role: optionalText(160).optional(),
+          company: text(120),
+          // Optional: left empty (null in the form) when there&#x27;s no logo.
+          logo: uploadedImage.nullish().transform((v) =&gt; v ?? undefined),
+        }),
+      )
+      .max(12),
+  }),
+  ai: z.object({
+    title: text(200),
+    lead: text(400),
+    capabilities: z.array(z.object({ title: text(60), description: text(400) })).min(1).max(6),
+  }),
+}) satisfies z.ZodType&lt;HomeContent&gt;;
+
+const mvvBase = { id: text(40), label: text(40), eyebrow: text(80), image: imageAsset };
+
+export const aboutContentSchema = z.object({
+  seo,
+  hero: pageHero,
+  intro: z.object({ statement: text(600), stats: z.array(stat).max(6) }),
+  mvv: z.object({
+    title: text(200),
+    steps: z
+      .array(
+        z.discriminatedUnion(&quot;kind&quot;, [
+          z.object({ ...mvvBase, kind: z.literal(&quot;statement&quot;), text: text(400) }),
+          z.object({
+            ...mvvBase,
+            kind: z.literal(&quot;values&quot;),
+            values: z.array(z.object({ title: text(80), body: text(300) })).min(1).max(6),
+          }),
+        ]),
+      )
+      .min(1)
+      .max(5),
+  }),
+  story: sectionIntro.extend({
+    milestones: z
+      .array(z.object({ year: text(10), title: text(120), body: text(500), icon, tbc: z.boolean().optional() }))
+      .min(1)
+      .max(20),
+  }),
+  clients: sectionIntro,
+  partnerships: sectionIntro.extend({ label: text(40) }),
+}) satisfies z.ZodType&lt;AboutContent&gt;;
+
+export const solutionsPageSchema = z.object({
+  seo,
+  hero: pageHero,
+  flagships: sectionIntro.extend({ lead: text(400) }),
+  catalog: sectionIntro,
+}) satisfies z.ZodType&lt;SolutionsPageContent&gt;;
+
+export const servicesPageSchema = z.object({
+  seo,
+  hero: pageHero,
+  areas: sectionIntro,
+  approach: sectionIntro.extend({
+    lead: text(400),
+    steps: z.array(z.object({ title: text(80), body: text(400) })).min(1).max(8),
+  }),
+}) satisfies z.ZodType&lt;ServicesPageContent&gt;;
+
+export const workPageSchema = z.object({
+  seo,
+  hero: pageHero,
+  portfolio: sectionIntro.extend({ allLabel: text(40) }),
+  featured: z.object({
+    eyebrow: text(80),
+    slug,
+    name: text(120),
+    summary: text(600),
+    ctaLabel: text(60),
+    stats: z.array(stat).max(6),
+  }),
+}) satisfies z.ZodType&lt;WorkPageContent&gt;;
+
+const prompt = z.object({ prompt: text(120), placeholder: text(80) });
+
+export const contactPageSchema = z.object({
+  seo,
+  hero: pageHero,
+  offices: z.object({ eyebrow: text(80) }),
+  enquiry: z.object({
+    eyebrow: text(80),
+    lead: text(400),
+    emailPrompt: text(80),
+    form: z.object({
+      name: prompt,
+      company: prompt,
+      email: prompt,
+      message: prompt,
+      submitLabel: text(120),
+      successMessage: text(200),
+      resetLabel: text(60),
+    }),
+  }),
+}) satisfies z.ZodType&lt;ContactPageContent&gt;;
+
+export const layoutContentSchema = z.object({
+  email: z.email(),
+  phone: navLink,
+  foundedYear: z.number().int().min(1900).max(2100),
+  menu: z
+    .array(z.object({ label: text(40), href, brief: text(200), image: uploadedImage }))
+    .min(1)
+    .max(10),
+  footer: z.object({ slogan: text(60), blurb: text(400) }),
+  contact: contactContent,
+}) satisfies z.ZodType&lt;LayoutContent&gt;;
+
+/** Content schema of each page, by API path. */
+export const pageSchemas = {
+  home: homeContentSchema,
+  about: aboutContentSchema,
+  solutions: solutionsPageSchema,
+  services: servicesPageSchema,
+  work: workPageSchema,
+  contact: contactPageSchema,
+  layout: layoutContentSchema,
+} satisfies { [K in PageKey]: z.ZodType&lt;PageContentMap[K]&gt; };
+
+export const pageKeys = Object.keys(pageSchemas) as PageKey[];
+
+export const isPageKey = (value: string): value is PageKey =&gt; value in pageSchemas;
+
+// ---- Settings ---------------------------------------------------------------
+
+export const metaSettingsSchema = z.object({
+  site_name: text(80),
+  description: text(320),
+  keywords: tags(20, 40),
+}) satisfies z.ZodType&lt;MetaSettings&gt;;
+
+const socialLink = z.object({ url: z.union([z.literal(&quot;&quot;), webUrl]), icon_url: z.string().max(2000).nullable() });
+
+export const socialLinksSchema = z.object(
+  Object.fromEntries(socialPlatforms.map((platform) =&gt; [platform, socialLink])) as Record&lt;
+    (typeof socialPlatforms)[number],
+    typeof socialLink
+  &gt;,
+) satisfies z.ZodType&lt;SocialLinks&gt;;
+
+const optionalEmail = z.union([z.literal(&quot;&quot;), z.email()]);
+
+export const advancedSettingsSchema = z.object({
+  website_url: z.union([z.literal(&quot;&quot;), webUrl]),
+  smtp_host: optionalText(200),
+  smtp_port: z.number().int().min(1).max(65535),
+  smtp_username: optionalText(200),
+  /** &quot;&quot; keeps the stored password. */
+  smtp_password: z.string().max(500),
+  smtp_use_ssl: z.boolean(),
+  default_email_address: optionalEmail,
+  default_email_name: optionalText(120),
+  notification_email: optionalEmail,
+  recaptcha_site_key: optionalText(200),
+  /** &quot;&quot; keeps the stored key. */
+  recaptcha_secret_key: z.string().max(500),
+  google_analytics_code: z.string().max(10_000),
+  google_analytics_emails: z.array(z.email()).max(10),
+  seo_scripts: z.string().max(20_000),
+}) satisfies z.ZodType&lt;AdvancedSettingsRecord&gt;;
+
+// ---- Users and enquiries ----------------------------------------------------
+
+export const PASSWORD_MIN = 10;
+const password = z.string().min(PASSWORD_MIN, `Use at least ${PASSWORD_MIN} characters`).max(200);
+const role = z.enum([&quot;admin&quot;, &quot;editor&quot;, &quot;viewer&quot;]);
+
+export const loginSchema = z.object({ email: z.string().trim().min(1).max(200), password: z.string().min(1).max(200) });
+
+export const userCreateSchema = z.object({ name: text(120), email: z.email(), role, password });
+
+/** `password` left empty keeps the current one. */
+export const userUpdateSchema = z.object({
+  name: text(120),
+  email: z.email(),
+  role,
+  password: z.union([z.literal(&quot;&quot;), password]),
+});
+
+export const profileSchema = z.object({ name: text(120), email: z.email() });
+
+export const passwordChangeSchema = z.object({ current_password: z.string().min(1).max(200), new_password: password });
+
+export const enquirySubmitSchema = z.object({
+  name: text(120),
+  company: optionalText(160),
+  email: z.email(),
+  message: text(5000),
+  /** Honeypot: hidden from people, so only bots fill it in. */
+  website: z.string().max(0).optional(),
+  source: optionalText(300).optional(),
+});
+
+export const enquiryStatusSchema = z.object({ status: z.enum([&quot;new&quot;, &quot;read&quot;, &quot;archived&quot;]) });
+
+export { imageSource };</code></pre></details>
+<details><summary><code>src/lib/cms/icons.ts</code> (allowed icon keys)</summary><pre class="code" data-lang="ts"><code>import type { IconName } from &quot;@/types/content&quot;;
+
+/**
+ * Icons content can pick (features, process steps, milestones, services,
+ * solutions). The rest of the &lt;Icon&gt; set is UI chrome: arrows, socials.
+ */
+export const contentIcons = [
+  &quot;armchair&quot;,
+  &quot;bank&quot;,
+  &quot;chart-bar&quot;,
+  &quot;chart-line-up&quot;,
+  &quot;cloud&quot;,
+  &quot;code&quot;,
+  &quot;cube&quot;,
+  &quot;cursor-click&quot;,
+  &quot;device-mobile&quot;,
+  &quot;flag&quot;,
+  &quot;flow-arrow&quot;,
+  &quot;globe&quot;,
+  &quot;handshake&quot;,
+  &quot;identification-badge&quot;,
+  &quot;identification-card&quot;,
+  &quot;layout&quot;,
+  &quot;magnifying-glass&quot;,
+  &quot;map-pin&quot;,
+  &quot;paint-brush&quot;,
+  &quot;pen-nib&quot;,
+  &quot;plugs-connected&quot;,
+  &quot;qr-code&quot;,
+  &quot;scan&quot;,
+  &quot;shield-check&quot;,
+  &quot;shopping-cart&quot;,
+  &quot;sparkle&quot;,
+  &quot;storefront&quot;,
+  &quot;ticket&quot;,
+  &quot;tree-structure&quot;,
+  &quot;trophy&quot;,
+  &quot;truck&quot;,
+] as const satisfies readonly IconName[];
+
+export type ContentIcon = (typeof contentIcons)[number];</code></pre></details>
+<h3>9.4 Examples</h3>
+<details><summary>A service record (<code>ServiceRecord</code>, no detail page)</summary><pre class="code" data-lang="json"><code>{
+  &quot;slug&quot;: &quot;development&quot;,
+  &quot;name&quot;: &quot;Development&quot;,
+  &quot;summary&quot;: &quot;Web platforms and enterprise systems built from scratch.&quot;,
+  &quot;description&quot;: &quot;Our engineers build web platforms and enterprise systems from scratch, integrate them with the tools you already use, and keep them maintained after launch.&quot;,
+  &quot;capabilities&quot;: [
+    &quot;Web platforms&quot;,
+    &quot;Enterprise systems&quot;,
+    &quot;Custom software&quot;,
+    &quot;System integration&quot;
+  ],
+  &quot;icon&quot;: &quot;code&quot;,
+  &quot;image&quot;: {
+    &quot;src&quot;: &quot;/uploads/images/services/development-96f42b28.webp&quot;,
+    &quot;width&quot;: 510,
+    &quot;height&quot;: 319,
+    &quot;blurDataURL&quot;: &quot;data:image/webp;base64,…&quot;,
+    &quot;blurWidth&quot;: 10,
+    &quot;blurHeight&quot;: 6
+  },
+  &quot;has_detail&quot;: false,
+  &quot;detail&quot;: null,
+  &quot;order&quot;: 20
+}</code></pre></details>
+<details><summary>An office record (<code>OfficeRecord</code>)</summary><pre class="code" data-lang="json"><code>{
+  &quot;city&quot;: &quot;Cairo&quot;,
+  &quot;country&quot;: &quot;Egypt&quot;,
+  &quot;hq&quot;: true,
+  &quot;time_zone&quot;: &quot;Africa/Cairo&quot;,
+  &quot;address&quot;: &quot;Villa 117, Al-Narges 4, 5th Settlement, Cairo, Egypt&quot;,
+  &quot;map_url&quot;: &quot;https://maps.app.goo.gl/NM9tQmVSoVeJvDNW6&quot;,
+  &quot;lines&quot;: [
+    {
+      &quot;type&quot;: &quot;mobile&quot;,
+      &quot;label&quot;: &quot;Mobile&quot;,
+      &quot;value&quot;: &quot;+20 (11) 40 88 6688&quot;,
+      &quot;href&quot;: &quot;tel:+201140886688&quot;
+    },
+    {
+      &quot;type&quot;: &quot;email&quot;,
+      &quot;label&quot;: &quot;Email&quot;,
+      &quot;value&quot;: &quot;sparkeg@spark-sys.com&quot;,
+      &quot;href&quot;: &quot;mailto:sparkeg@spark-sys.com&quot;
+    },
+    {
+      &quot;type&quot;: &quot;phone&quot;,
+      &quot;label&quot;: &quot;Tel&quot;,
+      &quot;value&quot;: &quot;02 (2) 641 7015&quot;,
+      &quot;href&quot;: &quot;tel:+20226417015&quot;
+    }
+  ],
+  &quot;order&quot;: 10
+}</code></pre></details>
+<details><summary>Layout page content (<code>LayoutContent</code>)</summary><pre class="code" data-lang="json"><code>{
+  &quot;email&quot;: &quot;info@spark-sys.com&quot;,
+  &quot;phone&quot;: {
+    &quot;label&quot;: &quot;+20 (11) 40 88 6688&quot;,
+    &quot;href&quot;: &quot;tel:+201140886688&quot;
+  },
+  &quot;foundedYear&quot;: 2008,
+  &quot;menu&quot;: [
+    {
+      &quot;label&quot;: &quot;Home&quot;,
+      &quot;href&quot;: &quot;/&quot;,
+      &quot;brief&quot;: &quot;Software for events, ticketing and government services, built in Cairo.&quot;,
+      &quot;image&quot;: {
+        &quot;src&quot;: &quot;/uploads/images/work/our-work-93e548ab.webp&quot;,
+        &quot;width&quot;: 2400,
+        &quot;height&quot;: 1350,
+        &quot;blurDataURL&quot;: &quot;data:image/webp;base64,…&quot;,
+        &quot;blurWidth&quot;: 10,
+        &quot;blurHeight&quot;: 6
+      }
+    },
+    &quot;… more entries&quot;
+  ],
+  &quot;footer&quot;: {
+    &quot;slogan&quot;: &quot;Let wow begin.&quot;,
+    &quot;blurb&quot;: &quot;High-performance digital craftsmanship engineering custom software, enterprise platforms, and mobile solutions across the Middle East.&quot;
+  },
+  &quot;contact&quot;: {
+    &quot;title&quot;: &quot;Let&#x27;s talk about what you want to build.&quot;,
+    &quot;lead&quot;: &quot;Tell us where you&#x27;re headed and we&#x27;ll tell you honestly what it takes.&quot;,
+    &quot;submitLabel&quot;: &quot;Bring us the idea, we&#x27;ll bring the solution.&quot;
+  }
+}</code></pre></details>
+</section>
+
+<section id="seed">
+<h2>10. Starting content</h2>
+<p>The current website content lives in the repo’s <code>data/</code> folder in the envelope format of section 4. Import it as-is (keep the IDs):</p>
+<div class="table-wrap"><table class=""><thead><tr><th>File</th><th>Contains</th></tr></thead><tbody><tr><td><code>data/solutions.json</code>, <code>services.json</code>, <code>projects.json</code>, <code>clients.json</code>, <code>partners.json</code>, <code>offices.json</code></td><td><code>{ items: Envelope&lt;T&gt; &amp; { id }[] }</code></td></tr><tr><td><code>data/pages/&lt;page&gt;.json</code></td><td><code>Envelope&lt;PageContent&gt;</code> for home, about, solutions, services, work, contact, layout</td></tr><tr><td><code>data/settings.json</code></td><td><code>{ meta, social, advanced }</code></td></tr><tr><td><code>data/enquiries.json</code>, <code>users.json</code>, <code>activity.json</code></td><td><code>{ items: [] }</code> (empty)</td></tr><tr><td><code>public/uploads/images/**</code></td><td>The pictures referenced as <code>/uploads/images/…</code>. Copy them to your storage and rewrite the <code>src</code> URLs to your CDN.</td></tr></tbody></table></div>
+</section>
+
+<section id="handover">
+<h2>11. Handover checklist</h2>
+<h3>Backend team delivers</h3>
+<ol class="check"><li>Implement the <b>admin API</b> (section 5) with the exact paths, payloads and error shape. Allow CORS from the admin origin, <code>Authorization: Bearer</code> auth.</li><li>Implement the <b>public API</b> (section 7), returning <b>published</b> content only, already assembled into the page models (lists filled in, as described).</li><li>Store every list item and page as a <b>draft/publish document</b> (section 4); compute <code>status</code> on read.</li><li>Implement <b>uploads</b> (section 6): validate by content, resize to ≤ 2400 px, WebP, return width/height and a ~10 px blur preview. Serve uploads from a CDN and tell us the host.</li><li>On every publish / unpublish / delete / settings change, call the <b>revalidation webhook</b> (section 8).</li><li>Import the starting content from the <code>data/</code> folder of the repo (section 10) so the site looks the same on day one.</li><li>Send us: base URLs (staging + production), the CDN host for images, the webhook secret, and a test admin account.</li></ol>
+<h3>Frontend then changes</h3>
+<ol class="check"><li><code>src/admin/lib/api/config.ts</code> → <code>API_BASE_URL</code> = your admin base URL. Keep Google Analytics on our own <code>/api/admin/analytics/*</code> routes (we’ll split the client back into two).</li><li><code>src/server/content/pages.ts</code> → swap the database reads for <code>fetch</code> calls to your public API (the getters in <code>src/lib/api/pages.ts</code> keep their signatures, so no page changes).</li><li>Add <code>POST /api/revalidate</code> on the website (section 8) and drop our in-process revalidation.</li><li>Preview mode: <code>/api/preview</code> will validate the token with your <code>GET /auth/me</code>, and in preview the site will call your API with the editor’s token to read drafts (section 7.2).</li><li>Add your image CDN host to <code>images.remotePatterns</code> in <code>next.config.ts</code>.</li><li>Remove <code>src/server/*</code> and <code>src/app/api/admin/*</code> (except analytics) once everything runs against your backend.</li></ol>
+<p class="note">Questions or changes to the contract: agree them before implementing, since the admin screens validate and render against these exact shapes.</p>
+</section>
+</main>
+</div>
+</body>
+</html>
