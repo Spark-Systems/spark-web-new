@@ -10,24 +10,37 @@ const jsonPath = (key: string) => {
   return `db/${key}.json`;
 };
 
+/**
+ * Vercel Blob stores are either public or private, so this uses two:
+ * - content (the JSON documents, incl. users and settings): a PRIVATE store,
+ *   connected with the env prefix BLOB_DB → BLOB_DB_READ_WRITE_TOKEN
+ * - uploads (pictures): a PUBLIC store → BLOB_READ_WRITE_TOKEN, or
+ *   BLOB_READ_WRITE_TOKEN_READ_WRITE_TOKEN as this project's store was connected.
+ */
+export const blobTokens = () => ({
+  content: process.env.BLOB_DB_READ_WRITE_TOKEN || undefined,
+  uploads: process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN_READ_WRITE_TOKEN || undefined,
+});
+
 /** Etag given to a document read from the bundled data folder (never saved to Blob yet). */
 const SEED_PREFIX = "seed:";
 
 /**
- * Vercel Blob. Documents are private blobs under db/, read past the CDN cache
- * so a save is visible straight away, and written with the etag they were read
- * with so two people saving at once can't overwrite each other. Uploaded files
- * are public blobs under uploads/.
+ * Vercel Blob. Documents are private blobs under db/ (in the private store),
+ * read past the CDN cache so a save is visible straight away, and written
+ * with the etag they were read with so two people saving at once can't
+ * overwrite each other. Uploaded files are public blobs under uploads/ (in
+ * the public store).
  *
  * A document that has never been saved to Blob is read from the data folder
  * deployed with the site, so a fresh store starts out with the committed content.
  */
-export function createBlobDriver(): StorageDriver {
+export function createBlobDriver({ content: token, uploads: uploadsToken }: { content: string; uploads: string }): StorageDriver {
   return {
     kind: "blob",
 
     async readJson<T>(key: string) {
-      const result = await get(jsonPath(key), { access: "private", useCache: false });
+      const result = await get(jsonPath(key), { access: "private", useCache: false, token });
       if (result?.statusCode === 200) {
         const text = await new Response(result.stream).text();
         return { data: JSON.parse(text) as T, etag: result.blob.etag };
@@ -43,6 +56,7 @@ export function createBlobDriver(): StorageDriver {
       try {
         const result = await put(jsonPath(key), body, {
           access: "private",
+          token,
           contentType: "application/json",
           addRandomSuffix: false,
           allowOverwrite: !createOnly,
@@ -62,7 +76,7 @@ export function createBlobDriver(): StorageDriver {
       const keys: string[] = [];
       let cursor: string | undefined;
       do {
-        const page = await list({ prefix: `db/${prefix}`, cursor });
+        const page = await list({ prefix: `db/${prefix}`, cursor, token });
         keys.push(...page.blobs.map((blob) => blob.pathname.replace(/^db\//, "").replace(/\.json$/, "")));
         cursor = page.hasMore ? page.cursor : undefined;
       } while (cursor);
@@ -70,13 +84,14 @@ export function createBlobDriver(): StorageDriver {
     },
 
     async deleteJson(keys) {
-      if (keys.length) await del(keys.map(jsonPath));
+      if (keys.length) await del(keys.map(jsonPath), { token });
     },
 
     async saveFile(filePath, body, contentType) {
       assertKey(filePath);
       const result = await put(`uploads/${filePath}`, body, {
         access: "public",
+        token: uploadsToken,
         contentType,
         addRandomSuffix: false,
         // Names are unique per upload, so the file never changes: cache it for a year.
