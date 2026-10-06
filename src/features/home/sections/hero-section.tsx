@@ -17,12 +17,19 @@ export function HeroSection() {
       <div className="relative flex min-h-[max(520px,100vh)] flex-col justify-center">
         <h1
           aria-label={`${hero.titleStart} ${hero.titleEnd}`}
-          className="m-0 text-[clamp(50px,9.2cqw,156px)] font-medium leading-[0.94] tracking-[-0.035em]"
+          className="m-0 text-[clamp(50px,9.2cqw,156px)] font-medium leading-none tracking-[-0.035em]"
         >
           {headlineLines.map((line, i) => (
             // Each line rises out of its own mask on load (see .hero-line).
-            <span key={i} aria-hidden="true" className="mb-[-0.08em] block overflow-hidden pb-[0.08em]">
-              <span className="hero-line block will-change-transform" style={{ "--line": i } as CSSProperties}>
+            <span
+              key={i}
+              aria-hidden="true"
+              className="mb-[-0.08em] block overflow-hidden pb-[0.08em]"
+            >
+              <span
+                className="hero-line block will-change-transform"
+                style={{ "--line": i } as CSSProperties}
+              >
                 {line}
               </span>
             </span>
