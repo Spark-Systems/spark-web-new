@@ -1,0 +1,448 @@
+{
+  "items": [
+    {
+      "id": "cli_001",
+      "draft": {
+        "name": "Ministry of Foreign Affairs",
+        "logo": {
+          "src": "/uploads/images/clients/mofa-6d5a47b7.webp",
+          "width": 289,
+          "height": 91,
+          "blurDataURL": "data:image/webp;base64,UklGRngAAABXRUJQVlA4WAoAAAAQAAAACQAAAgAAQUxQSB8AAAAAEyInISIpEyCaayQlKicaKBxb/9MAJiEfHSwGNPyxAFZQOCAyAAAA8AEAnQEqCgADAAOAWiWQAnR/ABgazbAAAP738KxhnFnRX2p47hMolO7AseWdNtk4YAA=",
+          "blurWidth": 10,
+          "blurHeight": 3
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 10
+      },
+      "published": {
+        "name": "Ministry of Foreign Affairs",
+        "logo": {
+          "src": "/uploads/images/clients/mofa-6d5a47b7.webp",
+          "width": 289,
+          "height": 91,
+          "blurDataURL": "data:image/webp;base64,UklGRngAAABXRUJQVlA4WAoAAAAQAAAACQAAAgAAQUxQSB8AAAAAEyInISIpEyCaayQlKicaKBxb/9MAJiEfHSwGNPyxAFZQOCAyAAAA8AEAnQEqCgADAAOAWiWQAnR/ABgazbAAAP738KxhnFnRX2p47hMolO7AseWdNtk4YAA=",
+          "blurWidth": 10,
+          "blurHeight": 3
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 10
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_002",
+      "draft": {
+        "name": "Saudi Arabia Railways",
+        "logo": {
+          "src": "/uploads/images/clients/sar-95fe98de.webp",
+          "width": 161,
+          "height": 84,
+          "blurDataURL": "data:image/webp;base64,UklGRogAAABXRUJQVlA4WAoAAAAQAAAACQAABAAAQUxQSDMAAAAAu5gxB39uAI+jm2+BW21YeEdsgI9lmnykE0SNZDtqOjkeKhoaIjUnLE1YT0ZYQUdNXUAAVlA4IC4AAACQAQCdASoKAAUAA4BaJaQAAxfkjYAA/vKRy0pqQXee1Y58K8CkQ3M4qbIQgAAA",
+          "blurWidth": 10,
+          "blurHeight": 5
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 20
+      },
+      "published": {
+        "name": "Saudi Arabia Railways",
+        "logo": {
+          "src": "/uploads/images/clients/sar-95fe98de.webp",
+          "width": 161,
+          "height": 84,
+          "blurDataURL": "data:image/webp;base64,UklGRogAAABXRUJQVlA4WAoAAAAQAAAACQAABAAAQUxQSDMAAAAAu5gxB39uAI+jm2+BW21YeEdsgI9lmnykE0SNZDtqOjkeKhoaIjUnLE1YT0ZYQUdNXUAAVlA4IC4AAACQAQCdASoKAAUAA4BaJaQAAxfkjYAA/vKRy0pqQXee1Y58K8CkQ3M4qbIQgAAA",
+          "blurWidth": 10,
+          "blurHeight": 5
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 20
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_003",
+      "draft": {
+        "name": "Riyadh Season",
+        "logo": {
+          "src": "/uploads/images/clients/riyadh-season-dc8afb7b.webp",
+          "width": 276,
+          "height": 110,
+          "blurDataURL": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4WAoAAAAQAAAACQAAAwAAQUxQSCkAAAAAQrChQAAJBwgHBqsjKZgkSStKTkrMSFG8FkdERUhNWNzcVQAIBwUDBQBWUDggPgAAALABAJ0BKgoABAADgFolsAJ0APQuupAA3JuUeLH71/6okv8JDLHdP36WOF/oeYH/yTFgh3skxsfyDtfwAAAA",
+          "blurWidth": 10,
+          "blurHeight": 4
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 30
+      },
+      "published": {
+        "name": "Riyadh Season",
+        "logo": {
+          "src": "/uploads/images/clients/riyadh-season-dc8afb7b.webp",
+          "width": 276,
+          "height": 110,
+          "blurDataURL": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4WAoAAAAQAAAACQAAAwAAQUxQSCkAAAAAQrChQAAJBwgHBqsjKZgkSStKTkrMSFG8FkdERUhNWNzcVQAIBwUDBQBWUDggPgAAALABAJ0BKgoABAADgFolsAJ0APQuupAA3JuUeLH71/6okv8JDLHdP36WOF/oeYH/yTFgh3skxsfyDtfwAAAA",
+          "blurWidth": 10,
+          "blurHeight": 4
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 30
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_004",
+      "draft": {
+        "name": "Toyota",
+        "logo": {
+          "src": "/uploads/images/clients/toyota-3021a4b2.webp",
+          "width": 105,
+          "height": 75,
+          "blurDataURL": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4WAoAAAAQAAAACQAABgAAQUxQSEcAAAAAAAl4QpKLRXUFAABcqYKOjoSpVgAAhRRAfX44G4MAADt0DouGDHc1AAUBJjt2e0EfAAFuXk1XUE5VWV9OTGFuaGVsbE97iABWUDggGAAAADABAJ0BKgoABwADgFolpAADcAD+9QgAAA==",
+          "blurWidth": 10,
+          "blurHeight": 7
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 40
+      },
+      "published": {
+        "name": "Toyota",
+        "logo": {
+          "src": "/uploads/images/clients/toyota-3021a4b2.webp",
+          "width": 105,
+          "height": 75,
+          "blurDataURL": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4WAoAAAAQAAAACQAABgAAQUxQSEcAAAAAAAl4QpKLRXUFAABcqYKOjoSpVgAAhRRAfX44G4MAADt0DouGDHc1AAUBJjt2e0EfAAFuXk1XUE5VWV9OTGFuaGVsbE97iABWUDggGAAAADABAJ0BKgoABwADgFolpAADcAD+9QgAAA==",
+          "blurWidth": 10,
+          "blurHeight": 7
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 40
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_005",
+      "draft": {
+        "name": "KAFD",
+        "logo": {
+          "src": "/uploads/images/clients/kafd-539181bd.webp",
+          "width": 69,
+          "height": 133,
+          "blurDataURL": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4WAoAAAAQAAAABAAACQAAQUxQSDMAAAAAKysqLzk1NDVGMjk4REwvSVJAPTFMRzE2MT45KDY1LSEaFygaEBYTGj8sNylAJiIcGyYAVlA4IBgAAAAwAQCdASoFAAoAA4BaJaQAA3AA/vUIAAA=",
+          "blurWidth": 5,
+          "blurHeight": 10
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 50
+      },
+      "published": {
+        "name": "KAFD",
+        "logo": {
+          "src": "/uploads/images/clients/kafd-539181bd.webp",
+          "width": 69,
+          "height": 133,
+          "blurDataURL": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4WAoAAAAQAAAABAAACQAAQUxQSDMAAAAAKysqLzk1NDVGMjk4REwvSVJAPTFMRzE2MT45KDY1LSEaFygaEBYTGj8sNylAJiIcGyYAVlA4IBgAAAAwAQCdASoFAAoAA4BaJaQAA3AA/vUIAAA=",
+          "blurWidth": 5,
+          "blurHeight": 10
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 50
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_006",
+      "draft": {
+        "name": "Sela",
+        "logo": {
+          "src": "/uploads/images/clients/sela-b009e461.webp",
+          "width": 183,
+          "height": 51,
+          "blurDataURL": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4WAoAAAAQAAAACQAAAgAAQUxQSB8AAAAA35JtMh4qP1ozOJ28pnqCo46ScoLVjGthfH9caXJ/AFZQOCAYAAAAMAEAnQEqCgADAAOAWiWkAANwAP71CAAA",
+          "blurWidth": 10,
+          "blurHeight": 3
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 60
+      },
+      "published": {
+        "name": "Sela",
+        "logo": {
+          "src": "/uploads/images/clients/sela-b009e461.webp",
+          "width": 183,
+          "height": 51,
+          "blurDataURL": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4WAoAAAAQAAAACQAAAgAAQUxQSB8AAAAA35JtMh4qP1ozOJ28pnqCo46ScoLVjGthfH9caXJ/AFZQOCAYAAAAMAEAnQEqCgADAAOAWiWkAANwAP71CAAA",
+          "blurWidth": 10,
+          "blurHeight": 3
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 60
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_007",
+      "draft": {
+        "name": "Amreyah Cement",
+        "logo": {
+          "src": "/uploads/images/clients/amreyah-dcef1e99.webp",
+          "width": 113,
+          "height": 84,
+          "blurDataURL": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4WAoAAAAQAAAACQAABgAAQUxQSEcAAAAAAAMAdfhp5fXkLQEAFtrz6cwoGgEDAILUbf+VAAEAABPybBf+v1JMHgBpy3e038fY3igiSkA6TDc+QE4pRlVaPE06U1dUNABWUDggGAAAADABAJ0BKgoABwADgFolpAADcAD+9QgAAA==",
+          "blurWidth": 10,
+          "blurHeight": 7
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 70
+      },
+      "published": {
+        "name": "Amreyah Cement",
+        "logo": {
+          "src": "/uploads/images/clients/amreyah-dcef1e99.webp",
+          "width": 113,
+          "height": 84,
+          "blurDataURL": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4WAoAAAAQAAAACQAABgAAQUxQSEcAAAAAAAMAdfhp5fXkLQEAFtrz6cwoGgEDAILUbf+VAAEAABPybBf+v1JMHgBpy3e038fY3igiSkA6TDc+QE4pRlVaPE06U1dUNABWUDggGAAAADABAJ0BKgoABwADgFolpAADcAD+9QgAAA==",
+          "blurWidth": 10,
+          "blurHeight": 7
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 70
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_008",
+      "draft": {
+        "name": "Jeddah Events",
+        "logo": {
+          "src": "/uploads/images/clients/jeddah-events-65b78100.webp",
+          "width": 170,
+          "height": 89,
+          "blurDataURL": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4WAoAAAAQAAAACQAABAAAQUxQSDMAAAAAAAQUGAA9JzlgQwtRXE8uTkEdMSoRUDhKKDNCCxonMD4yTk5ma2BvWGNwZl8/Lx4QDwQAVlA4IBgAAAAwAQCdASoKAAUAA4BaJaQAA3AA/vUIAAA=",
+          "blurWidth": 10,
+          "blurHeight": 5
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 80
+      },
+      "published": {
+        "name": "Jeddah Events",
+        "logo": {
+          "src": "/uploads/images/clients/jeddah-events-65b78100.webp",
+          "width": 170,
+          "height": 89,
+          "blurDataURL": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4WAoAAAAQAAAACQAABAAAQUxQSDMAAAAAAAQUGAA9JzlgQwtRXE8uTkEdMSoRUDhKKDNCCxonMD4yTk5ma2BvWGNwZl8/Lx4QDwQAVlA4IBgAAAAwAQCdASoKAAUAA4BaJaQAA3AA/vUIAAA=",
+          "blurWidth": 10,
+          "blurHeight": 5
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 80
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_009",
+      "draft": {
+        "name": "Ittihad Club",
+        "logo": {
+          "src": "/uploads/images/clients/ittihad-27891dde.webp",
+          "width": 149,
+          "height": 173,
+          "blurDataURL": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4WAoAAAAQAAAACAAACQAAQUxQSEgAAAABcFTbttM8AUhghgesspDSmfcmoJMooJeT6iEiJkDUkuvEEK3i4sSVJxecWLLDlyN6z/VDwj9K+iOQege4Mfl50/v7NM/zdBRWUDggVAAAAFACAJ0BKgkACgADgFolsAJ0AR//kaYeq9mFAAD8zA0yvlxBldSkkLowKfPBkueELQqnnfm5etlPYJJKSgRYDbF/a3v/8pa/mjXdQpX9C/aj16QAAA==",
+          "blurWidth": 9,
+          "blurHeight": 10
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 90
+      },
+      "published": {
+        "name": "Ittihad Club",
+        "logo": {
+          "src": "/uploads/images/clients/ittihad-27891dde.webp",
+          "width": 149,
+          "height": 173,
+          "blurDataURL": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4WAoAAAAQAAAACAAACQAAQUxQSEgAAAABcFTbttM8AUhghgesspDSmfcmoJMooJeT6iEiJkDUkuvEEK3i4sSVJxecWLLDlyN6z/VDwj9K+iOQege4Mfl50/v7NM/zdBRWUDggVAAAAFACAJ0BKgkACgADgFolsAJ0AR//kaYeq9mFAAD8zA0yvlxBldSkkLowKfPBkueELQqnnfm5etlPYJJKSgRYDbF/a3v/8pa/mjXdQpX9C/aj16QAAA==",
+          "blurWidth": 9,
+          "blurHeight": 10
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 90
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_010",
+      "draft": {
+        "name": "Abdul Rahman Al-Shareef Group",
+        "logo": {
+          "src": "/uploads/images/clients/aag-99f5e813.webp",
+          "width": 214,
+          "height": 126,
+          "blurDataURL": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4WAoAAAAQAAAACQAABQAAQUxQSD0AAAAAAAABAgIACQ4AAAIAPyozOnCBDQAACp+bkr9+lFQAAD5qb3FsiZYdAAAUKyUvISQtCAAAAAECAgIBAAAAAFZQOCAyAAAA0AEAnQEqCgAGAAOAWiWkAAL2r/tEqAQA/vTxIkVaeQlK8nMIXTVGM01dal6yK0AAAAA=",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 100
+      },
+      "published": {
+        "name": "Abdul Rahman Al-Shareef Group",
+        "logo": {
+          "src": "/uploads/images/clients/aag-99f5e813.webp",
+          "width": 214,
+          "height": 126,
+          "blurDataURL": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4WAoAAAAQAAAACQAABQAAQUxQSD0AAAAAAAABAgIACQ4AAAIAPyozOnCBDQAACp+bkr9+lFQAAD5qb3FsiZYdAAAUKyUvISQtCAAAAAECAgIBAAAAAFZQOCAyAAAA0AEAnQEqCgAGAAOAWiWkAAL2r/tEqAQA/vTxIkVaeQlK8nMIXTVGM01dal6yK0AAAAA=",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 100
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_011",
+      "draft": {
+        "name": "BLVD World",
+        "logo": {
+          "src": "/uploads/images/clients/blvd-world-5b4817d7.webp",
+          "width": 311,
+          "height": 77,
+          "blurDataURL": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4WAoAAAAQAAAACQAAAQAAQUxQSBUAAAAATEwxKCQxOUBBXU5ZNSIsMkZKPFcAVlA4IBgAAAAwAQCdASoKAAIAA4BaJaQAA3AA/vUIAAA=",
+          "blurWidth": 10,
+          "blurHeight": 2
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 110
+      },
+      "published": {
+        "name": "BLVD World",
+        "logo": {
+          "src": "/uploads/images/clients/blvd-world-5b4817d7.webp",
+          "width": 311,
+          "height": 77,
+          "blurDataURL": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4WAoAAAAQAAAACQAAAQAAQUxQSBUAAAAATEwxKCQxOUBBXU5ZNSIsMkZKPFcAVlA4IBgAAAAwAQCdASoKAAIAA4BaJaQAA3AA/vUIAAA=",
+          "blurWidth": 10,
+          "blurHeight": 2
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 110
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "cli_012",
+      "draft": {
+        "name": "Al Taawoun FC",
+        "logo": {
+          "src": "/uploads/images/clients/altaawoun-0e9046f2.webp",
+          "width": 99,
+          "height": 115,
+          "blurDataURL": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4WAoAAAAQAAAACAAACQAAQUxQSEgAAAABcFzbttL8xcxHVgMjeqIEyvBq6IKRSzypAj3xGiJiAvhcF65f2Hn8sf9af1wbdmAlD1iAGd8omdeJQhbehZXRFZJwsmNoCglWUDggVAAAANABAJ0BKgkACgADgFolsAJ0AQbRmSdGAP4zo+9RM+Xd74xFrwWgdtA9Cl35Olm4scp5QIGWSUS0EYbtpw1q3629HZt8Y91u08XlqXlWG7NmNzAAAA==",
+          "blurWidth": 9,
+          "blurHeight": 10
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 120
+      },
+      "published": {
+        "name": "Al Taawoun FC",
+        "logo": {
+          "src": "/uploads/images/clients/altaawoun-0e9046f2.webp",
+          "width": 99,
+          "height": 115,
+          "blurDataURL": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4WAoAAAAQAAAACAAACQAAQUxQSEgAAAABcFzbttL8xcxHVgMjeqIEyvBq6IKRSzypAj3xGiJiAvhcF65f2Hn8sf9af1wbdmAlD1iAGd8omdeJQhbehZXRFZJwsmNoCglWUDggVAAAANABAJ0BKgkACgADgFolsAJ0AQbRmSdGAP4zo+9RM+Xd74xFrwWgdtA9Cl35Olm4scp5QIGWSUS0EYbtpw1q3629HZt8Y91u08XlqXlWG7NmNzAAAA==",
+          "blurWidth": 9,
+          "blurHeight": 10
+        },
+        "link": "",
+        "show_name": false,
+        "invert": false,
+        "order": 120
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    }
+  ]
+}

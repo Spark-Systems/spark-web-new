@@ -1,11 +1,9 @@
 import { PartnerBadge } from "@/components/ui/partner-badge";
 import { SmartLink } from "@/components/ui/smart-link";
-import { partners } from "@/config/site";
-import { clients, clientsSection } from "@/content/home";
+import type { HomeClientsSection } from "@/types/home";
 import { LogoWall } from "@/components/blocks/logo-wall";
 
-export function ClientsSection() {
-  const { moreLink, partnersLabel } = clientsSection;
+export function ClientsSection({ moreLink, partnersLabel, clients, partners }: HomeClientsSection) {
 
   return (
     <section className="bg-texture px-gutter pb-[clamp(56px,6cqw,96px)] pt-[clamp(88px,10cqw,160px)]">

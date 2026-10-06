@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "site_name": "Spark Systems",
+    "description": "Intelligent solutions, always delivered. Since 2008 Spark Systems has built the platforms organisations across the Middle East depend on every day.",
+    "keywords": [
+      "software",
+      "ticketing",
+      "accreditation",
+      "digital solutions",
+      "Egypt",
+      "Saudi Arabia"
+    ]
+  },
+  "social": {
+    "facebook": {
+      "url": "https://www.facebook.com/Spark.Systems",
+      "icon_url": null
+    },
+    "instagram": {
+      "url": "https://www.instagram.com/spark.systems/",
+      "icon_url": null
+    },
+    "x": {
+      "url": "https://x.com/Spark_systems",
+      "icon_url": null
+    },
+    "linkedin": {
+      "url": "https://www.linkedin.com/company/sparksystems/",
+      "icon_url": null
+    },
+    "youtube": {
+      "url": "",
+      "icon_url": null
+    }
+  },
+  "advanced": {
+    "website_url": "https://www.spark-sys.com",
+    "smtp_host": "",
+    "smtp_port": 587,
+    "smtp_username": "",
+    "smtp_password": "",
+    "smtp_use_ssl": false,
+    "default_email_address": "",
+    "default_email_name": "Spark Systems",
+    "notification_email": "info@spark-sys.com",
+    "recaptcha_site_key": "",
+    "recaptcha_secret_key": "",
+    "google_analytics_code": "",
+    "google_analytics_emails": [],
+    "seo_scripts": ""
+  }
+}

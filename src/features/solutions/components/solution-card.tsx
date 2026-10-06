@@ -5,7 +5,7 @@ import type { MouseEvent } from "react";
 import { useMotion } from "@/components/providers/motion-provider";
 import { Icon } from "@/components/ui/icon";
 import { SmartLink } from "@/components/ui/smart-link";
-import { solutionHref } from "@/content/solutions";
+import { solutionHref } from "@/lib/links";
 import type { SolutionSummary } from "@/types/solutions";
 
 /** Max tilt (degrees) and image counter-shift (px) at the card's edges. */

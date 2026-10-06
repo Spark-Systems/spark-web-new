@@ -2,9 +2,11 @@
 
 import { DirectionProvider } from "@base-ui/react/direction-provider"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { useLocale, useTranslations } from "next-intl"
 import { ThemeProvider } from "next-themes"
 import { useState } from "react"
 
+import { configureZodLocale } from "@admin/components/cms/content-resolver"
 import { Toaster } from "@admin/components/ui/sonner"
 import { TooltipProvider } from "@admin/components/ui/tooltip"
 import { isApiError } from "@admin/lib/api/errors"
@@ -33,6 +35,11 @@ export function Providers({
   children: React.ReactNode
 }) {
   const [queryClient] = useState(makeQueryClient)
+  const locale = useLocale()
+  const t = useTranslations("Common")
+  // Form validation messages in the admin's language. Browser only: zod's config is
+  // global, and on the server it would change the API's own error messages too.
+  if (typeof window !== "undefined") configureZodLocale(locale, t("required"))
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>

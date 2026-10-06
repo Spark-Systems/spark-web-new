@@ -1,0 +1,240 @@
+{
+  "items": [
+    {
+      "id": "off_cairo",
+      "draft": {
+        "city": "Cairo",
+        "country": "Egypt",
+        "hq": true,
+        "time_zone": "Africa/Cairo",
+        "address": "Villa 117, Al-Narges 4, 5th Settlement, Cairo, Egypt",
+        "map_url": "https://maps.app.goo.gl/NM9tQmVSoVeJvDNW6",
+        "lines": [
+          {
+            "type": "phone",
+            "label": "Tel",
+            "value": "02 (2) 641 7015",
+            "href": "tel:+20226417015"
+          },
+          {
+            "type": "mobile",
+            "label": "Mobile",
+            "value": "+20 (11) 40 88 6688",
+            "href": "tel:+201140886688"
+          },
+          {
+            "type": "email",
+            "label": "Email",
+            "value": "sparkeg@spark-sys.com",
+            "href": "mailto:sparkeg@spark-sys.com"
+          }
+        ],
+        "order": 10
+      },
+      "published": {
+        "city": "Cairo",
+        "country": "Egypt",
+        "hq": true,
+        "time_zone": "Africa/Cairo",
+        "address": "Villa 117, Al-Narges 4, 5th Settlement, Cairo, Egypt",
+        "map_url": "https://maps.app.goo.gl/NM9tQmVSoVeJvDNW6",
+        "lines": [
+          {
+            "type": "phone",
+            "label": "Tel",
+            "value": "02 (2) 641 7015",
+            "href": "tel:+20226417015"
+          },
+          {
+            "type": "mobile",
+            "label": "Mobile",
+            "value": "+20 (11) 40 88 6688",
+            "href": "tel:+201140886688"
+          },
+          {
+            "type": "email",
+            "label": "Email",
+            "value": "sparkeg@spark-sys.com",
+            "href": "mailto:sparkeg@spark-sys.com"
+          }
+        ],
+        "order": 10
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "off_giza",
+      "draft": {
+        "city": "Giza",
+        "country": "Egypt",
+        "hq": false,
+        "time_zone": "Africa/Cairo",
+        "address": "Villa 99, Area 3, District 8, Sheikh Zayed City, Giza, Egypt",
+        "map_url": "https://maps.app.goo.gl/MgeRiSus7fHLZ6HZA",
+        "lines": [
+          {
+            "type": "phone",
+            "label": "Tel",
+            "value": "+20 (2) 379 57 021",
+            "href": "tel:+20237957021"
+          },
+          {
+            "type": "mobile",
+            "label": "Mobile",
+            "value": "+20 (11) 40 88 6688",
+            "href": "tel:+201140886688"
+          },
+          {
+            "type": "email",
+            "label": "Email",
+            "value": "sparkeg@spark-sys.com",
+            "href": "mailto:sparkeg@spark-sys.com"
+          }
+        ],
+        "order": 20
+      },
+      "published": {
+        "city": "Giza",
+        "country": "Egypt",
+        "hq": false,
+        "time_zone": "Africa/Cairo",
+        "address": "Villa 99, Area 3, District 8, Sheikh Zayed City, Giza, Egypt",
+        "map_url": "https://maps.app.goo.gl/MgeRiSus7fHLZ6HZA",
+        "lines": [
+          {
+            "type": "phone",
+            "label": "Tel",
+            "value": "+20 (2) 379 57 021",
+            "href": "tel:+20237957021"
+          },
+          {
+            "type": "mobile",
+            "label": "Mobile",
+            "value": "+20 (11) 40 88 6688",
+            "href": "tel:+201140886688"
+          },
+          {
+            "type": "email",
+            "label": "Email",
+            "value": "sparkeg@spark-sys.com",
+            "href": "mailto:sparkeg@spark-sys.com"
+          }
+        ],
+        "order": 20
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "off_dubai",
+      "draft": {
+        "city": "Dubai",
+        "country": "United Arab Emirates",
+        "hq": false,
+        "time_zone": "Asia/Dubai",
+        "address": "Dubai Shopping Center Office FF-45, Dubai, UAE",
+        "map_url": "https://maps.app.goo.gl/4ZtmrZ9f4m2Y1zKA6",
+        "lines": [
+          {
+            "type": "mobile",
+            "label": "Mobile",
+            "value": "+971 509309480",
+            "href": "tel:+971509309480"
+          },
+          {
+            "type": "mobile",
+            "label": "Mobile",
+            "value": "+971 509409530",
+            "href": "tel:+971509409530"
+          },
+          {
+            "type": "email",
+            "label": "Email",
+            "value": "sparkuae@spark-sys.com",
+            "href": "mailto:sparkuae@spark-sys.com"
+          }
+        ],
+        "order": 30
+      },
+      "published": {
+        "city": "Dubai",
+        "country": "United Arab Emirates",
+        "hq": false,
+        "time_zone": "Asia/Dubai",
+        "address": "Dubai Shopping Center Office FF-45, Dubai, UAE",
+        "map_url": "https://maps.app.goo.gl/4ZtmrZ9f4m2Y1zKA6",
+        "lines": [
+          {
+            "type": "mobile",
+            "label": "Mobile",
+            "value": "+971 509309480",
+            "href": "tel:+971509309480"
+          },
+          {
+            "type": "mobile",
+            "label": "Mobile",
+            "value": "+971 509409530",
+            "href": "tel:+971509409530"
+          },
+          {
+            "type": "email",
+            "label": "Email",
+            "value": "sparkuae@spark-sys.com",
+            "href": "mailto:sparkuae@spark-sys.com"
+          }
+        ],
+        "order": 30
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "off_riyadh",
+      "draft": {
+        "city": "Riyadh",
+        "country": "Saudi Arabia",
+        "hq": false,
+        "time_zone": "Asia/Riyadh",
+        "address": "Imam Saud bin Faisal, Riyadh, KSA",
+        "map_url": "https://maps.app.goo.gl/h4n8zw6xSdmy3esE9",
+        "lines": [
+          {
+            "type": "email",
+            "label": "Email",
+            "value": "sparkksa@spark-sys.com",
+            "href": "mailto:sparkksa@spark-sys.com"
+          }
+        ],
+        "order": 40
+      },
+      "published": {
+        "city": "Riyadh",
+        "country": "Saudi Arabia",
+        "hq": false,
+        "time_zone": "Asia/Riyadh",
+        "address": "Imam Saud bin Faisal, Riyadh, KSA",
+        "map_url": "https://maps.app.goo.gl/h4n8zw6xSdmy3esE9",
+        "lines": [
+          {
+            "type": "email",
+            "label": "Email",
+            "value": "sparkksa@spark-sys.com",
+            "href": "mailto:sparkksa@spark-sys.com"
+          }
+        ],
+        "order": 40
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    }
+  ]
+}

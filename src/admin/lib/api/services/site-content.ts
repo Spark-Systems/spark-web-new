@@ -1,8 +1,9 @@
 import { createResource } from "../resource"
-import type { SiteService, SiteServiceInput, Solution, SolutionInput } from "../types"
 
-/** Service areas (the website's /services). "Site services" keeps them apart from the API modules in this folder. */
-export const siteServicesResource = createResource<SiteService, SiteServiceInput>("/services", "services")
-
-/** Solutions catalogue (the website's /solutions). */
-export const solutionsResource = createResource<Solution, SolutionInput>("/solutions", "solutions")
+/** The website's draft/publish lists. */
+export const solutionsResource = createResource("solutions")
+export const siteServicesResource = createResource("services")
+export const projectsResource = createResource("projects")
+export const clientsResource = createResource("clients")
+export const partnersResource = createResource("partners")
+export const officesResource = createResource("offices")

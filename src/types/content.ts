@@ -53,7 +53,8 @@ export type IconName =
   | "trophy"
   | "truck"
   | "x"
-  | "x-close";
+  | "x-close"
+  | "youtube";
 
 /** SEO fields every page provides. */
 export interface PageSeo {

@@ -8,7 +8,7 @@ import { SmartLink } from "@/components/ui/smart-link";
 import { contactCta, primaryNav } from "@/config/site";
 import { useFrame } from "@/hooks/use-frame";
 import { cn } from "@/lib/utils";
-import { SiteMenu } from "./site-menu";
+import { SiteMenu, type SiteMenuContent } from "./site-menu";
 
 /** Always show the header within this distance (px) of the top of the page. */
 const ALWAYS_SHOW_ABOVE = 120;
@@ -26,7 +26,7 @@ const HIDE_HEADER_SELECTOR = "[data-hide-header]";
  * - Stays hidden while a `[data-hide-header]` section is under it.
  * - The toggle opens the full-screen <SiteMenu />.
  */
-export function SiteHeader() {
+export function SiteHeader({ menu }: { menu: SiteMenuContent }) {
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [solid, setSolid] = useState(false);
@@ -92,7 +92,7 @@ export function SiteHeader() {
         <MenuToggle ref={toggleRef} open={open} onClick={() => setOpen(true)} />
       </div>
 
-      <SiteMenu open={open} onClose={closeMenu} originRef={toggleRef} />
+      <SiteMenu content={menu} open={open} onClose={closeMenu} originRef={toggleRef} />
     </header>
   );
 }

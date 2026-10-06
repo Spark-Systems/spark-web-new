@@ -63,6 +63,7 @@ export interface AboutPageData {
   };
   story: SectionIntro & { milestones: Milestone[] };
   clients: SectionIntro & { logos: ClientLogo[] };
-  partnerships: SectionIntro & { partners: [PartnerCard, PartnerCard] };
+  /** Left out when there are fewer than two partners. */
+  partnerships?: SectionIntro & { partners: [PartnerCard, PartnerCard] };
   contact: ContactContent;
 }

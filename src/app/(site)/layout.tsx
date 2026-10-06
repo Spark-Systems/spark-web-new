@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { draftMode } from "next/headers";
+import { PreviewBar } from "@/components/layout/preview-bar";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { AppProviders } from "@/components/providers/app-providers";
-import { siteConfig } from "@/config/site";
+import { getSiteLayout } from "@/lib/api/pages";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
@@ -19,13 +21,17 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: `${siteConfig.name} — Intelligent solutions, always delivered`,
-    template: `%s — ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { company, keywords } = await getSiteLayout();
+  return {
+    title: {
+      default: `${company.name} — Intelligent solutions, always delivered`,
+      template: `%s — ${company.name}`,
+    },
+    description: company.description,
+    keywords: keywords.length > 0 ? keywords : undefined,
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#0B0B0B",
@@ -36,17 +42,26 @@ export const viewport: Viewport = {
  * app/(admin)). The wrapper is the size container for the `cqw`-based fluid
  * type, and the parent the floating nav sticks in.
  */
-export default function SiteLayout({ children }: LayoutProps<"/">) {
+export default async function SiteLayout({ children }: LayoutProps<"/">) {
+  const [layout, { isEnabled: preview }] = await Promise.all([getSiteLayout(), draftMode()]);
+  const menu = {
+    items: layout.menu,
+    cities: layout.offices.map((o) => o.city),
+    email: layout.company.email,
+    phone: layout.company.phone,
+  };
+
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body data-highlight-tbc={process.env.NEXT_PUBLIC_HIGHLIGHT_TBC === "true" ? "" : undefined}>
         <AppProviders>
           <div className="@container relative overflow-clip bg-ink text-snow">
-            <SiteHeader />
+            <SiteHeader menu={menu} />
             <main>{children}</main>
-            <SiteFooter />
+            <SiteFooter {...layout} />
           </div>
         </AppProviders>
+        {preview && <PreviewBar />}
       </body>
     </html>
   );

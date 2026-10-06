@@ -1,11 +1,10 @@
 import { PillLink } from "@/components/ui/pill";
-import { projects, workSection } from "@/content/home";
+import type { HomeWorkSection } from "@/types/home";
 import { WorkCard } from "../components/work-card";
 import { WorkCarousel } from "../components/work-carousel";
 import { WorkIntro } from "../components/work-intro";
 
-export function WorkSection() {
-  const { intro, title, cta } = workSection;
+export function WorkSection({ intro, title, cta, items: projects }: HomeWorkSection) {
 
   return (
     <section id="work" className="bg-texture text-snow">

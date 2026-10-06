@@ -4,9 +4,10 @@ import { useRef, useState } from "react";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { MenuToggle } from "@/components/ui/menu-toggle";
 import { PillLink } from "@/components/ui/pill";
-import { contactCta, menuNav, primaryNav } from "@/config/site";
+import { contactCta, primaryNav } from "@/config/site";
 import { useFrame } from "@/hooks/use-frame";
 import { cn } from "@/lib/utils";
+import type { MenuItem } from "@/types/content";
 import { MenuList } from "./menu-list";
 
 const SHOW_AFTER_PX = 200;
@@ -16,7 +17,7 @@ const DIRECTION_THRESHOLD = 3;
  * Pill navigation pinned to the bottom of the viewport. Appears while the
  * user scrolls up (past the hero) and hides again when they scroll down.
  */
-export function FloatingNav() {
+export function FloatingNav({ menu: menuNav }: { menu: MenuItem[] }) {
   const [visible, setVisible] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const lastY = useRef<number | null>(null);

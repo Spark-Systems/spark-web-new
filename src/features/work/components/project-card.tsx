@@ -1,7 +1,7 @@
 import { ParallaxImage } from "@/components/blocks/parallax-image";
 import { Icon } from "@/components/ui/icon";
 import { SmartLink } from "@/components/ui/smart-link";
-import { projectHref } from "@/content/work";
+import { projectHref } from "@/lib/links";
 import type { ProjectSummary } from "@/types/work";
 
 /** Portfolio card: parallax image with a category badge, then the name with an arrow that grows and turns on hover. */

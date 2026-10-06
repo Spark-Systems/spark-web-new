@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useFrame } from "@/hooks/use-frame";
 import { useViewport } from "@/hooks/use-viewport";
 import { clamp, easeInOutCubic, easeOutCubic, lerp } from "@/lib/motion/math";
-import { services, servicesSection } from "@/content/home";
+import type { HomeServicesSection } from "@/types/home";
 import { ServiceCard } from "../components/service-card";
 
 /** Scroll (in viewport heights) over which the white circle opens — and closes again when scrolling back up. */
@@ -54,7 +54,7 @@ function setStyle(el: HTMLElement, prop: "opacity" | "transform", value: string)
  * opposite directions: the left one rises, the right one sinks. On mobile they
  * stack in a single rising column.
  */
-export function ServicesSection() {
+export function ServicesSection({ title, items: services }: HomeServicesSection) {
   const { vh, vw, isMobile } = useViewport();
   const sceneRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -194,7 +194,7 @@ export function ServicesSection() {
                 opacity: 0,
               }}
             >
-              {servicesSection.title}
+              {title}
             </h2>
 
             {services.map((service, i) => (

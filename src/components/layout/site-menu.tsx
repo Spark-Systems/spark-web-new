@@ -7,16 +7,13 @@ import { useMotion } from "@/components/providers/motion-provider";
 import { useScrollController } from "@/components/providers/smooth-scroll-provider";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { SmartLink } from "@/components/ui/smart-link";
-import { menuNav, menuSecondaryNav, siteConfig } from "@/config/site";
-import { offices } from "@/content/offices";
+import { menuSecondaryNav } from "@/config/site";
 import { cn } from "@/lib/utils";
+import type { MenuItem, NavLink } from "@/types/content";
 
 const EASE_IN_OUT = "cubic-bezier(.76,0,.24,1)";
 const EASE_OUT = "cubic-bezier(.22,1,.36,1)";
 const EASE_IN = "cubic-bezier(.64,0,.78,0)";
-
-/** Office cities for the bottom bar ("Cairo · Giza · Dubai · Riyadh"). */
-const officeNames = offices.map((o) => o.city).join(" · ");
 
 type Circle = { x: number; y: number; r: number };
 const clip = ({ x, y }: Circle, r: number) => `circle(${r}px at ${x}px ${y}px)`;
@@ -108,7 +105,17 @@ function animateClose(panel: HTMLElement, red: HTMLElement, c: Circle) {
   }).finished;
 }
 
+/** What the menu shows: its entries and the contact details in the bottom bar. */
+export interface SiteMenuContent {
+  items: MenuItem[];
+  /** Office cities, in order. */
+  cities: string[];
+  email: string;
+  phone: NavLink;
+}
+
 interface SiteMenuProps {
+  content: SiteMenuContent;
   open: boolean;
   onClose: () => void;
   /** The toggle button: the wipe grows from (and shrinks back into) it, and focus returns to it. */
@@ -122,7 +129,10 @@ interface SiteMenuProps {
  * swaps the preview image and brief on the right. Page scroll is frozen while
  * it is open; Escape closes it.
  */
-export function SiteMenu({ open, onClose, originRef }: SiteMenuProps) {
+export function SiteMenu({ content, open, onClose, originRef }: SiteMenuProps) {
+  const { items: menuNav, email, phone } = content;
+  /** Office cities for the bottom bar ("Cairo · Giza · Dubai · Riyadh"). */
+  const officeNames = content.cities.join(" · ");
   const motion = useMotion();
   const controller = useScrollController();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -305,11 +315,11 @@ export function SiteMenu({ open, onClose, originRef }: SiteMenuProps) {
         >
           <span>{officeNames}</span>
           <div className="flex flex-wrap gap-x-7 gap-y-2">
-            <a href={siteConfig.phone.href} className="text-snow transition-colors hover:text-brand-bright">
-              {siteConfig.phone.label}
+            <a href={phone.href} className="text-snow transition-colors hover:text-brand-bright">
+              {phone.label}
             </a>
-            <a href={`mailto:${siteConfig.email}`} className="text-snow transition-colors hover:text-brand-bright">
-              {siteConfig.email}
+            <a href={`mailto:${email}`} className="text-snow transition-colors hover:text-brand-bright">
+              {email}
             </a>
           </div>
         </div>

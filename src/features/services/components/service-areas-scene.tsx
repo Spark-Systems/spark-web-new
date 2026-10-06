@@ -12,7 +12,7 @@ import { useScrollStepper } from "@/hooks/use-scroll-stepper";
 import { useViewport } from "@/hooks/use-viewport";
 import { clamp, easeInOutCubic, lerp } from "@/lib/motion/math";
 import { cn } from "@/lib/utils";
-import { serviceHref } from "@/content/services";
+import { serviceHref } from "@/lib/links";
 import type { ServiceArea, ServicesPageData } from "@/types/services";
 
 type ServiceAreasSceneProps = ServicesPageData["areas"];

@@ -11,9 +11,18 @@ const nextConfig: NextConfig = {
   },
   // gRPC-based Google Analytics client (admin dashboard); load it from node_modules at runtime.
   serverExternalPackages: ["@google-analytics/data"],
+  // The content database (data/*.json) is read at runtime, so ship it with every server function.
+  // With a Vercel Blob store connected it's the starting content until a document is first saved.
+  outputFileTracingIncludes: {
+    "/**": ["./data/**/*.json"],
+  },
   images: {
-    // Hosts allowed for remote <Image> sources: stock photography now, the content API's CDN later.
-    remotePatterns: [{ protocol: "https", hostname: "images.pexels.com" }],
+    remotePatterns: [
+      // Stock photography used in some page heroes.
+      { protocol: "https", hostname: "images.pexels.com" },
+      // Pictures uploaded in the admin when the site runs on Vercel (Blob storage).
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+    ],
   },
 };
 

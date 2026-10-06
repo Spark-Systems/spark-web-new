@@ -19,7 +19,7 @@ export default async function AboutPage() {
       <MissionVisionValues {...page.mvv} />
       <StoryTimeline {...page.story} />
       <AboutClients {...page.clients} />
-      <Partnerships {...page.partnerships} />
+      {page.partnerships && <Partnerships {...page.partnerships} />}
       <ContactSection content={page.contact} />
     </>
   );

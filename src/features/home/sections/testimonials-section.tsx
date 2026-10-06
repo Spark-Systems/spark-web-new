@@ -1,8 +1,8 @@
 import { Reveal } from "@/components/ui/reveal";
 import { Eyebrow } from "@/components/ui/typography";
-import { testimonials, testimonialsSection } from "@/content/home";
 import { cn } from "@/lib/utils";
 import type { Testimonial } from "@/types/content";
+import type { HomeTestimonialsSection } from "@/types/home";
 import { TestimonialCard } from "../components/testimonial-card";
 
 const MIN_ITEMS_PER_LOOP = 4;
@@ -48,17 +48,19 @@ function MarqueeColumn({
   );
 }
 
-export function TestimonialsSection() {
+export function TestimonialsSection({ eyebrow, title, items: testimonials }: HomeTestimonialsSection) {
+  if (testimonials.length === 0) return null;
+
   return (
     <section className="bg-texture px-gutter py-[clamp(88px,10cqw,160px)] text-snow">
       <div className="mb-[clamp(40px,5cqw,72px)] flex flex-col items-center gap-4 text-center">
-        <Reveal as={Eyebrow} className="text-brand-bright">{testimonialsSection.eyebrow}</Reveal>
+        <Reveal as={Eyebrow} className="text-brand-bright">{eyebrow}</Reveal>
         <Reveal
           as="h2"
           delay={80}
           className="m-0 text-[clamp(36px,4.4cqw,68px)] font-medium leading-none tracking-[-0.04em]"
         >
-          {testimonialsSection.title}
+          {title}
         </Reveal>
       </div>
 

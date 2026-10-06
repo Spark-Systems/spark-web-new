@@ -5,7 +5,7 @@ import { Icon } from "@/components/ui/icon";
 import { PillLink } from "@/components/ui/pill";
 import { Reveal } from "@/components/ui/reveal";
 import { TagPills } from "@/components/ui/tag-pills";
-import { solutionHref } from "@/content/solutions";
+import { solutionHref } from "@/lib/links";
 import type { SolutionsPageData } from "@/types/solutions";
 
 const pad = (n: number) => String(n).padStart(2, "0");

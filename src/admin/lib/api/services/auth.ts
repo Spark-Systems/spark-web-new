@@ -8,6 +8,10 @@ export const authApi = {
     apiClient.post<AuthTokens>("/auth/login", payload, { auth: false }),
   logout: () => apiClient.post<void>("/auth/logout"),
   me: () => apiClient.get<User>("/auth/me"),
+  updateProfile: (profile: { name: string; email: string }) => apiClient.put<User>("/auth/me", profile),
+  /** Signs out every other session; returns fresh tokens for this one. */
+  changePassword: (payload: { current_password: string; new_password: string }) =>
+    apiClient.put<AuthTokens>("/auth/password", payload),
 }
 
 export const authQueries = {

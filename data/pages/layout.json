@@ -1,0 +1,200 @@
+{
+  "draft": {
+    "email": "info@spark-sys.com",
+    "phone": {
+      "label": "+20 (11) 40 88 6688",
+      "href": "tel:+201140886688"
+    },
+    "foundedYear": 2008,
+    "menu": [
+      {
+        "label": "Home",
+        "href": "/",
+        "brief": "Software for events, ticketing and government services, built in Cairo.",
+        "image": {
+          "src": "/uploads/images/work/our-work-93e548ab.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoKAAYAA4BaJZwAAtzg1bgoAP7snNPH3UKvFgxlK64MCXXL195NEkClAJwh4AAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "Solutions",
+        "href": "/solutions",
+        "brief": "Ready platforms for ticketing, accreditation, distribution and government services.",
+        "image": {
+          "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "Services",
+        "href": "/services",
+        "brief": "Design, development, mobile, AI, cloud and cybersecurity, delivered by one team.",
+        "image": {
+          "src": "/uploads/images/services/design-ef0fb139.webp",
+          "width": 510,
+          "height": 319,
+          "blurDataURL": "data:image/webp;base64,UklGRi4AAABXRUJQVlA4ICIAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vEIdh+B98US9SD9MqAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "Work",
+        "href": "/work",
+        "brief": "Selected projects for TicketMX, Sela, the Ministry of Foreign Affairs and more.",
+        "image": {
+          "src": "/uploads/images/work/sela-8edd50fd.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAADQAQCdASoKAAYAA4BaJaQAAuso1Z8mgAD++SoldOiH+UcAAAA=",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "About",
+        "href": "/about",
+        "brief": "Who we are: a Cairo software company with offices across Egypt, Saudi Arabia and the UAE.",
+        "image": {
+          "src": "/uploads/images/solutions/governmental-d2c47f70.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJZwAAuyQgpnYAAD+wofRtco7MlnZe2efm7229ujK94FFAvfuC0zpwY28kwd5DpJAAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "Contact",
+        "href": "/contact",
+        "brief": "Tell us about your project and we will get back to you.",
+        "image": {
+          "src": "/uploads/images/services/ai-b49b9818.webp",
+          "width": 510,
+          "height": 319,
+          "blurDataURL": "data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAABQAQCdASoKAAYAA4BaJaQABHQAAP7xQ8q0ttn60tAAAA==",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      }
+    ],
+    "footer": {
+      "slogan": "Let wow begin.",
+      "blurb": "High-performance digital craftsmanship engineering custom software, enterprise platforms, and mobile solutions across the Middle East."
+    },
+    "contact": {
+      "title": "Let's talk about what you want to build.",
+      "lead": "Tell us where you're headed and we'll tell you honestly what it takes.",
+      "submitLabel": "Bring us the idea, we'll bring the solution."
+    }
+  },
+  "published": {
+    "email": "info@spark-sys.com",
+    "phone": {
+      "label": "+20 (11) 40 88 6688",
+      "href": "tel:+201140886688"
+    },
+    "foundedYear": 2008,
+    "menu": [
+      {
+        "label": "Home",
+        "href": "/",
+        "brief": "Software for events, ticketing and government services, built in Cairo.",
+        "image": {
+          "src": "/uploads/images/work/our-work-93e548ab.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoKAAYAA4BaJZwAAtzg1bgoAP7snNPH3UKvFgxlK64MCXXL195NEkClAJwh4AAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "Solutions",
+        "href": "/solutions",
+        "brief": "Ready platforms for ticketing, accreditation, distribution and government services.",
+        "image": {
+          "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "Services",
+        "href": "/services",
+        "brief": "Design, development, mobile, AI, cloud and cybersecurity, delivered by one team.",
+        "image": {
+          "src": "/uploads/images/services/design-ef0fb139.webp",
+          "width": 510,
+          "height": 319,
+          "blurDataURL": "data:image/webp;base64,UklGRi4AAABXRUJQVlA4ICIAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vEIdh+B98US9SD9MqAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "Work",
+        "href": "/work",
+        "brief": "Selected projects for TicketMX, Sela, the Ministry of Foreign Affairs and more.",
+        "image": {
+          "src": "/uploads/images/work/sela-8edd50fd.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAADQAQCdASoKAAYAA4BaJaQAAuso1Z8mgAD++SoldOiH+UcAAAA=",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "About",
+        "href": "/about",
+        "brief": "Who we are: a Cairo software company with offices across Egypt, Saudi Arabia and the UAE.",
+        "image": {
+          "src": "/uploads/images/solutions/governmental-d2c47f70.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJZwAAuyQgpnYAAD+wofRtco7MlnZe2efm7229ujK94FFAvfuC0zpwY28kwd5DpJAAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      },
+      {
+        "label": "Contact",
+        "href": "/contact",
+        "brief": "Tell us about your project and we will get back to you.",
+        "image": {
+          "src": "/uploads/images/services/ai-b49b9818.webp",
+          "width": 510,
+          "height": 319,
+          "blurDataURL": "data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAABQAQCdASoKAAYAA4BaJaQABHQAAP7xQ8q0ttn60tAAAA==",
+          "blurWidth": 10,
+          "blurHeight": 6
+        }
+      }
+    ],
+    "footer": {
+      "slogan": "Let wow begin.",
+      "blurb": "High-performance digital craftsmanship engineering custom software, enterprise platforms, and mobile solutions across the Middle East."
+    },
+    "contact": {
+      "title": "Let's talk about what you want to build.",
+      "lead": "Tell us where you're headed and we'll tell you honestly what it takes.",
+      "submitLabel": "Bring us the idea, we'll bring the solution."
+    }
+  },
+  "created_at": "2026-10-06T13:02:06.492Z",
+  "updated_at": "2026-10-06T13:02:06.492Z",
+  "published_at": "2026-10-06T13:02:06.492Z",
+  "updated_by": "Initial content"
+}

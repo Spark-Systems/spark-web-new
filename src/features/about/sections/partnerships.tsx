@@ -3,7 +3,7 @@ import type { AboutPageData } from "@/types/about";
 import { PartnershipConnect } from "../components/partnership-connect";
 
 /** Centred heading over the two technology partners connecting to Spark. */
-export function Partnerships({ eyebrow, title, partners }: AboutPageData["partnerships"]) {
+export function Partnerships({ eyebrow, title, partners }: NonNullable<AboutPageData["partnerships"]>) {
   return (
     <section className="bg-texture px-gutter py-[clamp(72px,8cqw,128px)]">
       <SectionHeading

@@ -42,6 +42,7 @@ import {
   TruckIcon,
   XIcon,
   XLogoIcon,
+  YoutubeLogoIcon,
 } from "@phosphor-icons/react/dist/ssr";
 import type { IconWeight } from "@phosphor-icons/react";
 import type { IconName } from "@/types/content";
@@ -90,6 +91,7 @@ const icons = {
   truck: TruckIcon,
   x: XLogoIcon,
   "x-close": XIcon,
+  youtube: YoutubeLogoIcon,
 } satisfies Record<IconName, unknown>;
 
 interface IconProps {

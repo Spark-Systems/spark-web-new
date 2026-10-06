@@ -5,6 +5,7 @@ import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 import type { EnquiryFormCopy, FormPrompt } from "@/types/contact";
 import { submitContact } from "../actions";
+import { Honeypot } from "./honeypot";
 import type { ContactField, ContactFormState } from "../validation";
 
 const initialState: ContactFormState = { status: "idle" };
@@ -61,8 +62,9 @@ function EnquiryFormRound({ copy, onReset }: { copy: EnquiryFormCopy; onReset: (
     <form
       action={formAction}
       noValidate
-      className="flex flex-col text-[clamp(22px,2.2cqw,34px)] font-medium leading-[1.35] tracking-[-0.02em] text-snow"
+      className="relative flex flex-col text-[clamp(22px,2.2cqw,34px)] font-medium leading-[1.35] tracking-[-0.02em] text-snow"
     >
+      <Honeypot />
       {field("name", copy.name, (p) => <input type="text" autoComplete="name" {...p} />, true)}
       {field("company", copy.company, (p) => <input type="text" autoComplete="organization" {...p} />)}
       {field("email", copy.email, (p) => <input type="email" autoComplete="email" {...p} />)}
@@ -76,6 +78,11 @@ function EnquiryFormRound({ copy, onReset }: { copy: EnquiryFormCopy; onReset: (
         {pending ? "Sending…" : copy.submitLabel}
         <Icon name="arrow-right" />
       </button>
+      {state.message && (
+        <p aria-live="polite" className="m-0 mt-4 text-sm font-normal tracking-normal text-brand-bright">
+          {state.message}
+        </p>
+      )}
     </form>
   );
 }

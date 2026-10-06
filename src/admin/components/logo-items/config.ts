@@ -2,32 +2,41 @@
 
 import { useTranslations } from "next-intl"
 
-import { ADMIN_BASE } from "@admin/lib/auth/constants"
-import { clientsApi, partnersApi, type LogoItemsApi } from "@admin/lib/api/services/logo-items"
+import type { Resource } from "@admin/lib/api/resource"
+import { clientsResource, partnersResource } from "@admin/lib/api/services/site-content"
+import { adminPaths } from "@admin/lib/paths"
 
-/** Everything that differs between logo lists; the table and form are shared. */
+/** Everything that differs between the logo lists; the table and editor are shared. */
 export interface LogoItemsConfig {
-  /** Message namespace; each has the same keys (see "Clients" in messages/en.json). */
+  /** Message namespace; both have the same keys (see "Clients" in messages/en.json). */
   namespace: "Clients" | "Partners"
-  /** List page; new/edit pages live under it. */
   path: string
-  api: LogoItemsApi
+  resource: Resource<"clients"> | Resource<"partners">
   uploadFolder: string
-  /** Export file name, without extension. */
-  fileName: string
+  /** Partners can print their name beside a symbol-only logo. */
+  showNameOption: boolean
 }
 
 export const logoItemsConfigs = {
-  clients: { namespace: "Clients", path: `${ADMIN_BASE}/clients`, api: clientsApi, uploadFolder: "clients", fileName: "clients" },
-  partners: { namespace: "Partners", path: `${ADMIN_BASE}/partners`, api: partnersApi, uploadFolder: "partners", fileName: "partners" },
+  clients: {
+    namespace: "Clients",
+    path: adminPaths.clients,
+    resource: clientsResource,
+    uploadFolder: "clients",
+    showNameOption: false,
+  },
+  partners: {
+    namespace: "Partners",
+    path: adminPaths.partners,
+    resource: partnersResource,
+    uploadFolder: "partners",
+    showNameOption: true,
+  },
 } satisfies Record<string, LogoItemsConfig>
 
 export type LogoItemsKind = keyof typeof logoItemsConfigs
 
-/**
- * Translator for a logo list. The namespaces share one shape, so they're typed
- * as "Clients" to get key checking for both.
- */
+/** Translator for a logo list. The namespaces share one shape, so they're typed as "Clients". */
 export function useLogoItemsT(config: LogoItemsConfig) {
   return useTranslations(config.namespace as "Clients")
 }

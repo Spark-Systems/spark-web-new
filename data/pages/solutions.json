@@ -1,0 +1,74 @@
+{
+  "draft": {
+    "seo": {
+      "title": "Solutions",
+      "description": "Ticketing, accreditation, distribution, governmental platforms and more: the systems Spark Systems builds and runs at scale across Egypt and Saudi Arabia."
+    },
+    "hero": {
+      "eyebrow": "Solutions",
+      "titleLines": [
+        "Platforms for",
+        "work that",
+        "can’t stop."
+      ],
+      "image": {
+        "src": {
+          "src": "/uploads/images/solutions/governmental-d2c47f70.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJZwAAuyQgpnYAAD+wofRtco7MlnZe2efm7229ujK94FFAvfuC0zpwY28kwd5DpJAAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "alt": ""
+      }
+    },
+    "flagships": {
+      "eyebrow": "Flagship platforms",
+      "title": "Four platforms we run at scale.",
+      "lead": "Each started as a custom build and now runs every day for clients across Egypt and Saudi Arabia."
+    },
+    "catalog": {
+      "eyebrow": "All solutions",
+      "title": "Thirteen ways we help organisations run."
+    }
+  },
+  "published": {
+    "seo": {
+      "title": "Solutions",
+      "description": "Ticketing, accreditation, distribution, governmental platforms and more: the systems Spark Systems builds and runs at scale across Egypt and Saudi Arabia."
+    },
+    "hero": {
+      "eyebrow": "Solutions",
+      "titleLines": [
+        "Platforms for",
+        "work that",
+        "can’t stop."
+      ],
+      "image": {
+        "src": {
+          "src": "/uploads/images/solutions/governmental-d2c47f70.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJZwAAuyQgpnYAAD+wofRtco7MlnZe2efm7229ujK94FFAvfuC0zpwY28kwd5DpJAAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "alt": ""
+      }
+    },
+    "flagships": {
+      "eyebrow": "Flagship platforms",
+      "title": "Four platforms we run at scale.",
+      "lead": "Each started as a custom build and now runs every day for clients across Egypt and Saudi Arabia."
+    },
+    "catalog": {
+      "eyebrow": "All solutions",
+      "title": "Thirteen ways we help organisations run."
+    }
+  },
+  "created_at": "2026-10-06T13:02:06.492Z",
+  "updated_at": "2026-10-06T13:02:06.492Z",
+  "published_at": "2026-10-06T13:02:06.492Z",
+  "updated_by": "Initial content"
+}

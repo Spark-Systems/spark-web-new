@@ -1,0 +1,64 @@
+{
+  "items": [
+    {
+      "id": "act_muwp5nf9b9ed1b",
+      "at": "2026-10-06T13:10:51.861Z",
+      "user_id": "usr_muwp5ne50da75e",
+      "user_name": "Spark Admin",
+      "action": "login",
+      "resource": "auth",
+      "resource_id": "usr_muwp5ne50da75e",
+      "label": "admin@spark-sys.com"
+    },
+    {
+      "id": "act_muwp5yoe306d27",
+      "at": "2026-10-06T13:11:06.446Z",
+      "user_id": "usr_muwp5ne50da75e",
+      "user_name": "Spark Admin",
+      "action": "update",
+      "resource": "solutions",
+      "resource_id": "sol_ticketing",
+      "label": "Ticketing ZZ"
+    },
+    {
+      "id": "act_muwp5zmdb5de52",
+      "at": "2026-10-06T13:11:07.670Z",
+      "user_id": "usr_muwp5ne50da75e",
+      "user_name": "Spark Admin",
+      "action": "publish",
+      "resource": "solutions",
+      "resource_id": "sol_ticketing",
+      "label": "Ticketing ZZ"
+    },
+    {
+      "id": "act_muwp672q9f9a8d",
+      "at": "2026-10-06T13:11:17.330Z",
+      "user_id": "usr_muwp5ne50da75e",
+      "user_name": "Spark Admin",
+      "action": "update",
+      "resource": "solutions",
+      "resource_id": "sol_ticketing",
+      "label": "Ticketing"
+    },
+    {
+      "id": "act_muwp674k32c536",
+      "at": "2026-10-06T13:11:17.396Z",
+      "user_id": "usr_muwp5ne50da75e",
+      "user_name": "Spark Admin",
+      "action": "publish",
+      "resource": "solutions",
+      "resource_id": "sol_ticketing",
+      "label": "Ticketing"
+    },
+    {
+      "id": "act_muwq4gjbe0e7b6",
+      "at": "2026-10-06T13:37:55.895Z",
+      "user_id": "usr_muwp5ne50da75e",
+      "user_name": "Spark Admin",
+      "action": "login",
+      "resource": "auth",
+      "resource_id": "usr_muwp5ne50da75e",
+      "label": "admin@spark-sys.com"
+    }
+  ]
+}

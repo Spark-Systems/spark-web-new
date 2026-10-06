@@ -1,7 +1,6 @@
 import { tokenStorage } from "@admin/lib/auth/token-storage"
-import { API_BASE_URL, USE_MOCK_API } from "./config"
+import { API_BASE_URL } from "./config"
 import { ApiError } from "./errors"
-import { mockFetch } from "./mock"
 import type { AuthTokens } from "./types"
 
 type QueryParams = Record<string, string | number | boolean | null | undefined>
@@ -25,14 +24,8 @@ interface ClientConfig {
 
 const realFetch: typeof fetch = (...args) => fetch(...args)
 
-/** The Spark backend (served by the mock backend while USE_MOCK_API is on). */
-const backend: ClientConfig = {
-  baseUrl: API_BASE_URL,
-  transport: USE_MOCK_API ? mockFetch : realFetch,
-}
-
-/** This app's own admin route handlers (app/api/admin), e.g. Google Analytics. */
-const app: ClientConfig = { baseUrl: "/api/admin", transport: realFetch }
+/** The admin API (app/api/admin), including analytics. */
+const backend: ClientConfig = { baseUrl: API_BASE_URL, transport: realFetch }
 
 // ---- Session expiry ---------------------------------------------------------
 
@@ -164,8 +157,8 @@ function createClient(config: ClientConfig) {
   }
 }
 
-/** Calls the Spark backend API. */
+/** Calls the admin API. */
 export const apiClient = createClient(backend)
 
-/** Calls this app's own route handlers under /api. Same auth and refresh behavior. */
-export const appApiClient = createClient(app)
+/** Same client; kept as a separate name for the analytics endpoints. */
+export const appApiClient = apiClient

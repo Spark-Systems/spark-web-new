@@ -1,0 +1,66 @@
+{
+  "items": [
+    {
+      "id": "par_001",
+      "draft": {
+        "name": "Amazon Web Services",
+        "logo": {
+          "src": "/uploads/images/partners/aws-f686ca08.svg",
+          "width": 304,
+          "height": 182
+        },
+        "link": "",
+        "show_name": false,
+        "invert": true,
+        "order": 10
+      },
+      "published": {
+        "name": "Amazon Web Services",
+        "logo": {
+          "src": "/uploads/images/partners/aws-f686ca08.svg",
+          "width": 304,
+          "height": 182
+        },
+        "link": "",
+        "show_name": false,
+        "invert": true,
+        "order": 10
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "par_002",
+      "draft": {
+        "name": "Microsoft Azure",
+        "logo": {
+          "src": "/uploads/images/partners/microsoft-8065a97e.svg",
+          "width": 23,
+          "height": 23
+        },
+        "link": "",
+        "show_name": true,
+        "invert": false,
+        "order": 20
+      },
+      "published": {
+        "name": "Microsoft Azure",
+        "logo": {
+          "src": "/uploads/images/partners/microsoft-8065a97e.svg",
+          "width": 23,
+          "height": 23
+        },
+        "link": "",
+        "show_name": true,
+        "invert": false,
+        "order": 20
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    }
+  ]
+}

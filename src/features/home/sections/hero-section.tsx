@@ -1,14 +1,14 @@
 import type { CSSProperties } from "react";
 import { Reveal } from "@/components/ui/reveal";
-import { hero } from "@/content/home";
+import type { HomeHero } from "@/types/home";
 import { cn } from "@/lib/utils";
 import { HeroBackground } from "../components/hero-background";
 import { StatCounter } from "@/components/blocks/stat-counter";
 
-/** Headline lines: the first part breaks per word, the ending stays on one line. */
-const headlineLines = [...hero.titleStart.split(" "), hero.titleEnd];
+export function HeroSection(hero: HomeHero) {
+  /** Headline lines: the first part breaks per word, the ending stays on one line. */
+  const headlineLines = [...hero.titleStart.split(" "), hero.titleEnd];
 
-export function HeroSection() {
   return (
     <section id="top" className="px-gutter relative overflow-hidden">
       <HeroBackground videoSrc={hero.videoSrc} />

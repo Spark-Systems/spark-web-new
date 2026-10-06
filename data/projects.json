@@ -1,0 +1,968 @@
+{
+  "items": [
+    {
+      "id": "prj_saudi-tickets",
+      "draft": {
+        "slug": "saudi-tickets",
+        "name": "Saudi Tickets",
+        "category": "Development",
+        "summary": "The main ticketing platform for sports fans in Saudi Arabia.",
+        "image": {
+          "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": true,
+        "detail": {
+          "seo": {
+            "title": "Saudi Tickets",
+            "description": "How Spark Systems built Saudi Tickets, the main ticketing platform in Saudi Arabia, issuing more than one million tickets every year."
+          },
+          "hero": {
+            "eyebrow": "Case study / Development",
+            "titleLines": [
+              "Saudi",
+              "Tickets."
+            ],
+            "image": {
+              "src": {
+                "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                "width": 2400,
+                "height": 1350,
+                "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                "blurWidth": 10,
+                "blurHeight": 6
+              },
+              "alt": ""
+            }
+          },
+          "facts": [
+            {
+              "label": "Client",
+              "value": "Saudi Tickets"
+            },
+            {
+              "label": "Sector",
+              "value": "Sports ticketing"
+            },
+            {
+              "label": "Services",
+              "value": "Development, Cloud"
+            },
+            {
+              "label": "Launched",
+              "value": "2019"
+            }
+          ],
+          "statement": "Saudi Tickets is the main ticketing platform in Saudi Arabia, providing more than one million tickets every year for sports fans.",
+          "showcase": {
+            "src": {
+              "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+              "width": 2400,
+              "height": 1350,
+              "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+              "blurWidth": 10,
+              "blurHeight": 6
+            },
+            "alt": "Saudi Tickets platform"
+          },
+          "story": [
+            {
+              "title": "Challenge",
+              "body": "Sell and validate tickets for packed stadiums across the Kingdom, with demand that spikes the moment a big match goes on sale."
+            },
+            {
+              "title": "Approach",
+              "body": "A cloud platform for web, app and box-office sales, live seat maps and gate scanning, scaled automatically on AWS."
+            },
+            {
+              "title": "Outcome",
+              "body": "The main ticketing platform in Saudi Arabia, issuing more than one million tickets every year."
+            }
+          ],
+          "features": {
+            "eyebrow": "Key features",
+            "title": "What the platform does.",
+            "items": [
+              {
+                "title": "Web and app sales",
+                "body": "Fans buy tickets on the web or in the app, with a checkout built for on-sale peaks.",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Web and app sales screen"
+                }
+              },
+              {
+                "title": "Live seat maps",
+                "body": "Pick an exact seat on a live stadium map that updates as seats sell.",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Live seat map screen"
+                }
+              },
+              {
+                "title": "Gate scanning",
+                "body": "Tickets are validated at the gate in seconds, even when the stadium is full.",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/accreditation-ef7742bd.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoKAAYAA4BaJaQAAt0GOK+ygAD+wp7gRxvfTvWsvOX5tDvHzOGb/IIzt8Rm/MlvJo2AAA==",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Gate scanning screen"
+                }
+              },
+              {
+                "title": "Organiser dashboard",
+                "body": "Organisers track sales, capacity and entry for every match in real time.",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/our-work-93e548ab.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoKAAYAA4BaJZwAAtzg1bgoAP7snNPH3UKvFgxlK64MCXXL195NEkClAJwh4AAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Organiser dashboard screen"
+                }
+              }
+            ]
+          },
+          "gallery": {
+            "title": "Inside the platform.",
+            "items": [
+              {
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Match listing and checkout"
+                },
+                "caption": "Match listing and checkout"
+              },
+              {
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Live seat selection"
+                },
+                "caption": "Live seat selection"
+              },
+              {
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/accreditation-ef7742bd.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoKAAYAA4BaJaQAAt0GOK+ygAD+wp7gRxvfTvWsvOX5tDvHzOGb/IIzt8Rm/MlvJo2AAA==",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Gate scanning"
+                },
+                "caption": "Gate scanning"
+              },
+              {
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/our-work-93e548ab.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoKAAYAA4BaJZwAAtzg1bgoAP7snNPH3UKvFgxlK64MCXXL195NEkClAJwh4AAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Organiser dashboard"
+                },
+                "caption": "Organiser dashboard"
+              }
+            ]
+          },
+          "devices": {
+            "eyebrow": "Across devices",
+            "title": "One product, every screen.",
+            "items": [
+              {
+                "kind": "web",
+                "label": "Web",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Saudi Tickets on the web"
+                }
+              },
+              {
+                "kind": "mobile",
+                "label": "Mobile app",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Saudi Tickets mobile app"
+                }
+              },
+              {
+                "kind": "tablet",
+                "label": "Tablet",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/distribution-662bcb62.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAQAgCdASoKAAYAA4BaJZQCdIExF8gUtfXAAP7qXp7ifxTVexWpVfmDIKnVlerD+QvWBkKV2AhsnYMOqfUmP2/JjV5X2EAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Saudi Tickets on a tablet"
+                }
+              },
+              {
+                "kind": "pos",
+                "label": "Box office POS",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/accreditation-ef7742bd.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoKAAYAA4BaJaQAAt0GOK+ygAD+wp7gRxvfTvWsvOX5tDvHzOGb/IIzt8Rm/MlvJo2AAA==",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Box office point of sale"
+                }
+              }
+            ]
+          },
+          "comparison": {
+            "eyebrow": "Before / after",
+            "title": "From the old experience to the new one.",
+            "hint": "Drag to compare",
+            "before": {
+              "src": {
+                "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+                "width": 2400,
+                "height": 1350,
+                "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+                "blurWidth": 10,
+                "blurHeight": 6
+              },
+              "alt": "The old ticketing experience"
+            },
+            "after": {
+              "src": {
+                "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                "width": 2400,
+                "height": 1350,
+                "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                "blurWidth": 10,
+                "blurHeight": 6
+              },
+              "alt": "The new Saudi Tickets experience"
+            }
+          },
+          "results": {
+            "eyebrow": "Results",
+            "headline": {
+              "value": 1,
+              "suffix": "M+",
+              "label": "tickets every year for sports fans"
+            },
+            "builtOn": {
+              "label": "Spark Ticketing",
+              "href": "/solutions/ticketing",
+              "eyebrow": "Built on"
+            },
+            "figures": [
+              {
+                "label": "Peak tickets sold per minute"
+              },
+              {
+                "label": "Platform uptime"
+              },
+              {
+                "label": "Stadiums and venues"
+              }
+            ]
+          },
+          "testimonial": {
+            "eyebrow": "Client words",
+            "quote": "Client quote goes here. One or two sentences on what the project changed for their team and their customers.",
+            "author": "Client name",
+            "role": "Role, Saudi Tickets",
+            "placeholder": true
+          }
+        },
+        "order": 10
+      },
+      "published": {
+        "slug": "saudi-tickets",
+        "name": "Saudi Tickets",
+        "category": "Development",
+        "summary": "The main ticketing platform for sports fans in Saudi Arabia.",
+        "image": {
+          "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": true,
+        "detail": {
+          "seo": {
+            "title": "Saudi Tickets",
+            "description": "How Spark Systems built Saudi Tickets, the main ticketing platform in Saudi Arabia, issuing more than one million tickets every year."
+          },
+          "hero": {
+            "eyebrow": "Case study / Development",
+            "titleLines": [
+              "Saudi",
+              "Tickets."
+            ],
+            "image": {
+              "src": {
+                "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                "width": 2400,
+                "height": 1350,
+                "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                "blurWidth": 10,
+                "blurHeight": 6
+              },
+              "alt": ""
+            }
+          },
+          "facts": [
+            {
+              "label": "Client",
+              "value": "Saudi Tickets"
+            },
+            {
+              "label": "Sector",
+              "value": "Sports ticketing"
+            },
+            {
+              "label": "Services",
+              "value": "Development, Cloud"
+            },
+            {
+              "label": "Launched",
+              "value": "2019"
+            }
+          ],
+          "statement": "Saudi Tickets is the main ticketing platform in Saudi Arabia, providing more than one million tickets every year for sports fans.",
+          "showcase": {
+            "src": {
+              "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+              "width": 2400,
+              "height": 1350,
+              "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+              "blurWidth": 10,
+              "blurHeight": 6
+            },
+            "alt": "Saudi Tickets platform"
+          },
+          "story": [
+            {
+              "title": "Challenge",
+              "body": "Sell and validate tickets for packed stadiums across the Kingdom, with demand that spikes the moment a big match goes on sale."
+            },
+            {
+              "title": "Approach",
+              "body": "A cloud platform for web, app and box-office sales, live seat maps and gate scanning, scaled automatically on AWS."
+            },
+            {
+              "title": "Outcome",
+              "body": "The main ticketing platform in Saudi Arabia, issuing more than one million tickets every year."
+            }
+          ],
+          "features": {
+            "eyebrow": "Key features",
+            "title": "What the platform does.",
+            "items": [
+              {
+                "title": "Web and app sales",
+                "body": "Fans buy tickets on the web or in the app, with a checkout built for on-sale peaks.",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Web and app sales screen"
+                }
+              },
+              {
+                "title": "Live seat maps",
+                "body": "Pick an exact seat on a live stadium map that updates as seats sell.",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Live seat map screen"
+                }
+              },
+              {
+                "title": "Gate scanning",
+                "body": "Tickets are validated at the gate in seconds, even when the stadium is full.",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/accreditation-ef7742bd.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoKAAYAA4BaJaQAAt0GOK+ygAD+wp7gRxvfTvWsvOX5tDvHzOGb/IIzt8Rm/MlvJo2AAA==",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Gate scanning screen"
+                }
+              },
+              {
+                "title": "Organiser dashboard",
+                "body": "Organisers track sales, capacity and entry for every match in real time.",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/our-work-93e548ab.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoKAAYAA4BaJZwAAtzg1bgoAP7snNPH3UKvFgxlK64MCXXL195NEkClAJwh4AAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Organiser dashboard screen"
+                }
+              }
+            ]
+          },
+          "gallery": {
+            "title": "Inside the platform.",
+            "items": [
+              {
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Match listing and checkout"
+                },
+                "caption": "Match listing and checkout"
+              },
+              {
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Live seat selection"
+                },
+                "caption": "Live seat selection"
+              },
+              {
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/accreditation-ef7742bd.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoKAAYAA4BaJaQAAt0GOK+ygAD+wp7gRxvfTvWsvOX5tDvHzOGb/IIzt8Rm/MlvJo2AAA==",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Gate scanning"
+                },
+                "caption": "Gate scanning"
+              },
+              {
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/our-work-93e548ab.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoKAAYAA4BaJZwAAtzg1bgoAP7snNPH3UKvFgxlK64MCXXL195NEkClAJwh4AAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Organiser dashboard"
+                },
+                "caption": "Organiser dashboard"
+              }
+            ]
+          },
+          "devices": {
+            "eyebrow": "Across devices",
+            "title": "One product, every screen.",
+            "items": [
+              {
+                "kind": "web",
+                "label": "Web",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Saudi Tickets on the web"
+                }
+              },
+              {
+                "kind": "mobile",
+                "label": "Mobile app",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Saudi Tickets mobile app"
+                }
+              },
+              {
+                "kind": "tablet",
+                "label": "Tablet",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/distribution-662bcb62.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAQAgCdASoKAAYAA4BaJZQCdIExF8gUtfXAAP7qXp7ifxTVexWpVfmDIKnVlerD+QvWBkKV2AhsnYMOqfUmP2/JjV5X2EAA",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Saudi Tickets on a tablet"
+                }
+              },
+              {
+                "kind": "pos",
+                "label": "Box office POS",
+                "image": {
+                  "src": {
+                    "src": "/uploads/images/solutions/accreditation-ef7742bd.webp",
+                    "width": 2400,
+                    "height": 1350,
+                    "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoKAAYAA4BaJaQAAt0GOK+ygAD+wp7gRxvfTvWsvOX5tDvHzOGb/IIzt8Rm/MlvJo2AAA==",
+                    "blurWidth": 10,
+                    "blurHeight": 6
+                  },
+                  "alt": "Box office point of sale"
+                }
+              }
+            ]
+          },
+          "comparison": {
+            "eyebrow": "Before / after",
+            "title": "From the old experience to the new one.",
+            "hint": "Drag to compare",
+            "before": {
+              "src": {
+                "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+                "width": 2400,
+                "height": 1350,
+                "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+                "blurWidth": 10,
+                "blurHeight": 6
+              },
+              "alt": "The old ticketing experience"
+            },
+            "after": {
+              "src": {
+                "src": "/uploads/images/solutions/ticketing-958ca756.webp",
+                "width": 2400,
+                "height": 1350,
+                "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+                "blurWidth": 10,
+                "blurHeight": 6
+              },
+              "alt": "The new Saudi Tickets experience"
+            }
+          },
+          "results": {
+            "eyebrow": "Results",
+            "headline": {
+              "value": 1,
+              "suffix": "M+",
+              "label": "tickets every year for sports fans"
+            },
+            "builtOn": {
+              "label": "Spark Ticketing",
+              "href": "/solutions/ticketing",
+              "eyebrow": "Built on"
+            },
+            "figures": [
+              {
+                "label": "Peak tickets sold per minute"
+              },
+              {
+                "label": "Platform uptime"
+              },
+              {
+                "label": "Stadiums and venues"
+              }
+            ]
+          },
+          "testimonial": {
+            "eyebrow": "Client words",
+            "quote": "Client quote goes here. One or two sentences on what the project changed for their team and their customers.",
+            "author": "Client name",
+            "role": "Role, Saudi Tickets",
+            "placeholder": true
+          }
+        },
+        "order": 10
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "prj_sela-super-app",
+      "draft": {
+        "slug": "sela-super-app",
+        "name": "Sela Super App",
+        "category": "Mobile",
+        "summary": "One app for tickets, events and loyalty across Sela venues.",
+        "image": {
+          "src": "/uploads/images/work/sela-8edd50fd.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAADQAQCdASoKAAYAA4BaJaQAAuso1Z8mgAD++SoldOiH+UcAAAA=",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 20
+      },
+      "published": {
+        "slug": "sela-super-app",
+        "name": "Sela Super App",
+        "category": "Mobile",
+        "summary": "One app for tickets, events and loyalty across Sela venues.",
+        "image": {
+          "src": "/uploads/images/work/sela-8edd50fd.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAADQAQCdASoKAAYAA4BaJaQAAuso1Z8mgAD++SoldOiH+UcAAAA=",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 20
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "prj_mfa-portal",
+      "draft": {
+        "slug": "mfa-portal",
+        "name": "MFA Portal",
+        "category": "Development",
+        "summary": "Consular and citizen services moved online.",
+        "image": {
+          "src": "/uploads/images/work/mfa-f59afb30.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAACwAQCdASoKAAYAA4BaJaQAAucKqpjAAP70wHeLDzImvyfMuzAAAA==",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 30
+      },
+      "published": {
+        "slug": "mfa-portal",
+        "name": "MFA Portal",
+        "category": "Development",
+        "summary": "Consular and citizen services moved online.",
+        "image": {
+          "src": "/uploads/images/work/mfa-f59afb30.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAACwAQCdASoKAAYAA4BaJaQAAucKqpjAAP70wHeLDzImvyfMuzAAAA==",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 30
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "prj_maak",
+      "draft": {
+        "slug": "maak",
+        "name": "Maak",
+        "category": "Mobile",
+        "summary": "A consumer app built for daily use.",
+        "image": {
+          "src": "/uploads/images/work/maak-ee6aede2.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACwAQCdASoKAAYAA4BaJZwAAlnkwYwAAP7284INcZMtN+ocNOEqhdvLe6Nl3qcCAAA=",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 40
+      },
+      "published": {
+        "slug": "maak",
+        "name": "Maak",
+        "category": "Mobile",
+        "summary": "A consumer app built for daily use.",
+        "image": {
+          "src": "/uploads/images/work/maak-ee6aede2.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACwAQCdASoKAAYAA4BaJZwAAlnkwYwAAP7284INcZMtN+ocNOEqhdvLe6Nl3qcCAAA=",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 40
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "prj_ticketmx",
+      "draft": {
+        "slug": "ticketmx",
+        "name": "ticketMX",
+        "category": "Development",
+        "summary": "Ticket sales storefront with live seat selection.",
+        "image": {
+          "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 50
+      },
+      "published": {
+        "slug": "ticketmx",
+        "name": "ticketMX",
+        "category": "Development",
+        "summary": "Ticket sales storefront with live seat selection.",
+        "image": {
+          "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 50
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "prj_event-accreditation",
+      "draft": {
+        "slug": "event-accreditation",
+        "name": "Event Accreditation",
+        "category": "Development",
+        "summary": "Registration, vetting and badges for large events.",
+        "image": {
+          "src": "/uploads/images/solutions/accreditation-ef7742bd.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoKAAYAA4BaJaQAAt0GOK+ygAD+wp7gRxvfTvWsvOX5tDvHzOGb/IIzt8Rm/MlvJo2AAA==",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 60
+      },
+      "published": {
+        "slug": "event-accreditation",
+        "name": "Event Accreditation",
+        "category": "Development",
+        "summary": "Registration, vetting and badges for large events.",
+        "image": {
+          "src": "/uploads/images/solutions/accreditation-ef7742bd.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoKAAYAA4BaJaQAAt0GOK+ygAD+wp7gRxvfTvWsvOX5tDvHzOGb/IIzt8Rm/MlvJo2AAA==",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 60
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "prj_distribution-orders",
+      "draft": {
+        "slug": "distribution-orders",
+        "name": "Distribution & Orders",
+        "category": "Mobile",
+        "summary": "Field ordering and delivery tracking for distributors.",
+        "image": {
+          "src": "/uploads/images/solutions/distribution-662bcb62.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAQAgCdASoKAAYAA4BaJZQCdIExF8gUtfXAAP7qXp7ifxTVexWpVfmDIKnVlerD+QvWBkKV2AhsnYMOqfUmP2/JjV5X2EAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 70
+      },
+      "published": {
+        "slug": "distribution-orders",
+        "name": "Distribution & Orders",
+        "category": "Mobile",
+        "summary": "Field ordering and delivery tracking for distributors.",
+        "image": {
+          "src": "/uploads/images/solutions/distribution-662bcb62.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAQAgCdASoKAAYAA4BaJZQCdIExF8gUtfXAAP7qXp7ifxTVexWpVfmDIKnVlerD+QvWBkKV2AhsnYMOqfUmP2/JjV5X2EAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 70
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "prj_government-services",
+      "draft": {
+        "slug": "government-services",
+        "name": "Government Services",
+        "category": "Development",
+        "summary": "Citizen-facing portals built for national scale.",
+        "image": {
+          "src": "/uploads/images/solutions/governmental-d2c47f70.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJZwAAuyQgpnYAAD+wofRtco7MlnZe2efm7229ujK94FFAvfuC0zpwY28kwd5DpJAAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 80
+      },
+      "published": {
+        "slug": "government-services",
+        "name": "Government Services",
+        "category": "Development",
+        "summary": "Citizen-facing portals built for national scale.",
+        "image": {
+          "src": "/uploads/images/solutions/governmental-d2c47f70.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJZwAAuyQgpnYAAD+wofRtco7MlnZe2efm7229ujK94FFAvfuC0zpwY28kwd5DpJAAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "has_detail": false,
+        "detail": null,
+        "order": 80
+      },
+      "created_at": "2026-10-06T13:02:06.492Z",
+      "updated_at": "2026-10-06T13:02:06.492Z",
+      "published_at": "2026-10-06T13:02:06.492Z",
+      "updated_by": "Initial content"
+    }
+  ]
+}

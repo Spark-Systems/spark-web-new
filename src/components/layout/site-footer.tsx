@@ -2,11 +2,10 @@ import type { ReactNode } from "react";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { PartnerBadge } from "@/components/ui/partner-badge";
 import { SmartLink } from "@/components/ui/smart-link";
-import { companyNav, contactCta, partners, routes, siteConfig, socialLinks } from "@/config/site";
-import { footerContent } from "@/content/home";
-import { officeLabel, offices } from "@/content/offices";
-import { solutionCatalog } from "@/content/solutions";
+import { companyNav, contactCta, routes } from "@/config/site";
 import { cn } from "@/lib/utils";
+import type { Office } from "@/types/contact";
+import type { SiteLayoutData } from "@/types/layout";
 import { FooterParallax, FooterSlogan } from "./footer-motion";
 
 function FooterColumn({ title, className, children }: { title: string; className?: string; children: ReactNode }) {
@@ -20,25 +19,28 @@ function FooterColumn({ title, className, children }: { title: string; className
 
 const linkClass = "text-fog-200 transition-colors hover:text-brand-bright";
 
+/** "Cairo (HQ), Egypt" */
+const officeLabel = (o: Office) => `${o.city}${o.hq ? " (HQ)" : ""}, ${o.country}`;
+
 /**
  * Site footer. On mobile it slims down: the solutions list and offices are
  * hidden, company links sit in two columns, and a big "Let's Talk" button
  * takes the offices' place.
  */
-export function SiteFooter() {
+export function SiteFooter({ company, footer, solutions, offices, partners, socials }: SiteLayoutData) {
   return (
     <FooterParallax className="bg-texture px-gutter flex min-h-[clamp(500px,100vh,1100px)] flex-col justify-center gap-[clamp(48px,6cqw,96px)] border-t border-white/8 pb-8 pt-[clamp(56px,6cqw,96px)] text-fog-400 will-change-transform">
-      <FooterSlogan text={footerContent.slogan} />
+      <FooterSlogan text={footer.slogan} />
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-x-[clamp(24px,4cqw,64px)] gap-y-12">
         <div className="flex flex-col gap-5">
           <BrandLogo className="h-[26px] self-start" />
-          <p className="max-w-[30ch] text-sm leading-relaxed text-fog-500">{footerContent.blurb}</p>
+          <p className="max-w-[30ch] text-sm leading-relaxed text-fog-500">{footer.blurb}</p>
         </div>
 
         <FooterColumn title="Solutions" className="max-md:hidden">
           <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm">
-            {solutionCatalog.map((s) => (
+            {solutions.map((s) => (
               <SmartLink
                 key={s.slug}
                 href={s.hasDetail ? routes.solution(s.slug) : routes.solutions}
@@ -70,8 +72,8 @@ export function SiteFooter() {
             {offices.map((office) => (
               <span key={office.id}>{officeLabel(office)}</span>
             ))}
-            <a href={`mailto:${siteConfig.email}`} className={`${linkClass} mt-1.5`}>
-              {siteConfig.email}
+            <a href={`mailto:${company.email}`} className={`${linkClass} mt-1.5`}>
+              {company.email}
             </a>
           </address>
         </FooterColumn>
@@ -84,8 +86,8 @@ export function SiteFooter() {
           >
             Let&apos;s Talk
           </SmartLink>
-          <a href={`mailto:${siteConfig.email}`} className={cn(linkClass, "self-center text-sm")}>
-            {siteConfig.email}
+          <a href={`mailto:${company.email}`} className={cn(linkClass, "self-center text-sm")}>
+            {company.email}
           </a>
         </div>
       </div>
@@ -97,14 +99,14 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="flex flex-wrap gap-5 text-[13px]">
-          {socialLinks.map((link) => (
+          {socials.map((link) => (
             <SmartLink key={link.label} href={link.href} className="text-fog-400 transition-colors hover:text-brand-bright">
               {link.label}
             </SmartLink>
           ))}
         </div>
         <span className="text-[13px] text-fog-600">
-          © {siteConfig.name}, est. {siteConfig.foundedYear}
+          © {company.name}, est. {company.foundedYear}
         </span>
       </div>
     </FooterParallax>

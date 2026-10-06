@@ -6,6 +6,7 @@ import { Field, Input, Textarea } from "@/components/ui/text-field";
 import { pillClassName } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
 import { submitContact } from "./actions";
+import { Honeypot } from "./components/honeypot";
 import type { ContactFormState } from "./validation";
 
 const initialState: ContactFormState = { status: "idle" };
@@ -15,7 +16,8 @@ export function ContactForm({ submitLabel }: { submitLabel: string }) {
   const { errors, values } = state;
 
   return (
-    <Reveal as="form" delay={120} action={formAction} noValidate className="flex flex-col gap-7">
+    <Reveal as="form" delay={120} action={formAction} noValidate className="relative flex flex-col gap-7">
+      <Honeypot />
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-7">
         <Field label="Name" error={errors?.name}>
           <Input name="name" type="text" autoComplete="name" defaultValue={values?.name} aria-invalid={!!errors?.name} />
@@ -49,7 +51,7 @@ export function ContactForm({ submitLabel }: { submitLabel: string }) {
       </button>
 
       <p aria-live="polite" className="text-sm text-fog-400 empty:hidden">
-        {state.status === "success" ? state.message : ""}
+        {state.message ?? ""}
       </p>
     </Reveal>
   );
