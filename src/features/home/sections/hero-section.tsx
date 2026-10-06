@@ -3,7 +3,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { hero } from "@/content/home";
 import { cn } from "@/lib/utils";
 import { HeroBackground } from "../components/hero-background";
-import { StatCounter } from "../components/stat-counter";
+import { StatCounter } from "@/components/blocks/stat-counter";
 
 /** Headline lines: the first part breaks per word, the ending stays on one line. */
 const headlineLines = [...hero.titleStart.split(" "), hero.titleEnd];

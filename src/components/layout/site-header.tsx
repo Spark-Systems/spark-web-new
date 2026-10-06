@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { MenuToggle } from "@/components/ui/menu-toggle";
 import { PillLink } from "@/components/ui/pill";
-import { contactCta, menuNav, primaryNav } from "@/config/site";
+import { SmartLink } from "@/components/ui/smart-link";
+import { contactCta, primaryNav } from "@/config/site";
 import { useFrame } from "@/hooks/use-frame";
 import { cn } from "@/lib/utils";
-import { MenuList } from "./menu-list";
+import { SiteMenu } from "./site-menu";
 
 /** Always show the header within this distance (px) of the top of the page. */
 const ALWAYS_SHOW_ABOVE = 120;
@@ -23,12 +24,14 @@ const HIDE_HEADER_SELECTOR = "[data-hide-header]";
  * - Transparent at the very top (over the hero), solid with blur once scrolled.
  * - Slides away while scrolling down, back in when scrolling up.
  * - Stays hidden while a `[data-hide-header]` section is under it.
+ * - The toggle opens the full-screen <SiteMenu />.
  */
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [solid, setSolid] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const lastY = useRef<number | null>(null);
   const hideZones = useRef<HTMLElement[]>([]);
 
@@ -61,6 +64,7 @@ export function SiteHeader() {
   });
 
   const filled = solid || open;
+  const closeMenu = useCallback(() => setOpen(false), []);
 
   return (
     <header
@@ -73,27 +77,22 @@ export function SiteHeader() {
       )}
     >
       <div className="px-gutter flex h-[clamp(64px,5.6cqw,84px)] items-center gap-[clamp(12px,2.4cqw,40px)]">
-        <a href="#top" className="flex flex-none items-center">
+        <SmartLink href="/#top" aria-label="Spark Systems home" className="flex flex-none items-center">
           <BrandLogo preload />
-        </a>
+        </SmartLink>
         <div className="flex-1" />
         <nav className="hidden gap-9 text-[15px] font-medium text-fog-200 md:flex">
           {primaryNav.map((item) => (
-            <a key={item.href} href={item.href} className="transition-colors hover:text-brand-bright">
+            <SmartLink key={item.href} href={item.href} className="transition-colors hover:text-brand-bright">
               {item.label}
-            </a>
+            </SmartLink>
           ))}
         </nav>
         <PillLink href={contactCta.href}>{contactCta.label}</PillLink>
-        <MenuToggle open={open} onClick={() => setOpen((v) => !v)} />
+        <MenuToggle ref={toggleRef} open={open} onClick={() => setOpen(true)} />
       </div>
 
-      {/* Overlays the page so opening it never changes the document height. */}
-      {open && (
-        <nav className="px-gutter absolute inset-x-0 top-full grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-x-[clamp(24px,4cqw,64px)] gap-y-1 border-b border-white/8 bg-ink pb-[clamp(36px,5cqw,72px)] pt-[clamp(28px,4cqw,56px)] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.8)]">
-          <MenuList items={menuNav} onNavigate={() => setOpen(false)} />
-        </nav>
-      )}
+      <SiteMenu open={open} onClose={closeMenu} originRef={toggleRef} />
     </header>
   );
 }

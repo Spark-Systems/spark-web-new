@@ -1,0 +1,106 @@
+import {
+  ArmchairIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ArrowUpRightIcon,
+  ArrowsLeftRightIcon,
+  BankIcon,
+  ChartBarIcon,
+  ChartLineUpIcon,
+  CloudIcon,
+  CodeIcon,
+  CubeIcon,
+  CursorClickIcon,
+  DeviceMobileIcon,
+  EnvelopeSimpleIcon,
+  FacebookLogoIcon,
+  FlagIcon,
+  FlowArrowIcon,
+  GlobeHemisphereEastIcon,
+  HandshakeIcon,
+  IdentificationBadgeIcon,
+  IdentificationCardIcon,
+  InstagramLogoIcon,
+  LayoutIcon,
+  LinkedinLogoIcon,
+  MagnifyingGlassIcon,
+  MapPinIcon,
+  MapTrifoldIcon,
+  PaintBrushIcon,
+  PenNibIcon,
+  PhoneIcon,
+  PlugsConnectedIcon,
+  QrCodeIcon,
+  ScanIcon,
+  ShieldCheckIcon,
+  ShoppingCartIcon,
+  SparkleIcon,
+  StorefrontIcon,
+  TicketIcon,
+  TreeStructureIcon,
+  TrophyIcon,
+  TruckIcon,
+  XIcon,
+  XLogoIcon,
+} from "@phosphor-icons/react/dist/ssr";
+import type { IconWeight } from "@phosphor-icons/react";
+import type { IconName } from "@/types/content";
+
+const icons = {
+  armchair: ArmchairIcon,
+  "arrow-left": ArrowLeftIcon,
+  "arrow-right": ArrowRightIcon,
+  "arrow-up-right": ArrowUpRightIcon,
+  "arrows-left-right": ArrowsLeftRightIcon,
+  bank: BankIcon,
+  "chart-bar": ChartBarIcon,
+  "chart-line-up": ChartLineUpIcon,
+  cloud: CloudIcon,
+  code: CodeIcon,
+  cube: CubeIcon,
+  "cursor-click": CursorClickIcon,
+  "device-mobile": DeviceMobileIcon,
+  envelope: EnvelopeSimpleIcon,
+  facebook: FacebookLogoIcon,
+  flag: FlagIcon,
+  "flow-arrow": FlowArrowIcon,
+  globe: GlobeHemisphereEastIcon,
+  handshake: HandshakeIcon,
+  "identification-badge": IdentificationBadgeIcon,
+  "identification-card": IdentificationCardIcon,
+  instagram: InstagramLogoIcon,
+  layout: LayoutIcon,
+  linkedin: LinkedinLogoIcon,
+  "magnifying-glass": MagnifyingGlassIcon,
+  "map-pin": MapPinIcon,
+  "map-trifold": MapTrifoldIcon,
+  "paint-brush": PaintBrushIcon,
+  "pen-nib": PenNibIcon,
+  phone: PhoneIcon,
+  "plugs-connected": PlugsConnectedIcon,
+  "qr-code": QrCodeIcon,
+  scan: ScanIcon,
+  "shield-check": ShieldCheckIcon,
+  "shopping-cart": ShoppingCartIcon,
+  sparkle: SparkleIcon,
+  storefront: StorefrontIcon,
+  ticket: TicketIcon,
+  "tree-structure": TreeStructureIcon,
+  trophy: TrophyIcon,
+  truck: TruckIcon,
+  x: XLogoIcon,
+  "x-close": XIcon,
+} satisfies Record<IconName, unknown>;
+
+interface IconProps {
+  name: IconName;
+  size?: number | string;
+  weight?: IconWeight;
+  className?: string;
+}
+
+/** Renders an icon by content key (see `IconName`), so data can reference icons by name. */
+export function Icon({ name, size = "1em", weight = "light", className }: IconProps) {
+  const Component = icons[name];
+  return <Component size={size} weight={weight} className={className} aria-hidden="true" />;
+}

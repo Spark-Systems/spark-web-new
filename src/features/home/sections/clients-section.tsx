@@ -2,7 +2,7 @@ import { PartnerBadge } from "@/components/ui/partner-badge";
 import { SmartLink } from "@/components/ui/smart-link";
 import { partners } from "@/config/site";
 import { clients, clientsSection } from "@/content/home";
-import { LogoWall } from "../components/logo-wall";
+import { LogoWall } from "@/components/blocks/logo-wall";
 
 export function ClientsSection() {
   const { moreLink, partnersLabel } = clientsSection;

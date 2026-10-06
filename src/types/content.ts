@@ -1,8 +1,102 @@
 import type { StaticImageData } from "next/image";
 
+/** A static import today; a URL string once content comes from the API (allow its host in next.config). */
+export type ImageSource = StaticImageData | string;
+
+/** An image plus its alt text. Components render it with `fill`, so no intrinsic size is needed. */
+export interface ImageAsset {
+  src: ImageSource;
+  alt: string;
+}
+
+/** Icon keys content can reference by name; mapped to icon components in <Icon />. */
+export type IconName =
+  | "armchair"
+  | "arrow-left"
+  | "arrow-right"
+  | "arrow-up-right"
+  | "arrows-left-right"
+  | "bank"
+  | "chart-bar"
+  | "chart-line-up"
+  | "cloud"
+  | "code"
+  | "cube"
+  | "cursor-click"
+  | "device-mobile"
+  | "envelope"
+  | "facebook"
+  | "flag"
+  | "flow-arrow"
+  | "globe"
+  | "handshake"
+  | "identification-badge"
+  | "identification-card"
+  | "instagram"
+  | "layout"
+  | "linkedin"
+  | "magnifying-glass"
+  | "map-pin"
+  | "map-trifold"
+  | "paint-brush"
+  | "pen-nib"
+  | "phone"
+  | "plugs-connected"
+  | "qr-code"
+  | "scan"
+  | "shield-check"
+  | "shopping-cart"
+  | "sparkle"
+  | "storefront"
+  | "ticket"
+  | "tree-structure"
+  | "trophy"
+  | "truck"
+  | "x"
+  | "x-close";
+
+/** SEO fields every page provides. */
+export interface PageSeo {
+  title: string;
+  description: string;
+}
+
+/** Eyebrow + heading pair that opens most sections. */
+export interface SectionIntro {
+  eyebrow: string;
+  title: string;
+}
+
+/** Full-screen inner-page hero: eyebrow, a headline split into lines, and a background image. */
+export interface PageHeroContent {
+  eyebrow: string;
+  titleLines: string[];
+  image: ImageAsset;
+}
+
+/** One step of a numbered process ("Buy", "Receive", "Scan", …). */
+export interface ProcessStep {
+  icon: IconName;
+  title: string;
+  body: string;
+}
+
+/** Copy for the shared contact section. */
+export interface ContactContent {
+  title: string;
+  lead: string;
+  submitLabel: string;
+}
+
 export interface NavLink {
   label: string;
   href: string;
+}
+
+/** Full-screen menu entry: a link with the preview shown while it is hovered. */
+export interface MenuItem extends NavLink {
+  brief: string;
+  image: StaticImageData;
 }
 
 export interface Stat {

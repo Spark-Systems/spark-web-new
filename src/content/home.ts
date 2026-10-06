@@ -29,7 +29,7 @@ import sar from "@/assets/images/clients/sar.png";
 import sela from "@/assets/images/clients/sela.png";
 import toyota from "@/assets/images/clients/toyota.png";
 
-import { solutionNames } from "@/config/site";
+import { routes } from "@/config/site";
 import type {
   AiCapability,
   ClientLogo,
@@ -39,12 +39,13 @@ import type {
   Stat,
   Testimonial,
 } from "@/types/content";
+import { solutionCatalog } from "./solutions";
 
 export const hero = {
   titleStart: "Intelligent Solutions,",
   titleEnd: "Always Delivered.",
   /** Words cycled by the rotating label in the headline. */
-  rotatingWords: solutionNames,
+  rotatingWords: solutionCatalog.map((s) => s.name),
   videoSrc: "https://di5qa23gsyh66.cloudfront.net/Project-Video-small_2.mp4",
   paragraphs: [
     "Since 2008, from our offices across the region, we've built the platforms that organisations depend on every day — at national scale, under real pressure, without fail.",
@@ -64,7 +65,7 @@ export const solutionsSection = {
     label: "users served",
     tbc: "[figure to confirm]",
   },
-  cta: { label: "Explore All", href: "#" },
+  cta: { label: "Explore All", href: routes.solutions },
 };
 
 export const solutions: Solution[] = [
@@ -77,7 +78,7 @@ export const solutions: Solution[] = [
     image: ticketingImg,
     imageAlt: "TicketMX ticketing platform",
     theme: "brand",
-    href: "#",
+    href: routes.solution("ticketing"),
   },
   {
     id: "distribution",
@@ -88,7 +89,7 @@ export const solutions: Solution[] = [
     image: distributionImg,
     imageAlt: "Distribution ordering app",
     theme: "navy",
-    href: "#",
+    href: routes.solutions,
   },
   {
     id: "governmental",
@@ -99,7 +100,7 @@ export const solutions: Solution[] = [
     image: governmentalImg,
     imageAlt: "Government portal",
     theme: "brand",
-    href: "#",
+    href: routes.solutions,
   },
   {
     id: "accreditation",
@@ -110,7 +111,7 @@ export const solutions: Solution[] = [
     image: accreditationImg,
     imageAlt: "AccreditMX accreditation platform",
     theme: "navy",
-    href: "#",
+    href: routes.solutions,
   },
 ];
 
@@ -177,7 +178,7 @@ export const workSection = {
     imageAlt: "Spark platforms",
   },
   title: "Selected work",
-  cta: { label: "Show all work", href: "#" },
+  cta: { label: "Show all work", href: routes.work },
 };
 
 export const projects: Project[] = [
@@ -260,12 +261,6 @@ export const aiCapabilities: AiCapability[] = [
       "An employee asks your HR portal a policy question in their own words, and gets the answer instantly, no ticket needed.",
   },
 ];
-
-export const contactSection = {
-  title: "Let's talk about what you want to build.",
-  lead: "Tell us where you're headed and we'll tell you honestly what it takes.",
-  submitLabel: "Bring us the idea, we'll bring the solution.",
-};
 
 export const footerContent = {
   slogan: "Let wow begin.",

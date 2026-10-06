@@ -2,14 +2,17 @@
 
 import { useEffect } from "react";
 
+const SELECTOR = "[data-reveal]:not([data-revealed])";
+
 /**
  * Fades in every `[data-reveal]` element (see <Reveal />) the first time it
  * enters the viewport. One observer serves the whole page, so revealed
- * elements can stay in Server Components.
+ * elements can stay in Server Components. Elements added later (a new page
+ * after client-side navigation, or a layout swapped in after hydration) are
+ * picked up too: DOM additions trigger a rescan, batched to one per frame.
  */
 export function RevealObserver() {
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-revealed])");
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -20,8 +23,21 @@ export function RevealObserver() {
       },
       { threshold: 0.12 },
     );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    // Observing an element twice is a no-op, so rescanning everything is safe.
+    const scan = () => document.querySelectorAll<HTMLElement>(SELECTOR).forEach((el) => io.observe(el));
+
+    let frame = 0;
+    const mo = new MutationObserver(() => {
+      if (!frame) frame = requestAnimationFrame(() => ((frame = 0), scan()));
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+    scan();
+
+    return () => {
+      mo.disconnect();
+      io.disconnect();
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   return null;

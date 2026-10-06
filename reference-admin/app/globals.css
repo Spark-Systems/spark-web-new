@@ -1,0 +1,307 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /* The stacks themselves switch with the page direction (see :root below). */
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--app-font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * Spark Systems brand palette
+ *   Primary   #B9383A  (Spark red)
+ *   Secondary #050505  (near-black)
+ *   OffWhite  #F8F8F8
+ *   Gray      #D9D9D9
+ */
+:root {
+  --background: #f8f8f8;
+  --foreground: #050505;
+  --card: #ffffff;
+  --card-foreground: #050505;
+  --popover: #ffffff;
+  --popover-foreground: #050505;
+  --primary: #b9383a;
+  --primary-foreground: #ffffff;
+  --secondary: #050505;
+  --secondary-foreground: #f8f8f8;
+  --muted: #efefef;
+  --muted-foreground: #5c5c5c;
+  --accent: #f6e7e7;
+  --accent-foreground: #8f2a2c;
+  --destructive: #dc2626;
+  --border: #d9d9d9;
+  --input: #d9d9d9;
+  --ring: #b9383a;
+  /* Categorical order: brand red, ink, mid gray, light gray. Validated so every
+     adjacent pair (including a donut's wrap-around) stays distinct under CVD. */
+  --chart-1: #b9383a;
+  --chart-2: #050505;
+  --chart-3: #8c8c8c;
+  --chart-4: #d9d9d9;
+  --chart-5: #d9d9d9;
+  --radius: 0.5rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #050505;
+  --sidebar-primary: #b9383a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f3f3f3;
+  --sidebar-accent-foreground: #050505;
+  --sidebar-border: #d9d9d9;
+  --sidebar-ring: #b9383a;
+}
+
+.dark {
+  --background: #050505;
+  --foreground: #f8f8f8;
+  --card: #111111;
+  --card-foreground: #f8f8f8;
+  --popover: #141414;
+  --popover-foreground: #f8f8f8;
+  --primary: #b9383a;
+  --primary-foreground: #ffffff;
+  --secondary: #f8f8f8;
+  --secondary-foreground: #050505;
+  --muted: #1c1c1c;
+  --muted-foreground: #a3a3a3;
+  --accent: #2a1415;
+  --accent-foreground: #f3c4c5;
+  --destructive: #f87171;
+  --border: rgb(255 255 255 / 10%);
+  --input: rgb(255 255 255 / 15%);
+  --ring: #d4595b;
+  --chart-1: #d4595b;
+  --chart-2: #f8f8f8;
+  --chart-3: #8a8a8a;
+  --chart-4: #404040;
+  --chart-5: #404040;
+  --sidebar: #111111;
+  --sidebar-foreground: #f8f8f8;
+  --sidebar-primary: #b9383a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1c1c1c;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 8%);
+  --sidebar-ring: #d4595b;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* English pages lead with Geist; Arabic (RTL) pages lead with IBM Plex Sans
+     Arabic, so Arabic text, numbers and Latin words all share one typeface. */
+  :root {
+    --app-font-sans: var(--font-geist-sans), var(--font-arabic), ui-sans-serif, system-ui, sans-serif;
+  }
+  :root[dir="rtl"] {
+    --app-font-sans: var(--font-arabic), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+/*
+ * Rich text (Tiptap editor content, and anywhere its saved HTML is rendered).
+ * Logical properties keep list indents on the correct side in Arabic.
+ */
+@layer components {
+  .rich-text {
+    @apply text-sm leading-relaxed;
+  }
+  .rich-text > * + * {
+    @apply mt-2;
+  }
+  .rich-text ul {
+    @apply list-disc ps-5;
+  }
+  .rich-text ol {
+    @apply list-decimal ps-5;
+  }
+  .rich-text li > p {
+    @apply m-0;
+  }
+  .rich-text a {
+    @apply text-primary underline underline-offset-2;
+  }
+  .rich-text strong {
+    @apply font-semibold;
+  }
+  .rich-text :is(h1, h2, h3, h4, h5, h6) {
+    @apply font-heading leading-tight font-semibold;
+  }
+  .rich-text h1 {
+    @apply text-3xl;
+  }
+  .rich-text h2 {
+    @apply text-2xl;
+  }
+  .rich-text h3 {
+    @apply text-xl;
+  }
+  .rich-text h4 {
+    @apply text-lg;
+  }
+  .rich-text h5 {
+    @apply text-base;
+  }
+  .rich-text h6 {
+    @apply text-muted-foreground text-sm uppercase;
+  }
+  /* Tiptap placeholder on an empty editor. */
+  .rich-text p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    @apply text-muted-foreground pointer-events-none float-start h-0;
+  }
+  /* Images: never wider than the editor; dragged sizes are kept as width/height. */
+  .rich-text img {
+    @apply h-auto max-w-full rounded-md;
+  }
+  .rich-text [data-resize-wrapper] {
+    @apply max-w-full;
+  }
+  .rich-text [data-resize-container].ProseMirror-selectednode img,
+  .rich-text [data-resize-state="true"] img {
+    @apply outline-primary outline-2 outline-offset-2;
+  }
+  /* Image positions (data-position on the <img>). The same rules are needed on the
+     website: left/right float the image so text wraps beside it; center gives it
+     its own line. Physical left/right, so the result matches the picker in both
+     languages. In the editor the float goes on Tiptap's resize container. */
+  .rich-text img {
+    @apply !h-auto;
+  }
+  .rich-text img[data-position$="left"],
+  .rich-text [data-embed][data-position$="left"],
+  .rich-text [data-resize-container]:has(> [data-resize-wrapper] > [data-position$="left"]) {
+    float: left;
+    margin: 0.25rem 1.25rem 0.75rem 0;
+    max-width: 50%;
+  }
+  .rich-text img[data-position$="right"],
+  .rich-text [data-embed][data-position$="right"],
+  .rich-text [data-resize-container]:has(> [data-resize-wrapper] > [data-position$="right"]) {
+    float: right;
+    margin: 0.25rem 0 0.75rem 1.25rem;
+    max-width: 50%;
+  }
+  .rich-text img[data-position="center"],
+  .rich-text [data-embed][data-position="center"] {
+    @apply mx-auto block;
+  }
+  .rich-text [data-resize-container]:has(> [data-resize-wrapper] > [data-position="center"]) {
+    @apply justify-center;
+  }
+  /* A floated embed with no dragged width takes half the line. */
+  .rich-text [data-embed][data-position$="left"]:not([style*="width"]),
+  .rich-text [data-embed][data-position$="right"]:not([style*="width"]),
+  .rich-text [data-resize-container]:has(> [data-resize-wrapper] > [data-embed][data-position$="left"]:not([style*="width"])),
+  .rich-text [data-resize-container]:has(> [data-resize-wrapper] > [data-embed][data-position$="right"]:not([style*="width"])) {
+    width: 50%;
+  }
+  /* In the editor the container carries the float; the block inside just fills it. */
+  .rich-text [data-resize-wrapper] > [data-position] {
+    @apply float-none m-0 max-w-full;
+  }
+  .rich-text [data-resize-container]:has(> [data-resize-wrapper] > [data-embed]) {
+    @apply my-3 max-w-full;
+  }
+  .rich-text [data-resize-container]:has(> [data-resize-wrapper] > [data-embed]:not([data-position$="left"]):not([data-position$="right"])) {
+    @apply clear-both;
+  }
+  .rich-text [data-resize-wrapper]:has(> [data-embed]) {
+    @apply w-full max-w-full;
+  }
+  /* Floats never hang out of the editor or the block below it. */
+  .rich-text::after {
+    content: "";
+    @apply clear-both block;
+  }
+  /* Embedded players (videos, maps) keep a 16:9 shape; full width unless resized. */
+  .rich-text [data-embed] {
+    @apply bg-muted aspect-video max-w-full overflow-hidden rounded-lg;
+  }
+  .rich-text [data-embed]:not([style*="width"]) {
+    @apply w-full;
+  }
+  .rich-text:not(.ProseMirror) [data-embed]:not([data-position$="left"]):not([data-position$="right"]) {
+    @apply clear-both my-3;
+  }
+  .rich-text [data-embed] iframe {
+    @apply size-full border-0;
+  }
+  /* In the editor the player can't take clicks, so clicking selects the block (to move or delete it). */
+  .rich-text.ProseMirror [data-embed] iframe {
+    @apply pointer-events-none;
+  }
+  .rich-text [data-resize-container].ProseMirror-selectednode [data-embed],
+  .rich-text [data-resize-state="true"] [data-embed] {
+    @apply outline-primary outline-2 outline-offset-2;
+  }
+  /* Corner handles appear on hover or selection (Tiptap ships them unstyled). */
+  .rich-text [data-resize-handle] {
+    @apply border-primary bg-background z-10 size-3 rounded-sm border-2 opacity-0 transition-opacity;
+  }
+  .rich-text [data-resize-wrapper]:hover [data-resize-handle],
+  .rich-text .ProseMirror-selectednode [data-resize-handle],
+  .rich-text [data-resize-state="true"] [data-resize-handle] {
+    @apply opacity-100;
+  }
+  .rich-text [data-resize-handle="top-left"] {
+    @apply -translate-x-1/2 -translate-y-1/2 cursor-nwse-resize;
+  }
+  .rich-text [data-resize-handle="top-right"] {
+    @apply translate-x-1/2 -translate-y-1/2 cursor-nesw-resize;
+  }
+  .rich-text [data-resize-handle="bottom-left"] {
+    @apply -translate-x-1/2 translate-y-1/2 cursor-nesw-resize;
+  }
+  .rich-text [data-resize-handle="bottom-right"] {
+    @apply translate-x-1/2 translate-y-1/2 cursor-nwse-resize;
+  }
+}

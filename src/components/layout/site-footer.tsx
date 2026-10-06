@@ -2,8 +2,10 @@ import type { ReactNode } from "react";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import { PartnerBadge } from "@/components/ui/partner-badge";
 import { SmartLink } from "@/components/ui/smart-link";
-import { companyNav, contactCta, offices, partners, siteConfig, socialLinks, solutionNames } from "@/config/site";
+import { companyNav, contactCta, partners, routes, siteConfig, socialLinks } from "@/config/site";
 import { footerContent } from "@/content/home";
+import { officeLabel, offices } from "@/content/offices";
+import { solutionCatalog } from "@/content/solutions";
 import { cn } from "@/lib/utils";
 import { FooterParallax, FooterSlogan } from "./footer-motion";
 
@@ -36,10 +38,14 @@ export function SiteFooter() {
 
         <FooterColumn title="Solutions" className="max-md:hidden">
           <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm">
-            {solutionNames.map((name) => (
-              <a key={name} href="#" className={linkClass}>
-                {name}
-              </a>
+            {solutionCatalog.map((s) => (
+              <SmartLink
+                key={s.slug}
+                href={s.hasDetail ? routes.solution(s.slug) : routes.solutions}
+                className={linkClass}
+              >
+                {s.name}
+              </SmartLink>
             ))}
           </div>
         </FooterColumn>
@@ -62,7 +68,7 @@ export function SiteFooter() {
         <FooterColumn title="Offices" className="max-md:hidden">
           <address className="flex flex-col gap-2.5 text-sm not-italic text-fog-200">
             {offices.map((office) => (
-              <span key={office}>{office}</span>
+              <span key={office.id}>{officeLabel(office)}</span>
             ))}
             <a href={`mailto:${siteConfig.email}`} className={`${linkClass} mt-1.5`}>
               {siteConfig.email}

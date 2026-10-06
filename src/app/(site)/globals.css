@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+/* The admin panel (/admin) has its own Tailwind build in app/(admin)/admin.css. */
+@source not "../../admin";
+@source not "../../../reference-admin";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                       */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Layout: the design switches to its mobile layout below 760px. */
+  --breakpoint-md: 47.5rem;
+
+  /* Brand */
+  --color-brand: #b9383a;
+  --color-brand-bright: #cf4a4c;
+  --color-brand-deep: #8e2a2d;
+  --color-navy: #050b26;
+
+  /* Dark surfaces */
+  --color-ink: #0b0b0b;
+  --color-surface: #141416;
+  --color-surface-2: #1c1c1f;
+
+  /* Light surfaces */
+  --color-snow: #f2f2f0;
+  --color-paper: #f4f3f1;
+  --color-cloud: #ececec;
+
+  /* Text on dark (light → dim) */
+  --color-fog-100: #d9d9d6;
+  --color-fog-200: #d6d6d4;
+  --color-fog-250: #d4d4d8;
+  --color-fog-300: #c4c4c2;
+  --color-fog-400: #b8b8b6;
+  --color-fog-500: #a3a3a8;
+  --color-fog-600: #8e8e93;
+  --color-fog-700: #6e6e73;
+
+  /* Text on light (dark → dim) */
+  --color-ink-800: #2a2a2e;
+  --color-ink-700: #3a3a3e;
+  --color-ink-600: #5e5e62;
+  --color-ink-500: #77777c;
+
+  /* Cool accents (AI band, navy cards) */
+  --color-lavender-100: #e4e5ec;
+  --color-lavender-200: #c5c7d3;
+  --color-lavender-300: #a9adc2;
+
+  /* Utility */
+  --color-tbc: #e8b931;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --radius-card: 20px;
+
+  --ease-spark: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-swift: cubic-bezier(0.7, 0, 0.2, 1);
+  --ease-reveal: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-marquee-up: marquee-up 32s linear infinite;
+
+  @keyframes marquee-up {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(0, -50%, 0);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Custom utilities                                                    */
+/* ------------------------------------------------------------------ */
+
+/* Horizontal page gutter shared by every section. */
+@utility px-gutter {
+  padding-inline: clamp(20px, 5.5cqw, 88px);
+}
+
+/* Textured dark background used by the dark sections. */
+@utility bg-texture {
+  background: #000 url("/images/dark-bg.png") center / cover no-repeat fixed;
+}
+
+/*
+ * The dark texture as a CSS gradient: black with a navy glow bottom-left and a
+ * deep red glow top-right. Pair with `bg-clip-text text-transparent` to fill text.
+ * Uses longhand properties so it doesn't reset `background-clip`.
+ */
+@utility bg-night-glow {
+  background-color: #000;
+  background-image:
+    /* radial-gradient(ellipse 55% 120% at 6% 92%, rgba(30, 58, 190, 1) 0%, rgba(12, 28, 110, 0.6) 38%, transparent 75%), */
+    radial-gradient(ellipse 100% 200% at 92% 12%, rgba(185, 46, 46, 1) 0%, rgba(110, 24, 24, 0.6) 35%, transparent 72%);
+}
+
+/* Cancels the page gutter so a track can scroll edge to edge (pair with px-gutter). */
+@utility bleed-gutter {
+  margin-inline: calc(-1 * clamp(20px, 5.5cqw, 88px));
+}
+
+/* Scrollable without a visible scrollbar (horizontal tracks). */
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Frosted glass used by the header and floating nav. */
+@utility glass {
+  /* Only the standard property: the build adds any vendor prefix itself. */
+  backdrop-filter: blur(18px) saturate(1.4);
+}
+
+@utility mask-fade-y {
+  mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    background: var(--color-ink);
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-snow);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-fog-700);
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll reveal ([data-reveal] is toggled by <RevealObserver />)       */
+/* `scripting: enabled` keeps content visible when JS is off.          */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    transition:
+      opacity 1.1s var(--ease-reveal) var(--reveal-delay, 0ms),
+      transform 1.1s var(--ease-reveal) var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal][data-revealed] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero headline: each line rises out of a mask once the page loads.   */
+/* Lines are staggered via --line (0, 1, 2…); --line-start offsets all. */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-line {
+    animation: hero-line-rise 1.4s cubic-bezier(0.19, 1, 0.22, 1) both;
+    animation-delay: calc(var(--line-start, 250ms) + var(--line, 0) * 140ms);
+  }
+}
+
+@keyframes hero-line-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Page hero (inner pages): background settles in, headline fades in.  */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  .page-hero-media {
+    animation: page-hero-media 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .page-hero-fade {
+    animation: page-hero-fade 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) var(--fade-delay, 0ms) both;
+  }
+}
+
+@keyframes page-hero-media {
+  from {
+    opacity: 0;
+    scale: 1.08;
+  }
+}
+
+@keyframes page-hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Map pin on the contact page: a ring that pulses out from the pin. */
+@media (prefers-reduced-motion: no-preference) {
+  .pin-pulse {
+    animation: pin-pulse 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+}
+
+@keyframes pin-pulse {
+  from {
+    transform: scale(0.4);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* Custom cursor (see <CustomCursor />) replaces the system cursor while active. */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+/* Content awaiting confirmation; outlined when NEXT_PUBLIC_HIGHLIGHT_TBC=true. */
+[data-highlight-tbc] [data-tbc] {
+  outline: 2px solid var(--color-tbc);
+  outline-offset: 3px;
+}

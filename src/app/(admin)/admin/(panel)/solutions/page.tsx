@@ -1,0 +1,25 @@
+import type { Metadata } from "next"
+import { getTranslations } from "next-intl/server"
+import { Suspense } from "react"
+
+import { PageHeader } from "@admin/components/layout/page-header"
+import { SolutionsTable } from "@admin/components/solutions/solutions-table"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Solutions")
+  return { title: t("title") }
+}
+
+export default async function SolutionsPage() {
+  const t = await getTranslations("Solutions")
+
+  return (
+    <div className="flex flex-col gap-6">
+      <PageHeader title={t("title")} description={t("description")} />
+      {/* The table keeps its page/sort/search in the URL (useSearchParams needs Suspense). */}
+      <Suspense>
+        <SolutionsTable />
+      </Suspense>
+    </div>
+  )
+}

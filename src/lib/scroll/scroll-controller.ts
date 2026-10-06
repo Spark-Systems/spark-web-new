@@ -45,6 +45,18 @@ export class ScrollController {
     this.gliding = false;
   }
 
+  /** Freeze page scrolling (e.g. while a full-screen menu is open). */
+  lock() {
+    if (this.lenis) this.lenis.stop();
+    else document.documentElement.style.overflow = "hidden";
+  }
+
+  /** Undo `lock()`. */
+  unlock() {
+    if (this.lenis) this.lenis.start();
+    else document.documentElement.style.overflow = "";
+  }
+
   /** True while a finger is on the screen (touch devices). */
   get touching() {
     return this.lenis?.isTouching ?? false;

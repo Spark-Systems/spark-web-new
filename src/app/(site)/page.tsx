@@ -1,7 +1,8 @@
+import { contactContent } from "@/content/shared";
+import { ContactSection } from "@/features/contact";
 import {
   AiSection,
   ClientsSection,
-  ContactSection,
   HeroSection,
   ServicesSection,
   SolutionsSection,
@@ -19,7 +20,7 @@ export default function HomePage() {
       <WorkSection />
       <TestimonialsSection />
       <AiSection />
-      <ContactSection />
+      <ContactSection content={contactContent} />
     </>
   );
 }

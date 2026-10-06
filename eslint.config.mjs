@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Design reference for the admin (its own app with its own dependencies); not part of this build.
+    "reference-admin/**",
   ]),
 ]);
 
