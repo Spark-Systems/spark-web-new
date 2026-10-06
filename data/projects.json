@@ -8,10 +8,10 @@
         "category": "Development",
         "summary": "The main ticketing platform for sports fans in Saudi Arabia.",
         "image": {
-          "src": "/uploads/images/solutions/ticketing-958ca756.webp",
-          "width": 2400,
-          "height": 1350,
-          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+          "src": "/uploads/images/work/ticketing-958ca756-72df33d7.webp",
+          "width": 1920,
+          "height": 1080,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACwAQCdASoKAAYAA4BaJYwAAu1tGlOAAP71+ZP58bfuqAhdtys0mDhSx5w+i8u216G4buecdgNBNm8HJ1DUpAAA",
           "blurWidth": 10,
           "blurHeight": 6
         },
@@ -343,10 +343,10 @@
         "category": "Development",
         "summary": "The main ticketing platform for sports fans in Saudi Arabia.",
         "image": {
-          "src": "/uploads/images/solutions/ticketing-958ca756.webp",
-          "width": 2400,
-          "height": 1350,
-          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKAAYAA4BaJYwAAu14wmvb8AD+9fmQGODEZx7xBQf+azuzYmb3XcnqEqoilkuoIKnDV49uuLt3AAAA",
+          "src": "/uploads/images/work/ticketing-958ca756-72df33d7.webp",
+          "width": 1920,
+          "height": 1080,
+          "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACwAQCdASoKAAYAA4BaJYwAAu1tGlOAAP71+ZP58bfuqAhdtys0mDhSx5w+i8u216G4buecdgNBNm8HJ1DUpAAA",
           "blurWidth": 10,
           "blurHeight": 6
         },
@@ -673,9 +673,9 @@
         "order": 10
       },
       "created_at": "2026-10-06T13:02:06.492Z",
-      "updated_at": "2026-10-06T13:02:06.492Z",
-      "published_at": "2026-10-06T13:02:06.492Z",
-      "updated_by": "Initial content"
+      "updated_at": "2026-10-06T17:07:03.189Z",
+      "published_at": "2026-10-06T17:07:03.241Z",
+      "updated_by": "Spark Admin"
     },
     {
       "id": "prj_sela-super-app",
