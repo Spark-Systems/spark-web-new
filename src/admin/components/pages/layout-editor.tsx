@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl"
 
 import { ContactCopyFields, LinkFields, looseControl } from "@admin/components/cms/content-fields"
-import { FormImage } from "@admin/components/cms/form-image"
 import { FormRepeater } from "@admin/components/cms/form-repeater"
 import { PageEditor } from "@admin/components/cms/page-editor"
 import { FormInput } from "@admin/components/form/form-input"
@@ -14,7 +13,6 @@ import { FormTextarea } from "@admin/components/form/form-textarea"
 /** Site-wide content: company details, the full-screen menu, the footer and the shared enquiry copy. */
 export function LayoutEditor() {
   const t = useTranslations("LayoutEditor")
-  const tf = useTranslations("Fields")
   return (
     <PageEditor
       page="layout"
@@ -54,14 +52,13 @@ export function LayoutEditor() {
                 addLabel={t("addMenuItem")}
                 min={1}
                 max={10}
-                newItem={() => ({ label: "", href: "/", brief: "", image: null })}
+                newItem={() => ({ label: "", href: "/", brief: "" })}
                 itemTitle={(item) => String(item.label ?? "")}
               >
                 {(path) => (
                   <>
                     <LinkFields control={control} name={path} />
                     <FormTextarea control={control} name={`${path}.brief`} label={t("brief")} description={t("briefHint")} required rows={2} maxLength={200} />
-                    <FormImage control={control} name={`${path}.image`} label={tf("image")} description={t("menuImageHint")} required />
                   </>
                 )}
               </FormRepeater>

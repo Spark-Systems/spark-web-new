@@ -29,8 +29,13 @@ import { CONTENT_TAG } from "@/server/content/revalidate";
  * publishes a change (which revalidates CONTENT_TAG). In preview mode (draft
  * mode, turned on from the admin) the saved drafts are read fresh instead.
  */
+// Stamped at build time (next.config.ts), so each deploy starts with a fresh cache:
+// Vercel's data cache outlives deploys, and a new build may shape the data differently.
+const BUILD = process.env.CONTENT_CACHE_BUILD ?? "dev"
+const key = (name: string) => [`content:${name}`, BUILD]
+
 function cachedGetter<A extends string[], R>(name: string, read: (...args: [...A, ReadOptions]) => Promise<R>) {
-  const live = unstable_cache((...args: A) => read(...args, {}), [`content:${name}`], { tags: [CONTENT_TAG] });
+  const live = unstable_cache((...args: A) => read(...args, {}), key(name), { tags: [CONTENT_TAG] });
   return async (...args: A): Promise<R> => {
     if ((await draftMode()).isEnabled) return read(...args, { preview: true });
     return live(...args);
@@ -77,13 +82,13 @@ export const getNextProject = cachedGetter<[slug: string], Awaited<ReturnType<ty
 // Slugs feed generateStaticParams, which runs at build time outside any request
 // (so no draft mode). Pages published later render on first visit.
 
-export const getSolutionSlugs = unstable_cache(() => getDetailSlugs("solutions"), ["content:solution-slugs"], {
+export const getSolutionSlugs = unstable_cache(() => getDetailSlugs("solutions"), key("solution-slugs"), {
   tags: [CONTENT_TAG],
 });
-export const getServiceSlugs = unstable_cache(() => getDetailSlugs("services"), ["content:service-slugs"], {
+export const getServiceSlugs = unstable_cache(() => getDetailSlugs("services"), key("service-slugs"), {
   tags: [CONTENT_TAG],
 });
-export const getProjectSlugs = unstable_cache(() => getDetailSlugs("projects"), ["content:project-slugs"], {
+export const getProjectSlugs = unstable_cache(() => getDetailSlugs("projects"), key("project-slugs"), {
   tags: [CONTENT_TAG],
 });
-export const getArticleSlugs = unstable_cache(() => getInsightSlugs(), ["content:insight-slugs"], { tags: [CONTENT_TAG] });
+export const getArticleSlugs = unstable_cache(() => getInsightSlugs(), key("insight-slugs"), { tags: [CONTENT_TAG] });

@@ -5,6 +5,8 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./src/admin/i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  // Part of the content cache keys (src/lib/api/pages.ts): a new build never reads data cached by an older one.
+  env: { CONTENT_CACHE_BUILD: Date.now().toString(36) },
   // The site and the admin have separate root layouts, so unmatched URLs get one global 404 page.
   experimental: {
     globalNotFound: true,

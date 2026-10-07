@@ -415,7 +415,7 @@ export const layoutContentSchema = z.object({
   phone: navLink,
   foundedYear: z.number().int().min(1900).max(2100),
   menu: z
-    .array(z.object({ label: text(40), href, brief: text(200), image: uploadedImage }))
+    .array(z.object({ label: text(40), href, brief: text(200) }))
     .min(1)
     .max(10),
   footer: z.object({ slogan: text(60), blurb: text(400) }),

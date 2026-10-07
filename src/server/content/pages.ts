@@ -6,6 +6,7 @@ import type { WithId } from "@/server/db/collection";
 import type { AboutPageData } from "@/types/about";
 import type { CareersPageData } from "@/types/careers";
 import type { CollectionKey, CollectionMap, InsightRecord } from "@/types/cms";
+import type { ImageSource } from "@/types/content";
 import type { ContactPageData } from "@/types/contact";
 import type { HomePageData } from "@/types/home";
 import type { InsightArticle, InsightSummary, InsightsPageData } from "@/types/insights";
@@ -38,13 +39,36 @@ export interface ReadOptions {
 const items = <K extends CollectionKey>(key: K, { preview = false }: ReadOptions): Promise<WithId<CollectionMap[K]>[]> =>
   preview ? collections[key].drafts() : collections[key].published();
 
+/**
+ * Each menu entry's preview picture: the hero image of the page it links to.
+ * Detail pages (/solutions/ticketing) use their section's hero; the home page
+ * has a video instead, so it (and any other link) uses the home "Our work" picture.
+ */
+async function menuPictures(options: ReadOptions): Promise<(href: string) => ImageSource> {
+  const [home, ...pages] = await Promise.all([
+    readPage("home", options),
+    ...(["about", "solutions", "services", "work", "contact", "careers", "insights"] as const).map((key) =>
+      readPage(key, options).then((page) => [routes[key], page.hero.image.src] as const),
+    ),
+  ]);
+  const fallback = home.work.intro.image;
+  const byPath = new Map<string, ImageSource>(pages);
+  return (href) => {
+    const path = href.split(/[?#]/)[0].replace(/\/+$/, "") || routes.home;
+    if (path === routes.home) return fallback;
+    const section = [...byPath.keys()].find((route) => path === route || path.startsWith(`${route}/`));
+    return section ? byPath.get(section)! : fallback;
+  };
+}
+
 export async function getLayoutData(options: ReadOptions = {}): Promise<SiteLayoutData> {
-  const [layout, settings, solutions, offices, partners] = await Promise.all([
+  const [layout, settings, solutions, offices, partners, pictureFor] = await Promise.all([
     readPage("layout", options),
     readSettings(),
     items("solutions", options),
     items("offices", options),
     items("partners", options),
+    menuPictures(options),
   ]);
   return {
     company: {
@@ -55,7 +79,7 @@ export async function getLayoutData(options: ReadOptions = {}): Promise<SiteLayo
       foundedYear: layout.foundedYear,
     },
     keywords: settings.meta.keywords,
-    menu: layout.menu,
+    menu: layout.menu.map((item) => ({ ...item, image: pictureFor(item.href) })),
     footer: layout.footer,
     contact: layout.contact,
     solutions: solutions.map(toSolutionSummary),

@@ -217,7 +217,13 @@
       "addImage": "Add image",
       "addImages": "Add images",
       "addFile": "Add file",
-      "addFiles": "Add files"
+      "addFiles": "Add files",
+      "dragPicture": "Drag a picture here",
+      "orBrowse": "or <browse>browse your files</browse>",
+      "dropToReplace": "Drop to replace",
+      "replaceShort": "Replace",
+      "remove": "Remove",
+      "notSaved": "not saved yet"
     },
     "showPassword": "Show password",
     "hidePassword": "Hide password",
@@ -958,12 +964,11 @@
     "slogan": "Slogan",
     "blurb": "About line",
     "menuTitle": "Full-screen menu",
-    "menuHint": "Each entry shows its picture and brief while hovered.",
+    "menuHint": "Each entry shows its brief while hovered, with the background picture of the page it links to (change that picture on the page itself).",
     "menuItems": "Entries",
     "addMenuItem": "Add entry",
     "brief": "Brief",
-    "briefHint": "One sentence shown beside the menu.",
-    "menuImageHint": "A wide picture, up to 4 MB."
+    "briefHint": "One sentence shown beside the menu."
   },
   "Pages": {
     "home": {

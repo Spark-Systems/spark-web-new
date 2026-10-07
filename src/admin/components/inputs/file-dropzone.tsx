@@ -1,6 +1,6 @@
 "use client"
 
-import { FileIcon, FilePlus, ImagePlus, RefreshCw, Trash2, X } from "lucide-react"
+import { FileIcon, FilePlus, ImagePlus, RefreshCw, Trash2, UploadCloud, X } from "lucide-react"
 import { useFormatter, useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 import { ErrorCode, useDropzone, type Accept, type FileRejection } from "react-dropzone"
@@ -97,6 +97,165 @@ function Preview({ item, className, small }: { item: DropzoneItem; className?: s
     <img src={item.url} alt="" className={cn("max-h-full max-w-full object-contain", className)} />
   ) : (
     <FileIcon className={cn("text-muted-foreground", small ? "size-3.5" : "size-8")} />
+  )
+}
+
+/**
+ * Single picture field: a 250×250 drop tile that shows the picture large, with
+ * its name, size and pixel size beside it (stacked when the column is narrow).
+ */
+function PictureDrop({
+  item,
+  rootProps,
+  inputProps,
+  isDragActive,
+  isDragReject,
+  invalid,
+  unavailable,
+  hint,
+  onReplace,
+  onRemove,
+}: {
+  item: DropzoneItem | undefined
+  rootProps: React.HTMLAttributes<HTMLDivElement>
+  inputProps: React.InputHTMLAttributes<HTMLInputElement>
+  isDragActive: boolean
+  isDragReject: boolean
+  invalid?: boolean
+  unavailable?: boolean
+  hint: string
+  onReplace: () => void
+  onRemove: () => void
+}) {
+  const t = useTranslations("Inputs.dropzone")
+  const fileSize = useFileSize()
+  // Natural size of the shown picture, read once it loads.
+  const [natural, setNatural] = useState<{ url: string; width: number; height: number } | null>(null)
+  const dimensions = item && natural?.url === item.url ? `${natural.width} × ${natural.height}` : null
+  // Buttons inside the tile must not also trigger the tile's own click (which opens the picker).
+  const stop = (event: React.SyntheticEvent) => event.stopPropagation()
+
+  return (
+    <div className="@container">
+      <div className="flex flex-col gap-3 @sm:flex-row @sm:items-start">
+        <div
+          {...rootProps}
+          className={cn(
+            "group bg-muted/60 relative flex aspect-square w-[250px] max-w-full shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl border outline-none transition-[border-color,box-shadow,background-color]",
+            "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3",
+            !item && "hover:border-ring/60 hover:bg-muted border-2 border-dashed",
+            isDragActive && "border-primary bg-accent ring-primary/20 ring-3",
+            (isDragReject || invalid) && "border-destructive ring-destructive/20 dark:ring-destructive/40 ring-3",
+            unavailable && "pointer-events-none cursor-not-allowed opacity-50"
+          )}
+        >
+          <input {...inputProps} />
+          {item ? (
+            <>
+              {/* Plain <img>: previews are blob:/data: URLs; next/image can't optimize those. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.url}
+                alt=""
+                draggable={false}
+                onLoad={(event) =>
+                  setNatural({ url: item.url, width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })
+                }
+                className="size-full object-contain p-2 transition-transform duration-300 group-hover:scale-[1.03]"
+              />
+              {/* Hover / drag overlay with the quick actions. */}
+              <div
+                className={cn(
+                  "absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/55 text-sm font-medium text-white transition-opacity",
+                  isDragActive ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
+                )}
+              >
+                {isDragActive ? (
+                  <>
+                    <UploadCloud className="size-7" />
+                    {t("dropToReplace")}
+                  </>
+                ) : (
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      onClick={(event) => {
+                        stop(event)
+                        onReplace()
+                      }}
+                      onKeyDown={stop}
+                    >
+                      <RefreshCw data-icon="inline-start" />
+                      {t("replaceShort")}
+                    </Button>
+                    <Button
+                      type="button"
+                      size="icon-sm"
+                      variant="destructive"
+                      onClick={(event) => {
+                        stop(event)
+                        onRemove()
+                      }}
+                      onKeyDown={stop}
+                      aria-label={t("removeFile", { name: item.name })}
+                    >
+                      <Trash2 />
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center gap-3 px-6 text-center">
+              <span
+                className={cn(
+                  "bg-background flex size-14 items-center justify-center rounded-full border shadow-xs transition-transform duration-300 group-hover:-translate-y-0.5",
+                  isDragActive ? "text-primary" : "text-muted-foreground"
+                )}
+              >
+                {isDragActive ? <UploadCloud className="size-6" /> : <ImagePlus className="size-6" />}
+              </span>
+              <span className="flex flex-col gap-1">
+                <span className="text-sm font-medium">{isDragActive ? t("dropHere") : t("dragPicture")}</span>
+                <span className="text-muted-foreground text-xs">
+                  {t.rich("orBrowse", {
+                    browse: (chunks) => <span className="text-primary font-medium underline-offset-2 group-hover:underline">{chunks}</span>,
+                  })}
+                </span>
+              </span>
+              {hint && <span className="text-muted-foreground text-[11px] leading-snug">{hint}</span>}
+            </div>
+          )}
+        </div>
+
+        {item && (
+          <div className="flex min-w-0 flex-col gap-3 @sm:pt-1">
+            <div className="flex min-w-0 flex-col gap-0.5">
+              {/* <bdi> keeps a Latin file name intact in Arabic without changing its alignment. */}
+              <span className="text-sm font-medium break-all">
+                <bdi>{item.name}</bdi>
+              </span>
+              <span className="text-muted-foreground text-xs tabular-nums">
+                {[item.size !== undefined && fileSize(item.size), dimensions, item.file && t("notSaved")].filter(Boolean).join(" · ")}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button type="button" variant="outline" size="sm" onClick={onReplace} disabled={unavailable}>
+                <RefreshCw data-icon="inline-start" />
+                {t("replaceShort")}
+              </Button>
+              <Button type="button" variant="ghost" size="sm" onClick={onRemove} disabled={unavailable} className="hover:text-destructive">
+                <Trash2 data-icon="inline-start" />
+                {t("remove")}
+              </Button>
+            </div>
+            {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
@@ -206,6 +365,34 @@ export function FileDropzone({
   )
 
   const single = !multiple ? value[0] : undefined
+  const errorList = errors.length > 0 && (
+    <ul role="alert" className="text-destructive flex flex-col gap-0.5 text-xs">
+      {errors.map((error) => (
+        <li key={error}>{error}</li>
+      ))}
+    </ul>
+  )
+
+  // One picture: a large preview tile instead of the one-line field.
+  if (!multiple && onlyImages) {
+    return (
+      <div className={cn("flex flex-col gap-1.5", className)}>
+        <PictureDrop
+          item={single}
+          rootProps={getRootProps()}
+          inputProps={getInputProps({ id, "aria-describedby": describedBy })}
+          isDragActive={isDragActive}
+          isDragReject={isDragReject}
+          invalid={invalid}
+          unavailable={unavailable}
+          hint={hint}
+          onReplace={open}
+          onRemove={() => single && remove(single.id)}
+        />
+        {errorList}
+      </div>
+    )
+  }
 
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
@@ -288,13 +475,7 @@ export function FileDropzone({
         </ul>
       )}
 
-      {errors.length > 0 && (
-        <ul role="alert" className="text-destructive flex flex-col gap-0.5 text-xs">
-          {errors.map((error) => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
-      )}
+      {errorList}
     </div>
   )
 }

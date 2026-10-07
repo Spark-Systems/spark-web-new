@@ -2,7 +2,7 @@ import type { StaticImageData } from "next/image";
 import type { AboutPageData } from "./about";
 import type { ApplyContent, RoleGroup } from "./careers";
 import type { ContactLine, ContactPageData } from "./contact";
-import type { ContactContent, IconName, ImageSource, MenuItem, NavLink, PageHeroContent, PageSeo, SectionIntro } from "./content";
+import type { ContactContent, IconName, ImageSource, MenuLink, NavLink, PageHeroContent, PageSeo, SectionIntro } from "./content";
 import type {
   HomeAiSection,
   HomeHero,
@@ -249,7 +249,8 @@ export interface LayoutContent {
   email: string;
   phone: NavLink;
   foundedYear: number;
-  menu: MenuItem[];
+  /** Pictures come from each linked page's hero (see getLayoutData). */
+  menu: MenuLink[];
   footer: { slogan: string; blurb: string };
   contact: ContactContent;
 }

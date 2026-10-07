@@ -94,10 +94,14 @@ export interface NavLink {
   href: string;
 }
 
-/** Full-screen menu entry: a link with the preview shown while it is hovered. */
-export interface MenuItem extends NavLink {
+/** Full-screen menu entry as stored: a link and the brief shown while it is hovered. */
+export interface MenuLink extends NavLink {
   brief: string;
-  image: StaticImageData;
+}
+
+/** Full-screen menu entry on the website: the preview picture is the linked page's hero image. */
+export interface MenuItem extends MenuLink {
+  image: ImageSource;
 }
 
 export interface Stat {
