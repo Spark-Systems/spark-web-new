@@ -26,6 +26,14 @@ export const blobTokens = () => ({
 const SEED_PREFIX = "seed:";
 
 /**
+ * Documents that belong to one environment and never come from the deployed
+ * data folder: user accounts (password hashes), messages, the activity log
+ * and backups. A fresh store starts with these empty, so the first admin is
+ * created from ADMIN_EMAIL / ADMIN_PASSWORD.
+ */
+const NOT_SEEDED = /^(users|enquiries|activity|backups\/)/;
+
+/**
  * Vercel Blob. Documents are private blobs under db/ (in the private store),
  * read past the CDN cache so a save is visible straight away, and written
  * with the etag they were read with so two people saving at once can't
@@ -45,6 +53,7 @@ export function createBlobDriver({ content: token, uploads: uploadsToken }: { co
         const text = await new Response(result.stream).text();
         return { data: JSON.parse(text) as T, etag: result.blob.etag };
       }
+      if (NOT_SEEDED.test(key)) return null;
       const seed = await readJsonFile<T>(key);
       return seed && { data: seed.data, etag: SEED_PREFIX + seed.etag };
     },

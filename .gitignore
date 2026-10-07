@@ -42,3 +42,8 @@ next-env.d.ts
 
 # content backups written on every save (local storage driver)
 /data/backups/
+
+# per-environment CMS data: user accounts (password hashes), messages, activity log
+/data/users.json
+/data/enquiries.json
+/data/activity.json
