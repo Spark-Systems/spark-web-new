@@ -40,14 +40,12 @@ function GeneralFields({ form }: { form: UseFormReturn<SolutionRecord> }) {
   const { control } = form
   return (
     <div className="flex flex-col gap-4">
-      <FormSection title={t("flagshipTitle")} description={t("flagshipHint")}>
-        <FormTextarea control={control} name="description" label={tf("description")} rows={2} maxLength={400} className="lg:col-span-2" />
-        <FormTagInput control={control} name="tags" label={t("tags")} maxTags={8} maxTagLength={60} className="lg:col-span-2" />
-      </FormSection>
       <FormSection title={t("detailsTitle")} description={t("detailsHint")}>
         <FormInput control={control} name="name" label={tf("name")} required maxLength={120} autoFocus />
         <FormInput control={control} name="slug" label={tf("slug")} description={t("slugHint")} required dir="ltr" maxLength={SLUG_MAX} />
         <IconField control={control} name="icon" />
+        <FormTextarea control={control} name="description" label={tf("description")} description={t("descriptionHint")} rows={2} maxLength={400} className="lg:col-span-2" />
+        <FormTagInput control={control} name="tags" label={t("tags")} description={t("tagsHint")} maxTags={8} maxTagLength={60} className="lg:col-span-2" />
         <FormImage control={control} name="image" label={tf("image")} description={t("imageHint")} required className="lg:col-span-2" />
       </FormSection>
       <FormSection title={t("placementTitle")} description={t("placementHint")}>
@@ -76,7 +74,7 @@ export function SolutionEditor({ row }: { row?: CollectionRow<SolutionRecord> })
         {
           value: "general",
           label: t("tabs.general"),
-          keys: ["description", "tags", "name", "slug", "icon", "image", "flagship", "order"],
+          keys: ["name", "slug", "icon", "description", "tags", "image", "flagship", "order"],
           content: <GeneralFields form={form} />,
         },
         {

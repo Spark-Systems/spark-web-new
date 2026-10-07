@@ -423,8 +423,6 @@
       "detailsHint": "How the solution appears in the catalogue and the footer.",
       "slugHint": "Its page address: /solutions/this-url. Changing it breaks old links.",
       "imageHint": "A wide picture (at least 1600px), up to 4 MB.",
-      "flagshipTitle": "Flagship card",
-      "flagshipHint": "The large card at the top of /solutions. Turn it on under Placement at the bottom.",
       "flagship": "Show as a flagship",
       "flagshipCheckHint": "Needs a description.",
       "tags": "Card tags",
@@ -432,7 +430,9 @@
       "hasDetailHint": "Otherwise its links go to the contact form.",
       "noDetail": "Turn on the detail page above to edit it.",
       "placementTitle": "Placement",
-      "placementHint": "Show it as a flagship card, and where it sits in the lists."
+      "placementHint": "Show it as a flagship card, and where it sits in the lists.",
+      "descriptionHint": "Text on the flagship card. Needed to show it as a flagship.",
+      "tagsHint": "Shown on the flagship card. Press Enter or comma to add."
     }
   },
   "Services": {
