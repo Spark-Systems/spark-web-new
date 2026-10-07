@@ -4,6 +4,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 // Translations for the admin (/admin); the public site doesn't use next-intl.
 const withNextIntl = createNextIntlPlugin("./src/admin/i18n/request.ts");
 
+/** The content backend (backend/). Read when the site is built: set BACKEND_URL before `next build`. */
+const backend = (process.env.BACKEND_URL || "http://127.0.0.1:4000").replace(/\/+$/, "");
+
 const nextConfig: NextConfig = {
   // Part of the content cache keys (src/lib/api/pages.ts): a new build never reads data cached by an older one.
   env: { CONTENT_CACHE_BUILD: Date.now().toString(36) },
@@ -13,19 +16,21 @@ const nextConfig: NextConfig = {
     // The careers form sends a CV (up to 4 MB) through a Server Action; the default limit is 1 MB.
     serverActions: { bodySizeLimit: "4.4mb" },
   },
-  // gRPC-based Google Analytics client (admin dashboard); load it from node_modules at runtime.
-  serverExternalPackages: ["@google-analytics/data"],
-  // The content database (data/*.json) is read at runtime, so ship it with every server function.
-  // With a Vercel Blob store connected it's the starting content until a document is first saved.
-  outputFileTracingIncludes: {
-    "/**": ["./data/**/*.json"],
+  // The admin API, the public API and uploaded pictures live on the backend.
+  // Forwarding them keeps everything on this one domain (no CORS; the admin's
+  // sign-in cookies keep working). This site's own routes (/api/preview,
+  // /api/revalidate) are matched first.
+  async rewrites() {
+    return [
+      { source: "/api/admin/:path*", destination: `${backend}/api/admin/:path*` },
+      { source: "/api/v1/:path*", destination: `${backend}/api/v1/:path*` },
+      { source: "/uploads/:path*", destination: `${backend}/uploads/:path*` },
+    ];
   },
   images: {
     remotePatterns: [
       // Stock photography used in some page heroes.
       { protocol: "https", hostname: "images.pexels.com" },
-      // Pictures uploaded in the admin when the site runs on Vercel (Blob storage).
-      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
   },
 };

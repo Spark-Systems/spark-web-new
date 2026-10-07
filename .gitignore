@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -41,11 +42,11 @@ yarn-error.log*
 next-env.d.ts
 
 # content backups written on every save (local storage driver)
-/data/backups/
+/backend/data/backups/
 
 # per-environment CMS data: user accounts (password hashes), messages, activity log
-/data/users.json
-/data/enquiries.json
-/data/activity.json
-/data/applications.json
-/data/cvs/
+/backend/data/users.json
+/backend/data/enquiries.json
+/backend/data/activity.json
+/backend/data/applications.json
+/backend/data/cvs/

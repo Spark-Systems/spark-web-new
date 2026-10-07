@@ -2,10 +2,8 @@
 
 import { headers } from "next/headers";
 
+import { backendFetch, BackendError, visitorHeaders } from "@/lib/api/backend";
 import { applicationSubmitSchema } from "@/lib/cms/schemas";
-import { createApplication } from "@/server/applications";
-import { senderOf } from "@/server/enquiries";
-import { HttpError } from "@/server/http/respond";
 
 export type ApplicationField = "name" | "email" | "mobile" | "country" | "position" | "cover_letter" | "cv";
 
@@ -42,15 +40,21 @@ export async function submitApplication(_prev: ApplicationFormState, formData: F
     return { status: "error", errors };
   }
 
+  // Sent on to the backend as the same multipart form (it checks the CV itself).
+  const body = new FormData();
+  for (const [name, value] of Object.entries(parsed.data)) if (value !== undefined) body.set(name, value);
   const cv = formData.get("cv");
+  if (cv instanceof File && cv.size > 0) body.set("cv", cv, cv.name);
+
   try {
-    await createApplication(
-      { ...parsed.data, website: parsed.data.website ?? "" },
-      cv instanceof File ? cv : null,
-      senderOf(await headers()),
-    );
+    await backendFetch("/api/v1/applications", {
+      method: "POST",
+      headers: visitorHeaders(await headers()),
+      body,
+    });
   } catch (error) {
-    if (error instanceof HttpError) {
+    // The backend's own wording for problems the visitor can fix (CV type or size, too many tries).
+    if (error instanceof BackendError && error.status < 500) {
       return error.code === "too_large" || error.code === "unsupported_type"
         ? { status: "error", errors: { cv: error.message } }
         : { status: "error", message: error.message };

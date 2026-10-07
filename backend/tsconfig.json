@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    // The backend's own code, plus the types, schemas and site routes it shares
+    // with the website (../src). The most specific alias wins.
+    "paths": {
+      "@backend/*": ["./src/*"],
+      "@/server/*": ["./src/server/*"],
+      "@/*": ["../src/*"],
+      "@admin/*": ["../src/admin/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "spark-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Spark Systems content API: admin API, public API, uploads and auth. Serves the website (../) over HTTP.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "routes": "node scripts/generate-routes.mjs",
+    "dev": "npm run routes && tsx watch src/main.ts",
+    "build": "npm run routes && node build.mjs",
+    "start": "node dist/server.mjs",
+    "typecheck": "npm run routes && tsc --noEmit"
+  },
+  "dependencies": {
+    "@google-analytics/data": "^7.2.1",
+    "sharp": "^0.35.5",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  }
+}
