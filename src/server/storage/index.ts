@@ -1,6 +1,6 @@
 import "server-only";
 
-import { blobTokens, createBlobDriver } from "./blob-driver";
+import { blobToken, createBlobDriver } from "./blob-driver";
 import { createFsDriver } from "./fs-driver";
 import type { StorageDriver } from "./types";
 
@@ -15,12 +15,12 @@ let driver: StorageDriver | undefined;
  */
 export function storage(): StorageDriver {
   if (driver) return driver;
-  const { content, publicUploads } = blobTokens();
-  if (content) driver = createBlobDriver({ content, publicUploads });
+  const token = blobToken();
+  if (token) driver = createBlobDriver(token);
   else {
     // Names only (never values), so the admin can say exactly what to connect.
     const reason =
-      "No Vercel Blob store is connected (BLOB_READ_WRITE_TOKEN). Create a Blob store with Private access, connect it to the project, and redeploy.";
+      "No Vercel Blob store is connected (BLOB_READ_WRITE_TOKEN). Create a Blob store, connect it to the project, and redeploy.";
     if (process.env.VERCEL) console.error(`[storage] ${reason}`);
     driver = createFsDriver({ readOnly: Boolean(process.env.VERCEL), reason });
   }
