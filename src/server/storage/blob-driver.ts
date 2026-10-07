@@ -4,7 +4,7 @@ import { createCipheriv, createDecipheriv, createHash, randomBytes } from "node:
 import { BlobPreconditionFailedError, del, get, list, put } from "@vercel/blob";
 
 import { readJsonFile } from "./fs-driver";
-import { assertKey, ConflictError, type StorageDriver } from "./types";
+import { assertKey, ConflictError, ReadOnlyStorageError, type StorageDriver, type StoredJson } from "./types";
 
 /**
  * Optional folder inside the store, e.g. "preview/" so Preview deployments
@@ -44,6 +44,28 @@ const NOT_SEEDED = /^(users|enquiries|applications|activity|backups\/|cvs\/)/;
 /** A private operation on a public store (some SDK calls throw a plain Error for it). */
 const isPublicStoreError = (error: unknown) =>
   error instanceof Error && /private access on a public store|Failed to fetch blob: 400/i.test(error.message);
+
+/**
+ * The store is suspended or blocked, e.g. after a Hobby plan used up its
+ * monthly operations. Reads then fall back to the deployed content.
+ */
+const isUnavailableError = (error: unknown) =>
+  error instanceof Error && /store (has been|is) (suspended|blocked)|store is paused/i.test(error.message);
+
+const UNAVAILABLE =
+  "The Vercel Blob store is suspended (usually its plan's monthly operations ran out), so the site shows the content deployed with it. Reactivate the store, or connect another one, to save changes.";
+
+/**
+ * The store's access type, when set (BLOB_STORE_ACCESS=public|private). It
+ * saves the write that otherwise detects it on every cold start.
+ */
+const CONFIGURED_ACCESS =
+  process.env.BLOB_STORE_ACCESS === "public" || process.env.BLOB_STORE_ACCESS === "private"
+    ? process.env.BLOB_STORE_ACCESS
+    : undefined;
+
+/** During `next build`, which reads each document for many pages. */
+const BUILDING = process.env.NEXT_PHASE === "phase-production-build";
 
 // ---- Encryption (public stores) ---------------------------------------------
 
@@ -109,20 +131,22 @@ export function createBlobDriver(token: string): StorageDriver {
    * Finds out once whether the store is private or public, by writing a tiny
    * private marker (a public store refuses it; reads alone can't tell).
    */
-  const storeAccess = () =>
-    (accessCheck ??= put(`${PATH_PREFIX}db/.access-check`, "private", {
-      access: "private",
-      token,
-      addRandomSuffix: false,
-      allowOverwrite: true,
-    }).then(
-      () => "private" as const,
-      (error) => {
-        if (isPublicStoreError(error)) return "public" as const;
-        accessCheck = undefined;
-        throw error;
-      },
-    ));
+  const storeAccess = (): Promise<Access> =>
+    CONFIGURED_ACCESS
+      ? Promise.resolve(CONFIGURED_ACCESS)
+      : (accessCheck ??= put(`${PATH_PREFIX}db/.access-check`, "private", {
+          access: "private",
+          token,
+          addRandomSuffix: false,
+          allowOverwrite: true,
+        }).then(
+          () => "private" as const,
+          (error) => {
+            if (isPublicStoreError(error)) return "public" as const;
+            accessCheck = undefined;
+            throw error;
+          },
+        ));
 
   const fromSeed = async <T>(key: string) => {
     if (NOT_SEEDED.test(key)) return null;
@@ -214,20 +238,59 @@ export function createBlobDriver(token: string): StorageDriver {
     }
   }
 
+  // A build reads the same documents for many pages: read each one once.
+  const buildReads = new Map<string, Promise<StoredJson<unknown> | null>>();
+  let warned = false;
+
+  /** Reads fall back to the deployed content while the store is suspended. */
+  const orSeed = async <T>(key: string, read: () => Promise<StoredJson<T> | null>) => {
+    try {
+      return await read();
+    } catch (error) {
+      if (!isUnavailableError(error)) throw error;
+      if (!warned) console.error(`[storage] ${UNAVAILABLE}`);
+      warned = true;
+      return fromSeed<T>(key);
+    }
+  };
+
+  /** Writes report a suspended store as read-only (503 with an explanation) instead of a crash. */
+  const writable = async <R>(write: () => Promise<R>) => {
+    try {
+      return await write();
+    } catch (error) {
+      if (isUnavailableError(error)) throw new ReadOnlyStorageError(UNAVAILABLE);
+      throw error;
+    }
+  };
+
+  const readDocument = <T>(key: string) =>
+    orSeed<T>(key, async () => ((await storeAccess()) === "public" ? readVersioned<T>(key) : readPrivate<T>(key)));
+
   return {
     kind: "blob",
 
-    async readJson<T>(key: string) {
-      return (await storeAccess()) === "public" ? readVersioned<T>(key) : readPrivate<T>(key);
+    readJson<T>(key: string) {
+      if (!BUILDING) return readDocument<T>(key);
+      if (!buildReads.has(key)) buildReads.set(key, readDocument<T>(key));
+      return buildReads.get(key) as Promise<StoredJson<T> | null>;
     },
 
-    async writeJson(key, data, ifMatch) {
-      return (await storeAccess()) === "public" ? writeVersioned(key, data, ifMatch) : writePrivate(key, data, ifMatch);
+    writeJson(key, data, ifMatch) {
+      return writable(async () =>
+        (await storeAccess()) === "public" ? writeVersioned(key, data, ifMatch) : writePrivate(key, data, ifMatch),
+      );
     },
 
     async listJson(prefix) {
       const base = `${PATH_PREFIX}db/`;
-      const blobs = await listAll(`${base}${prefix}`);
+      let blobs: Awaited<ReturnType<typeof listAll>>;
+      try {
+        blobs = await listAll(`${base}${prefix}`);
+      } catch (error) {
+        if (isUnavailableError(error)) return [];
+        throw error;
+      }
       if ((await storeAccess()) === "private") {
         return blobs.map((blob) => blob.pathname.slice(base.length).replace(/\.json$/, ""));
       }
@@ -236,28 +299,36 @@ export function createBlobDriver(token: string): StorageDriver {
       return [...new Set(keys)];
     },
 
-    async deleteJson(keys) {
-      if (keys.length === 0) return;
-      if ((await storeAccess()) === "private") {
-        await del(keys.map(jsonPath), { token });
-        return;
-      }
-      const blobs = (await Promise.all(keys.map(versionsOf))).flat();
-      if (blobs.length) await del(blobs.map((blob) => blob.url), { token });
+    deleteJson(keys) {
+      return writable(() => deleteDocuments(keys));
     },
 
-    async saveFile(filePath, body, contentType) {
-      assertKey(filePath);
-      const access = await storeAccess();
-      const result = await put(uploadPath(filePath), body, {
-        access,
-        token,
-        contentType,
-        addRandomSuffix: false,
-        // Names are unique per upload, so the file never changes: cache it for a year.
-        cacheControlMaxAge: 60 * 60 * 24 * 365,
-      });
-      return access === "public" ? result.url : `${MEDIA_ROUTE}/${filePath}`;
+    saveFile(filePath, body, contentType) {
+      return writable(() => saveUpload(filePath, body, contentType));
     },
   };
+
+  async function deleteDocuments(keys: string[]) {
+    if (keys.length === 0) return;
+    if ((await storeAccess()) === "private") {
+      await del(keys.map(jsonPath), { token });
+      return;
+    }
+    const blobs = (await Promise.all(keys.map(versionsOf))).flat();
+    if (blobs.length) await del(blobs.map((blob) => blob.url), { token });
+  }
+
+  async function saveUpload(filePath: string, body: Buffer, contentType: string) {
+    assertKey(filePath);
+    const access = await storeAccess();
+    const result = await put(uploadPath(filePath), body, {
+      access,
+      token,
+      contentType,
+      addRandomSuffix: false,
+      // Names are unique per upload, so the file never changes: cache it for a year.
+      cacheControlMaxAge: 60 * 60 * 24 * 365,
+    });
+    return access === "public" ? result.url : `${MEDIA_ROUTE}/${filePath}`;
+  }
 }
