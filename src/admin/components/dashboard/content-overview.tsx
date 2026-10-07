@@ -14,6 +14,7 @@ import { overviewQueries, type Overview } from "@admin/lib/api/services/records"
 import { useAuth } from "@admin/lib/auth/auth-provider"
 import { adminPaths } from "@admin/lib/paths"
 import { CardIcon } from "./card-icon"
+import { ContentStatsCarousel } from "./content-stats-carousel"
 
 const pagePaths: Record<string, string> = {
   home: adminPaths.home,
@@ -87,10 +88,17 @@ export function ContentOverview() {
   if (isError) return <QueryError message={t("loadError")} onRetry={() => refetch()} />
   if (isPending) {
     return (
-      <div className="grid gap-4 lg:grid-cols-3">
-        <Skeleton className="h-72 rounded-xl" />
-        <Skeleton className="h-72 rounded-xl" />
-        <Skeleton className="h-72 rounded-xl" />
+      <div className="flex flex-col gap-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {Array.from({ length: 4 }, (_, i) => (
+            <Skeleton key={i} className="h-44 rounded-2xl" />
+          ))}
+        </div>
+        <div className="grid gap-4 lg:grid-cols-3">
+          <Skeleton className="h-72 rounded-xl" />
+          <Skeleton className="h-72 rounded-xl" />
+          <Skeleton className="h-72 rounded-xl" />
+        </div>
       </div>
     )
   }
@@ -122,19 +130,7 @@ export function ContentOverview() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
-        {Object.entries(data.counts).map(([key, count]) => (
-          <Link
-            key={key}
-            href={listPaths[key]}
-            className="bg-card hover:border-primary/40 flex flex-col gap-1 rounded-xl border p-4 transition-colors"
-          >
-            <span className="text-muted-foreground text-xs">{listLabel(key)}</span>
-            <span className="text-2xl font-semibold tabular-nums">{format.number(count.total)}</span>
-            <span className="text-muted-foreground text-xs">{t("published", { count: count.published })}</span>
-          </Link>
-        ))}
-      </div>
+      <ContentStatsCarousel counts={data.counts} hrefs={listPaths} label={listLabel} />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <OverviewCard

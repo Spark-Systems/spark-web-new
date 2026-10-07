@@ -1194,7 +1194,12 @@
       "discard": "discarded changes to",
       "delete": "deleted",
       "login": "signed in:"
-    }
+    },
+    "contentTitle": "Content",
+    "contentTotal": "{count, plural, one {# item} other {{formatted} items}}",
+    "previous": "Previous",
+    "next": "Next",
+    "goTo": "Go to page {number}"
   },
   "Jobs": {
     "title": "Open roles",

@@ -1194,7 +1194,12 @@
       "discard": "تجاهل تغييرات",
       "delete": "حذف",
       "login": "سجّل الدخول:"
-    }
+    },
+    "contentTitle": "المحتوى",
+    "contentTotal": "{count, plural, one {عنصر واحد} other {{formatted} عنصر}}",
+    "previous": "السابق",
+    "next": "التالي",
+    "goTo": "الانتقال إلى الصفحة {number}"
   },
   "Jobs": {
     "title": "الوظائف المتاحة",
