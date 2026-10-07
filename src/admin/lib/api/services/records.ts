@@ -58,3 +58,25 @@ export const activityQueries = {
   all: ["activity"] as const,
   list: listOptions<ActivityEntry>("activity", "/activity"),
 }
+
+// ---- Dashboard overview -----------------------------------------------------
+
+export interface Overview {
+  pending: {
+    kind: "page" | "item"
+    resource: string
+    id: string | null
+    label: string
+    status: "draft" | "changed"
+    updated_at: string
+    updated_by: string | null
+  }[]
+  counts: Record<string, { total: number; published: number }>
+  enquiries: { new: number; total: number; latest: Enquiry[] }
+  activity: ActivityEntry[]
+}
+
+export const overviewQueries = {
+  overview: () =>
+    queryOptions({ queryKey: ["overview"], queryFn: () => apiClient.get<Overview>("/overview"), refetchInterval: 60_000 }),
+}

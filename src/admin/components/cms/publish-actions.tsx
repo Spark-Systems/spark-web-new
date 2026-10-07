@@ -52,6 +52,7 @@ export function PublishActions({
   onUnpublish,
   onDiscard,
   onDelete,
+  leading,
 }: {
   /** Null while creating (nothing saved yet). */
   status: PublishStatus | null
@@ -67,6 +68,8 @@ export function PublishActions({
   onUnpublish?: () => void
   onDiscard?: () => void
   onDelete?: () => void
+  /** Extra controls before the buttons, e.g. the live preview toggle. */
+  leading?: React.ReactNode
 }) {
   const t = useTranslations("Publish")
   const busy = pending !== null
@@ -88,6 +91,7 @@ export function PublishActions({
         </span>
       }
     >
+      {leading}
       {cancelHref && (
         <Button variant="ghost" nativeButton={false} render={<Link href={cancelHref} />}>
           {t("back")}

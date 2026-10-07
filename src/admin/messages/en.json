@@ -43,7 +43,6 @@
     "breadcrumb": "Breadcrumb",
     "settings": "Settings",
     "configuration": "Configuration",
-    "pages": "Pages",
     "home": "Home",
     "about": "About",
     "contact": "Contact",
@@ -56,7 +55,13 @@
     "offices": "Offices",
     "enquiries": "Enquiries",
     "activity": "Activity",
-    "users": "Users"
+    "users": "Users",
+    "pageSections": "Page sections",
+    "allSolutions": "All solutions",
+    "allServices": "All services",
+    "projects": "Projects",
+    "pageText": "Page text",
+    "site": "Site"
   },
   "Header": {
     "theme": "Theme",
@@ -81,7 +86,7 @@
   },
   "Dashboard": {
     "title": "Dashboard",
-    "subtitle": "Website traffic from Google Analytics",
+    "subtitle": "Your website at a glance: content waiting to publish, messages, activity and traffic.",
     "loadError": "Couldn't load Google Analytics data.",
     "empty": "No data for this period",
     "notSet": "Not set",
@@ -159,7 +164,8 @@
       "users": "Users"
     },
     "other": "Other",
-    "totalUsers": "Users"
+    "totalUsers": "Users",
+    "analyticsTitle": "Website analytics"
   },
   "Inputs": {
     "tagPlaceholder": "Type and press Enter",
@@ -1088,5 +1094,73 @@
     "newPasswordHint": "At least {min} characters.",
     "confirmPassword": "Repeat new password",
     "changePassword": "Change password"
+  },
+  "UnsavedChanges": {
+    "title": "Leave without saving?",
+    "description": "You have unsaved changes on this page. If you leave now, they'll be lost.",
+    "stay": "Keep editing",
+    "leave": "Leave"
+  },
+  "Editor": {
+    "jumpTo": "Jump to section",
+    "hasErrors": "Has errors",
+    "livePreview": "Live preview",
+    "desktop": "Desktop width",
+    "mobile": "Mobile width",
+    "reload": "Reload preview",
+    "openTab": "Open in a new tab",
+    "closePreview": "Close preview",
+    "showPreview": "Live preview",
+    "hidePreview": "Hide preview",
+    "previewAfterFirstSave": "Save once to see the live preview.",
+    "autosaving": "Saving draft…",
+    "autosaved": "Draft saved · preview updated",
+    "autosaveInvalid": "Preview paused: some fields need attention.",
+    "autosaveError": "Couldn't save the draft for the preview.",
+    "autosaveHint": "Edits are saved as a draft as you type, and shown here. Publish to make them live."
+  },
+  "Overview": {
+    "loadError": "Couldn't load the overview.",
+    "editHome": "Edit home page",
+    "newProject": "New project",
+    "newSolution": "New solution",
+    "openWebsite": "Open website",
+    "published": "{count} published",
+    "pendingTitle": "Waiting to publish",
+    "pendingDescription": "{count, plural, one {# change isn't} other {# changes aren't}} live yet",
+    "pendingEmpty": "Everything is published.",
+    "page": "Page",
+    "enquiriesTitle": "New enquiries",
+    "enquiriesDescription": "{count, plural, =0 {No unread messages} one {# unread message} other {# unread messages}}",
+    "enquiriesEmpty": "No new messages.",
+    "viewAll": "View all",
+    "activityTitle": "Recent activity",
+    "activityEmpty": "Nothing yet.",
+    "pages": {
+      "home": "Home page",
+      "about": "About page",
+      "contact": "Contact page",
+      "layout": "Menu & footer",
+      "solutions": "Solutions page",
+      "services": "Services page",
+      "work": "Work page"
+    },
+    "lists": {
+      "solutions": "Solutions",
+      "services": "Services",
+      "projects": "Projects",
+      "clients": "Clients",
+      "partners": "Partners",
+      "offices": "Offices"
+    },
+    "actions": {
+      "create": "created",
+      "update": "edited",
+      "publish": "published",
+      "unpublish": "unpublished",
+      "discard": "discarded changes to",
+      "delete": "deleted",
+      "login": "signed in:"
+    }
   }
 }

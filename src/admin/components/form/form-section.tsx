@@ -17,7 +17,8 @@ export function FormSection({
   children: React.ReactNode
 }) {
   return (
-    <Card className={className}>
+    // data-form-section / data-section-title: picked up by the section jump bar (cms/section-jump-bar).
+    <Card className={cn("scroll-mt-32", className)} data-form-section="" data-section-title={title}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}

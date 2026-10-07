@@ -1,16 +1,12 @@
 import {
-  Activity,
   Boxes,
   BriefcaseBusiness,
-  FileText,
-  Handshake,
-  Inbox,
+  Globe,
+  House,
+  Info,
   Layers,
   LayoutDashboard,
-  MapPin,
-  Settings,
-  UserCog,
-  Users,
+  Mail,
   type LucideIcon,
 } from "lucide-react"
 import type { Messages } from "next-intl"
@@ -38,32 +34,63 @@ export interface NavItem {
 }
 
 // The sidebar renders this tree in order; nesting can go as deep as needed.
-// Mirrors the website: its pages, then the lists they show, then the inbox and admin tools.
+// Organised like the website: one group per page with everything shown on it,
+// then the site-wide parts and admin tools.
 export const mainNav: NavItem[] = [
   { labelKey: "dashboard", href: adminPaths.dashboard, icon: LayoutDashboard },
   {
-    labelKey: "pages",
-    icon: FileText,
+    labelKey: "home",
+    icon: House,
     children: [
-      { labelKey: "home", href: adminPaths.home },
-      { labelKey: "about", href: adminPaths.about },
-      { labelKey: "contact", href: adminPaths.contact },
-      { labelKey: "layout", href: adminPaths.layout },
+      { labelKey: "pageSections", href: adminPaths.home },
+      { labelKey: "clients", href: adminPaths.clients },
+      { labelKey: "partners", href: adminPaths.partners },
     ],
   },
-  { labelKey: "solutions", href: adminPaths.solutions, icon: Boxes },
-  { labelKey: "services", href: adminPaths.services, icon: Layers },
-  { labelKey: "work", href: adminPaths.work, icon: BriefcaseBusiness },
-  { labelKey: "clients", href: adminPaths.clients, icon: Users },
-  { labelKey: "partners", href: adminPaths.partners, icon: Handshake },
-  { labelKey: "offices", href: adminPaths.offices, icon: MapPin },
-  { labelKey: "enquiries", href: adminPaths.enquiries, icon: Inbox, badge: "newEnquiries" },
-  { labelKey: "activity", href: adminPaths.activity, icon: Activity },
-  { labelKey: "users", href: adminPaths.users, icon: UserCog, role: "admin" },
+  { labelKey: "about", href: adminPaths.about, icon: Info },
   {
-    labelKey: "settings",
-    icon: Settings,
-    children: [{ labelKey: "configuration", href: adminPaths.configuration }],
+    labelKey: "solutions",
+    icon: Boxes,
+    children: [
+      { labelKey: "allSolutions", href: adminPaths.solutions },
+      { labelKey: "pageText", href: adminPaths.solutionsPage },
+    ],
+  },
+  {
+    labelKey: "services",
+    icon: Layers,
+    children: [
+      { labelKey: "allServices", href: adminPaths.services },
+      { labelKey: "pageText", href: adminPaths.servicesPage },
+    ],
+  },
+  {
+    labelKey: "work",
+    icon: BriefcaseBusiness,
+    children: [
+      { labelKey: "projects", href: adminPaths.work },
+      { labelKey: "pageText", href: adminPaths.workPage },
+    ],
+  },
+  {
+    labelKey: "contact",
+    icon: Mail,
+    badge: "newEnquiries",
+    children: [
+      { labelKey: "pageText", href: adminPaths.contact },
+      { labelKey: "offices", href: adminPaths.offices },
+      { labelKey: "enquiries", href: adminPaths.enquiries, badge: "newEnquiries" },
+    ],
+  },
+  {
+    labelKey: "site",
+    icon: Globe,
+    children: [
+      { labelKey: "layout", href: adminPaths.layout },
+      { labelKey: "configuration", href: adminPaths.configuration },
+      { labelKey: "users", href: adminPaths.users, role: "admin" },
+      { labelKey: "activity", href: adminPaths.activity },
+    ],
   },
 ]
 

@@ -43,7 +43,6 @@
     "breadcrumb": "مسار التنقل",
     "settings": "الإعدادات",
     "configuration": "التهيئة",
-    "pages": "الصفحات",
     "home": "الرئيسية",
     "about": "من نحن",
     "contact": "اتصل بنا",
@@ -56,7 +55,13 @@
     "offices": "المكاتب",
     "enquiries": "الاستفسارات",
     "activity": "سجل النشاط",
-    "users": "المستخدمون"
+    "users": "المستخدمون",
+    "pageSections": "أقسام الصفحة",
+    "allSolutions": "جميع الحلول",
+    "allServices": "جميع الخدمات",
+    "projects": "المشاريع",
+    "pageText": "نصوص الصفحة",
+    "site": "الموقع"
   },
   "Header": {
     "theme": "المظهر",
@@ -81,7 +86,7 @@
   },
   "Dashboard": {
     "title": "لوحة المعلومات",
-    "subtitle": "زيارات الموقع من Google Analytics",
+    "subtitle": "موقعك في لمحة: المحتوى بانتظار النشر والرسائل والنشاط والزيارات.",
     "loadError": "تعذّر تحميل بيانات Google Analytics.",
     "empty": "لا توجد بيانات لهذه الفترة",
     "notSet": "غير محدد",
@@ -159,7 +164,8 @@
       "users": "المستخدمون"
     },
     "other": "أخرى",
-    "totalUsers": "مستخدم"
+    "totalUsers": "مستخدم",
+    "analyticsTitle": "إحصاءات الموقع"
   },
   "Inputs": {
     "tagPlaceholder": "اكتب ثم اضغط Enter",
@@ -1088,5 +1094,73 @@
     "newPasswordHint": "{min} أحرف على الأقل.",
     "confirmPassword": "أعد كتابة كلمة المرور الجديدة",
     "changePassword": "تغيير كلمة المرور"
+  },
+  "UnsavedChanges": {
+    "title": "المغادرة دون حفظ؟",
+    "description": "لديك تغييرات غير محفوظة في هذه الصفحة وستضيع إذا غادرت الآن.",
+    "stay": "متابعة التعديل",
+    "leave": "مغادرة"
+  },
+  "Editor": {
+    "jumpTo": "الانتقال إلى قسم",
+    "hasErrors": "يحتوي على أخطاء",
+    "livePreview": "معاينة مباشرة",
+    "desktop": "عرض سطح المكتب",
+    "mobile": "عرض الجوال",
+    "reload": "إعادة تحميل المعاينة",
+    "openTab": "فتح في تبويب جديد",
+    "closePreview": "إغلاق المعاينة",
+    "showPreview": "معاينة مباشرة",
+    "hidePreview": "إخفاء المعاينة",
+    "previewAfterFirstSave": "احفظ مرة واحدة لترى المعاينة المباشرة.",
+    "autosaving": "جارٍ حفظ المسودة…",
+    "autosaved": "تم حفظ المسودة وتحديث المعاينة",
+    "autosaveInvalid": "المعاينة متوقفة: بعض الحقول تحتاج إلى مراجعة.",
+    "autosaveError": "تعذّر حفظ المسودة للمعاينة.",
+    "autosaveHint": "تُحفظ تعديلاتك كمسودة أثناء الكتابة وتظهر هنا. انشرها لتصبح مباشرة على الموقع."
+  },
+  "Overview": {
+    "loadError": "تعذّر تحميل الملخص.",
+    "editHome": "تعديل الصفحة الرئيسية",
+    "newProject": "مشروع جديد",
+    "newSolution": "حل جديد",
+    "openWebsite": "فتح الموقع",
+    "published": "{count} منشور",
+    "pendingTitle": "بانتظار النشر",
+    "pendingDescription": "{count, plural, one {تغيير واحد غير منشور} two {تغييران غير منشورين} few {# تغييرات غير منشورة} many {# تغييرًا غير منشور} other {# تغيير غير منشور}}",
+    "pendingEmpty": "كل شيء منشور.",
+    "page": "صفحة",
+    "enquiriesTitle": "استفسارات جديدة",
+    "enquiriesDescription": "{count, plural, =0 {لا توجد رسائل غير مقروءة} one {رسالة غير مقروءة} two {رسالتان غير مقروءتين} few {# رسائل غير مقروءة} many {# رسالة غير مقروءة} other {# رسالة غير مقروءة}}",
+    "enquiriesEmpty": "لا توجد رسائل جديدة.",
+    "viewAll": "عرض الكل",
+    "activityTitle": "آخر النشاطات",
+    "activityEmpty": "لا شيء بعد.",
+    "pages": {
+      "home": "الصفحة الرئيسية",
+      "about": "صفحة من نحن",
+      "contact": "صفحة التواصل",
+      "layout": "القائمة والتذييل",
+      "solutions": "صفحة الحلول",
+      "services": "صفحة الخدمات",
+      "work": "صفحة الأعمال"
+    },
+    "lists": {
+      "solutions": "الحلول",
+      "services": "الخدمات",
+      "projects": "المشاريع",
+      "clients": "العملاء",
+      "partners": "الشركاء",
+      "offices": "المكاتب"
+    },
+    "actions": {
+      "create": "أنشأ",
+      "update": "عدّل",
+      "publish": "نشر",
+      "unpublish": "ألغى نشر",
+      "discard": "تجاهل تغييرات",
+      "delete": "حذف",
+      "login": "سجّل الدخول:"
+    }
   }
 }

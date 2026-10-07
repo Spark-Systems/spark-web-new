@@ -17,8 +17,9 @@ import type { Resource } from "@admin/lib/api/resource"
 import type { CollectionKey, CollectionMap, CollectionRow, PublishAction } from "@admin/lib/api/types"
 import { useAuth } from "@admin/lib/auth/auth-provider"
 import { contentResolver } from "./content-resolver"
+import { EditorFrame, type AutosaveResult } from "./editor-frame"
 import { applyApiErrors, useEditorTabs, type EditorTab } from "./editor-shell"
-import { uploadPendingImages } from "./images"
+import { uploadPendingImages, withPlaceholderImages } from "./images"
 import { PublishActions, type PublishPending } from "./publish-actions"
 
 type Values<K extends CollectionKey> = CollectionMap[K]
@@ -126,6 +127,24 @@ export function CollectionEditor<K extends CollectionKey>({
     }
   }
 
+  /** Draft save for the live preview: no toasts, no navigation, never shows field errors. */
+  const saveSilently = async (): Promise<AutosaveResult> => {
+    if (!row || pending) return "error"
+    const before = form.getValues()
+    if (!schema.safeParse(withPlaceholderImages(before)).success) return "invalid"
+    try {
+      const saved = await api.update(row.id, await uploadPendingImages(before, folder))
+      setRow(saved)
+      queryClient.invalidateQueries({ queryKey: resource.queries.all })
+      // Edited again while saving? Keep those edits (they stay unsaved).
+      const unchanged = JSON.stringify(form.getValues()) === JSON.stringify(before)
+      form.reset(toValues(saved), unchanged ? undefined : { keepValues: true })
+      return "saved"
+    } catch {
+      return "error"
+    }
+  }
+
   const remove = async () => {
     if (!row) return
     setPending("delete")
@@ -150,20 +169,30 @@ export function CollectionEditor<K extends CollectionKey>({
           void save(false)
         }}
       >
-        {editorTabs.view}
-        <PublishActions
-          status={row?.status ?? null}
-          isDirty={form.formState.isDirty}
-          pending={pending}
+        <EditorFrame
+          form={form}
+          previewPath={row && previewPath ? previewPath(toValues(row)) : null}
+          saveSilently={saveSilently}
           readOnly={user?.role === "viewer"}
-          cancelHref={listPath}
-          previewPath={row && previewPath ? previewPath(values) : undefined}
-          onSaveDraft={() => void save(false)}
-          onPublish={() => void save(true)}
-          onUnpublish={() => void act("unpublish")}
-          onDiscard={() => void act("discard")}
-          onDelete={row ? () => setConfirmDelete(true) : undefined}
-        />
+          footer={(previewToggle) => (
+            <PublishActions
+              leading={previewToggle}
+              status={row?.status ?? null}
+              isDirty={form.formState.isDirty}
+              pending={pending}
+              readOnly={user?.role === "viewer"}
+              cancelHref={listPath}
+              previewPath={row && previewPath ? previewPath(toValues(row)) : undefined}
+              onSaveDraft={() => void save(false)}
+              onPublish={() => void save(true)}
+              onUnpublish={() => void act("unpublish")}
+              onDiscard={() => void act("discard")}
+              onDelete={row ? () => setConfirmDelete(true) : undefined}
+            />
+          )}
+        >
+          {editorTabs.view}
+        </EditorFrame>
       </form>
       <DeleteDialog
         open={confirmDelete}

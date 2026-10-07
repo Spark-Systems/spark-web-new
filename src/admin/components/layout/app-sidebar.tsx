@@ -58,6 +58,18 @@ function useNavBadge(badge: NavBadge | undefined) {
   return badge === "newEnquiries" ? (data?.new ?? 0) : 0;
 }
 
+/** Inline count pill for parent and sub items (top-level links use SidebarMenuBadge). */
+function InlineBadge({ badge }: { badge: NavBadge | undefined }) {
+  const format = useFormatter();
+  const count = useNavBadge(badge);
+  if (!count) return null;
+  return (
+    <span className="bg-primary text-primary-foreground ms-auto rounded-full px-1.5 text-xs leading-5 font-medium tabular-nums group-data-[collapsible=icon]:hidden">
+      {format.number(count)}
+    </span>
+  );
+}
+
 const menuButtonClass =
   "text-muted-foreground hover:text-foreground h-10 gap-3 rounded-lg px-3 data-active:bg-accent data-active:text-accent-foreground data-active:hover:bg-accent data-active:hover:text-accent-foreground [&[data-active]>svg]:text-primary";
 
@@ -155,6 +167,7 @@ function NavSubItems({ items }: { items: NavItem[] }) {
               render={<Link href={item.href ?? "#"} onClick={closeOnNavigate} />}
             >
               <span>{t(item.labelKey)}</span>
+              <InlineBadge badge={item.badge} />
             </SidebarMenuSubButton>
           </SidebarMenuSubItem>
         ),
@@ -283,6 +296,7 @@ function NavTopItem({
       >
         {Icon && <Icon />}
         <span>{label}</span>
+        {!open && <InlineBadge badge={item.badge} />}
         <Chevron />
       </CollapsibleTrigger>
       <CollapsibleContent className={panelClass}>

@@ -34,27 +34,34 @@ function mapPending(value: unknown, replace: (image: PendingImage) => unknown): 
 /** The form values as validation should see them: pending pictures count as present. */
 export const withPlaceholderImages = <T>(values: T): T => mapPending(values, () => PLACEHOLDER) as T
 
+// One upload per picked file, even across saves (auto-save may run several times
+// before the form's values are replaced with the stored pictures).
+const uploads = new WeakMap<File, Promise<UploadedImage>>()
+
+function uploadOnce(file: File, folder: string) {
+  let upload = uploads.get(file)
+  if (!upload) {
+    upload = uploadsApi.upload(file, folder).then((result) => {
+      const stored: Partial<typeof result> = { ...result }
+      delete stored.url // same as src; not part of a stored picture
+      return stored as UploadedImage
+    })
+    // A failed upload may be retried on the next save.
+    upload.catch(() => uploads.delete(file))
+    uploads.set(file, upload)
+  }
+  return upload
+}
+
 /**
  * Uploads every pending picture in `values` (each file once, even if used in
  * several places) into `folder` and returns the values with the stored pictures.
  */
 export async function uploadPendingImages<T>(values: T, folder: string): Promise<T> {
-  const files = new Map<File, Promise<UploadedImage>>()
-  mapPending(values, (image) => {
-    if (!files.has(image.file)) {
-      files.set(
-        image.file,
-        uploadsApi.upload(image.file, folder).then((result) => {
-          const stored: Partial<typeof result> = { ...result }
-          delete stored.url // same as src; not part of a stored picture
-          return stored as UploadedImage
-        }),
-      )
-    }
-    return image
-  })
+  const files = new Set<File>()
+  mapPending(values, (image) => files.add(image.file))
   const uploaded = new Map<File, UploadedImage>()
-  await Promise.all([...files].map(async ([file, upload]) => uploaded.set(file, await upload)))
+  await Promise.all([...files].map(async (file) => uploaded.set(file, await uploadOnce(file, folder))))
   return mapPending(values, (image) => uploaded.get(image.file)) as T
 }
 

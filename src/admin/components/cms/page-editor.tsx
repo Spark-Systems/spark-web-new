@@ -14,8 +14,9 @@ import type { PageContentMap, PageDocument, PageKey } from "@admin/lib/api/types
 import { useAuth } from "@admin/lib/auth/auth-provider"
 import { pageSchemas } from "@/lib/cms/schemas"
 import { contentResolver } from "./content-resolver"
+import { EditorFrame, type AutosaveResult } from "./editor-frame"
 import { applyApiErrors, useEditorTabs, type EditorTab } from "./editor-shell"
-import { uploadPendingImages } from "./images"
+import { uploadPendingImages, withPlaceholderImages } from "./images"
 import { PublishActions, type PublishPending } from "./publish-actions"
 
 export interface PageEditorProps<K extends PageKey> {
@@ -62,6 +63,23 @@ function PageForm<K extends PageKey>({ page, previewPath, tabs, doc: initial }: 
       }
     }, editorTabs.showFirstError)()
 
+  /** Draft save for the live preview: no toasts, never shows field errors. */
+  const saveSilently = async (): Promise<AutosaveResult> => {
+    if (pending) return "error"
+    const before = form.getValues()
+    if (!pageSchemas[page].safeParse(withPlaceholderImages(before)).success) return "invalid"
+    try {
+      const saved = await pagesApi.save(page, await uploadPendingImages(before, "pages"))
+      setDoc(saved)
+      queryClient.setQueryData(pageQueries.detail(page).queryKey, saved)
+      const unchanged = JSON.stringify(form.getValues()) === JSON.stringify(before)
+      form.reset(saved.content, unchanged ? undefined : { keepValues: true })
+      return "saved"
+    } catch {
+      return "error"
+    }
+  }
+
   const discard = async () => {
     setPending("discard")
     try {
@@ -82,17 +100,27 @@ function PageForm<K extends PageKey>({ page, previewPath, tabs, doc: initial }: 
         void save(false)
       }}
     >
-      {editorTabs.view}
-      <PublishActions
-        status={doc.status}
-        isDirty={form.formState.isDirty}
-        pending={pending}
-        readOnly={user?.role === "viewer"}
+      <EditorFrame
+        form={form}
         previewPath={previewPath}
-        onSaveDraft={() => void save(false)}
-        onPublish={() => void save(true)}
-        onDiscard={() => void discard()}
-      />
+        saveSilently={saveSilently}
+        readOnly={user?.role === "viewer"}
+        footer={(previewToggle) => (
+          <PublishActions
+            leading={previewToggle}
+            status={doc.status}
+            isDirty={form.formState.isDirty}
+            pending={pending}
+            readOnly={user?.role === "viewer"}
+            previewPath={previewPath}
+            onSaveDraft={() => void save(false)}
+            onPublish={() => void save(true)}
+            onDiscard={() => void discard()}
+          />
+        )}
+      >
+        {editorTabs.view}
+      </EditorFrame>
     </form>
   )
 }
