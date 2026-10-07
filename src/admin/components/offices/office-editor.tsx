@@ -63,7 +63,6 @@ function OfficeFields({ form }: { form: UseFormReturn<OfficeRecord> }) {
         <FormInput control={control} name="city" label={t("city")} required maxLength={80} autoFocus />
         <FormInput control={control} name="country" label={t("country")} required maxLength={80} />
         <FormInput control={control} name="time_zone" label={t("timeZone")} description={t("timeZoneHint")} required dir="ltr" placeholder="Africa/Cairo" />
-        <FormNumberInput control={control} name="order" label={tf("order")} description={tf("orderHint")} required min={-9999} max={9999} />
         <FormCheckbox control={control} name="hq" label={t("hq")} description={t("hqHint")} className="lg:col-span-2" />
       </FormSection>
       <FormSection title={t("locationTitle")} description={t("locationHint")}>
@@ -90,6 +89,9 @@ function OfficeFields({ form }: { form: UseFormReturn<OfficeRecord> }) {
             </>
           )}
         </FormRepeater>
+      </FormSection>
+      <FormSection title={tf("orderSection")} description={tf("orderSectionHint")}>
+        <FormNumberInput control={control} name="order" label={tf("order")} required min={-9999} max={9999} />
       </FormSection>
     </div>
   )

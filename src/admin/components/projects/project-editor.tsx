@@ -38,9 +38,9 @@ function GeneralFields({ form }: { form: UseFormReturn<ProjectRecord> }) {
       <FormInput control={control} name="name" label={tf("name")} required maxLength={120} autoFocus />
       <FormInput control={control} name="slug" label={tf("slug")} description={t("slugHint")} required dir="ltr" maxLength={SLUG_MAX} />
       <FormInput control={control} name="category" label={t("category")} description={t("categoryHint")} required maxLength={60} />
-      <FormNumberInput control={control} name="order" label={tf("order")} description={tf("orderHint")} required min={-9999} max={9999} />
       <FormTextarea control={control} name="summary" label={t("summary")} description={t("summaryHint")} required rows={2} maxLength={300} className="lg:col-span-2" />
       <FormImage control={control} name="image" label={tf("image")} description={t("imageHint")} required className="lg:col-span-2" />
+      <FormNumberInput control={control} name="order" label={tf("order")} description={tf("orderHint")} required min={-9999} max={9999} />
     </FormSection>
   )
 }

@@ -57,13 +57,13 @@ export function LogoItemEditor({ kind, row }: { kind: LogoItemsKind; row?: Colle
                 maxLength={500}
               />
               <FormImage control={control} name="logo" label={t("form.logo")} description={t("form.logoHint")} required svg className="lg:col-span-2" />
-              <FormNumberInput control={control} name="order" label={tf("order")} description={tf("orderHint")} required min={-9999} max={9999} />
-              <div className="flex flex-col gap-4 lg:pt-8">
+              <div className="flex flex-col gap-4 lg:col-span-2 lg:flex-row lg:gap-8">
                 <FormCheckbox control={control} name="invert" label={t("form.invert")} description={t("form.invertHint")} />
                 {config.showNameOption && (
                   <FormCheckbox control={control} name="show_name" label={t("form.showName")} description={t("form.showNameHint")} />
                 )}
               </div>
+              <FormNumberInput control={control} name="order" label={tf("order")} description={tf("orderHint")} required min={-9999} max={9999} />
             </FormSection>
           ),
         },

@@ -424,7 +424,7 @@
       "slugHint": "Its page address: /solutions/this-url. Changing it breaks old links.",
       "imageHint": "A wide picture (at least 1600px), up to 4 MB.",
       "flagshipTitle": "Flagship card",
-      "flagshipHint": "Flagships get a large card at the top of /solutions.",
+      "flagshipHint": "Flagships get a large card at the top of /solutions. Order sets the position in both lists.",
       "flagship": "Show as a flagship",
       "flagshipCheckHint": "Needs a description.",
       "tags": "Card tags",
@@ -626,7 +626,9 @@
     "author": "Name",
     "role": "Job title",
     "company": "Company",
-    "logo": "Logo"
+    "logo": "Logo",
+    "orderSection": "Position in the list",
+    "orderSectionHint": "Where this appears among the others. Lower numbers come first."
   },
   "Offering": {
     "overviewTitle": "Overview",

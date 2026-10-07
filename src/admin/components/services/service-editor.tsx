@@ -48,8 +48,8 @@ function GeneralFields({ form }: { form: UseFormReturn<ServiceRecord> }) {
       </FormSection>
       <FormSection title={t("displayTitle")} description={t("displayHint")}>
         <IconField control={control} name="icon" />
-        <FormNumberInput control={control} name="order" label={tf("order")} description={tf("orderHint")} required min={-9999} max={9999} />
         <FormImage control={control} name="image" label={tf("image")} description={t("imageHint")} required className="lg:col-span-2" />
+        <FormNumberInput control={control} name="order" label={tf("order")} description={tf("orderHint")} required min={-9999} max={9999} />
       </FormSection>
     </div>
   )

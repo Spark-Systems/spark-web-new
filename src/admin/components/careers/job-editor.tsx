@@ -50,7 +50,6 @@ export function JobEditor({ row }: { row?: CollectionRow<JobRecord> }) {
                 <FormSection title={t("form.detailsTitle")} description={t("form.detailsHint")}>
                   <FormInput control={control} name="title" label={t("form.title")} required maxLength={120} autoFocus />
                   <FormInput control={control} name="location" label={t("form.location")} description={t("form.locationHint")} required maxLength={120} />
-                  <FormNumberInput control={control} name="order" label={tf("order")} description={tf("orderHint")} required min={-9999} max={9999} />
                 </FormSection>
                 <FormSection title={t("form.groupsTitle")} description={t("form.groupsHint")}>
                   <FormRepeater
@@ -80,6 +79,9 @@ export function JobEditor({ row }: { row?: CollectionRow<JobRecord> }) {
                       </>
                     )}
                   </FormRepeater>
+                </FormSection>
+                <FormSection title={tf("orderSection")} description={tf("orderSectionHint")}>
+                  <FormNumberInput control={control} name="order" label={tf("order")} required min={-9999} max={9999} />
                 </FormSection>
               </div>
             ),
