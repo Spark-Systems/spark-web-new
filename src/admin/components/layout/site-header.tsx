@@ -114,7 +114,7 @@ export function SiteHeader() {
       </span>
       <Greeting />
       <div className="ms-auto flex items-center gap-2">
-        <LocaleSwitcher className={headerIconButton} />
+        {/* <LocaleSwitcher className={headerIconButton} /> */}
         <ThemeToggle className={headerIconButton} />
         <NotificationsMenu />
         <UserMenu />
