@@ -1,9 +1,12 @@
 import "server-only";
 
 import type {
+  Application,
   CollectionKey,
   CollectionMap,
   Enquiry,
+  InsightRecord,
+  JobRecord,
   LogoRecord,
   OfficeRecord,
   ProjectRecord,
@@ -46,7 +49,18 @@ export const collections: { [K in CollectionKey]: Collection<CollectionMap[K]> }
   clients: defineCollection<LogoRecord>({ key: "clients", idPrefix: "cli", noun: "Client", title: (c) => c.name }),
   partners: defineCollection<LogoRecord>({ key: "partners", idPrefix: "par", noun: "Partner", title: (p) => p.name }),
   offices: defineCollection<OfficeRecord>({ key: "offices", idPrefix: "off", noun: "Office", title: (o) => o.city }),
+  jobs: defineCollection<JobRecord>({ key: "jobs", idPrefix: "job", noun: "Role", title: (j) => j.title }),
+  insights: defineCollection<InsightRecord>({
+    key: "insights",
+    idPrefix: "ins",
+    noun: "Article",
+    title: (a) => a.title,
+    unique: ["slug"],
+  }),
 };
 
 /** Messages from the website's contact form, newest last. */
 export const enquiries = defineRecords<Enquiry>("enquiries", { label: "Enquiry", limit: 5000 });
+
+/** Job applications from the careers page, newest last (CV files are stored separately, see server/applications). */
+export const applications = defineRecords<Application>("applications", { label: "Application", limit: 5000 });

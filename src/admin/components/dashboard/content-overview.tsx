@@ -23,6 +23,8 @@ const pagePaths: Record<string, string> = {
   solutions: adminPaths.solutionsPage,
   services: adminPaths.servicesPage,
   work: adminPaths.workPage,
+  careers: adminPaths.careersPage,
+  insights: adminPaths.insightsPage,
 }
 
 const listPaths: Record<string, string> = {
@@ -32,10 +34,12 @@ const listPaths: Record<string, string> = {
   clients: adminPaths.clients,
   partners: adminPaths.partners,
   offices: adminPaths.offices,
+  jobs: adminPaths.careers,
+  insights: adminPaths.insights,
 }
 
-type ListKey = "solutions" | "services" | "projects" | "clients" | "partners" | "offices"
-type PageKey = "home" | "about" | "contact" | "layout" | "solutions" | "services" | "work"
+type ListKey = "solutions" | "services" | "projects" | "clients" | "partners" | "offices" | "jobs" | "insights"
+type PageKey = "home" | "about" | "contact" | "layout" | "solutions" | "services" | "work" | "careers" | "insights"
 
 const hrefOf = (item: Overview["pending"][number]) =>
   item.kind === "page" ? pagePaths[item.resource] : `${listPaths[item.resource]}/${item.id}/edit`

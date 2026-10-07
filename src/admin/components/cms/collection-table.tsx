@@ -63,6 +63,10 @@ export interface CollectionTableProps<K extends CollectionKey> {
   newLabel: string
   /** Website page that shows a row, for the Preview action. */
   previewPath?: (row: Row<K>) => string
+  /** Initial sort (default: display order). */
+  defaultSort?: { id: string; desc: boolean }
+  /** Hide the Order column (lists not sorted by it, e.g. articles by date). */
+  hideOrder?: boolean
 }
 
 /**
@@ -81,6 +85,8 @@ export function CollectionTable<K extends CollectionKey>({
   facets = [],
   newLabel,
   previewPath,
+  defaultSort = { id: "order", desc: false },
+  hideOrder = false,
 }: CollectionTableProps<K>) {
   const t = useTranslations("Publish")
   const tTable = useTranslations("DataTable")
@@ -89,7 +95,7 @@ export function CollectionTable<K extends CollectionKey>({
   const { user } = useAuth()
   const canEdit = user?.role !== "viewer"
   const { api, queries } = resource
-  const [query, setQuery] = useDataTableQuery({ sort: { id: "order", desc: false } })
+  const [query, setQuery] = useDataTableQuery({ sort: defaultSort })
   const { data, isPending, isFetching, isError, refetch } = useQuery(queries.list(query))
   const [toDelete, setToDelete] = useState<{ rows: Row<K>[]; done?: () => void } | null>(null)
 
@@ -125,14 +131,15 @@ export function CollectionTable<K extends CollectionKey>({
 
   const columns = useMemo(() => {
     const col = dataTableColumnHelper<Row<K>>()
+    const orderColumn = col.accessor((row) => row.order, {
+      id: "order",
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t("columns.order")} />,
+      cell: ({ row }) => <span className="tabular-nums">{format.number(row.original.order)}</span>,
+      meta: { className: "w-24" },
+    })
     return [
       ...ownColumns,
-      col.accessor((row) => row.order, {
-        id: "order",
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t("columns.order")} />,
-        cell: ({ row }) => <span className="tabular-nums">{format.number(row.original.order)}</span>,
-        meta: { className: "w-24" },
-      }),
+      ...(hideOrder ? [] : [orderColumn]),
       col.accessor((row) => row.status, {
         id: "status",
         header: ({ column }) => <DataTableColumnHeader column={column} title={t("columns.status")} />,
@@ -201,7 +208,7 @@ export function CollectionTable<K extends CollectionKey>({
         meta: { className: "w-20", align: "center" },
       }),
     ]
-  }, [ownColumns, t, tTable, format, basePath, nameOf, previewPath, canEdit, act])
+  }, [ownColumns, hideOrder, t, tTable, format, basePath, nameOf, previewPath, canEdit, act])
 
   if (isError && !data) return <QueryError message={t("loadError")} onRetry={() => refetch()} />
 
@@ -265,7 +272,7 @@ export function CollectionTable<K extends CollectionKey>({
           fetchRows: () => fetchAllRows(api.list, query),
           columns: [
             ...exportColumns,
-            { header: t("columns.order"), value: (row) => row.order, type: "number" },
+            ...(hideOrder ? [] : [{ header: t("columns.order"), value: (row: Row<K>) => row.order, type: "number" as const }]),
             { header: t("columns.status"), value: (row) => t(`status.${row.status}`) },
           ],
         }}

@@ -1,7 +1,8 @@
 import type { StaticImageData } from "next/image";
 import type { AboutPageData } from "./about";
+import type { ApplyContent, RoleGroup } from "./careers";
 import type { ContactLine, ContactPageData } from "./contact";
-import type { ContactContent, IconName, MenuItem, NavLink, PageHeroContent, PageSeo, SectionIntro } from "./content";
+import type { ContactContent, IconName, ImageSource, MenuItem, NavLink, PageHeroContent, PageSeo, SectionIntro } from "./content";
 import type {
   HomeAiSection,
   HomeHero,
@@ -140,6 +141,32 @@ export interface OfficeRecord {
   order: number;
 }
 
+/** An open position on the careers page. */
+export interface JobRecord {
+  title: string;
+  location: string;
+  groups: RoleGroup[];
+  order: number;
+}
+
+/** An article on the insights page (/insights/[slug]). */
+export interface InsightRecord {
+  slug: string;
+  title: string;
+  /** Filter it belongs to ("Cloud", "Company news", …). */
+  category: string;
+  /** Publication date shown on the site (YYYY-MM-DD); articles are listed newest first. */
+  date: string;
+  summary: string;
+  image: ImageSource;
+  /** Highlighted at the top of the insights page (the newest featured one wins). */
+  featured: boolean;
+  /** Article body as HTML (rich text editor). */
+  body: string;
+  /** Unused for sorting (articles sort by date); kept for the shared list behaviour. */
+  order: number;
+}
+
 /** Draft/publish lists, by API path. */
 export interface CollectionMap {
   solutions: SolutionRecord;
@@ -148,6 +175,8 @@ export interface CollectionMap {
   clients: LogoRecord;
   partners: LogoRecord;
   offices: OfficeRecord;
+  jobs: JobRecord;
+  insights: InsightRecord;
 }
 export type CollectionKey = keyof CollectionMap;
 
@@ -199,6 +228,22 @@ export interface ContactPageContent {
   enquiry: Omit<ContactPageData["enquiry"], "email" | "socials">;
 }
 
+export interface CareersPageContent {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  /** Roles come from the jobs list. */
+  roles: SectionIntro;
+  apply: ApplyContent;
+}
+
+export interface InsightsPageContent {
+  seo: PageSeo;
+  hero: PageHeroContent;
+  featured: { eyebrow: string; ctaLabel: string };
+  /** Articles come from the insights list. */
+  posts: SectionIntro & { allLabel: string };
+}
+
 /** Site-wide content: the menu, footer and shared contact copy. */
 export interface LayoutContent {
   email: string;
@@ -217,6 +262,8 @@ export interface PageContentMap {
   services: ServicesPageContent;
   work: WorkPageContent;
   contact: ContactPageContent;
+  careers: CareersPageContent;
+  insights: InsightsPageContent;
   layout: LayoutContent;
 }
 export type PageKey = keyof PageContentMap;
@@ -283,6 +330,28 @@ export interface Enquiry {
   created_at: string;
   /** The page it was sent from. */
   source: string;
+}
+
+/** A CV attached to a job application (the file itself is stored privately). */
+export interface ApplicationCv {
+  name: string;
+  type: string;
+  size: number;
+}
+
+/** A job application sent from the careers page. */
+export interface Application {
+  id: string;
+  name: string;
+  email: string;
+  mobile: string;
+  country: string;
+  /** Role applied for ("" for an open application). */
+  position: string;
+  cover_letter: string;
+  cv: ApplicationCv | null;
+  status: EnquiryStatus;
+  created_at: string;
 }
 
 export type UserRole = "admin" | "editor" | "viewer";

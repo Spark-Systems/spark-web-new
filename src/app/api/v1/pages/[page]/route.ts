@@ -1,7 +1,9 @@
 import {
   getAboutPage,
+  getCareersPage,
   getContactPage,
   getHomePage,
+  getInsightsPage,
   getServicesPage,
   getSiteLayout,
   getSolutionsPage,
@@ -18,13 +20,15 @@ const readers: Record<PageKey, () => Promise<unknown>> = {
   services: getServicesPage,
   work: getWorkPage,
   contact: getContactPage,
+  careers: getCareersPage,
+  insights: getInsightsPage,
   layout: getSiteLayout,
 };
 
 /**
  * GET /api/v1/pages/:page: a website page's published content, exactly as the
  * site renders it (lists filled in). Pages: home, about, solutions, services,
- * work, contact, and layout (menu, footer, company details).
+ * work, contact, careers, insights, and layout (menu, footer, company details).
  */
 export const GET = handle<{ params: Promise<{ page: string }> }>(async (_request, { params }) =>
   json(await readers[await pageKeyParam(params)]()),

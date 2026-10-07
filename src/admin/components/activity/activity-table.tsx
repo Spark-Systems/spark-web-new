@@ -26,7 +26,7 @@ const tones: Record<ActivityAction, StatusTone> = {
   delete: "danger",
   login: "neutral",
 }
-const resources = ["pages", "solutions", "services", "projects", "clients", "partners", "offices", "enquiries", "users", "settings", "auth"] as const
+const resources = ["pages", "solutions", "services", "projects", "clients", "partners", "offices", "jobs", "insights", "enquiries", "applications", "users", "settings", "auth"] as const
 
 /** Who changed what, newest first. */
 export function ActivityTable() {

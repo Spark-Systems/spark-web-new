@@ -61,7 +61,12 @@
     "allServices": "جميع الخدمات",
     "projects": "المشاريع",
     "pageText": "نصوص الصفحة",
-    "site": "الموقع"
+    "site": "الموقع",
+    "careers": "الوظائف",
+    "insights": "المقالات",
+    "openRoles": "الوظائف المتاحة",
+    "applications": "طلبات التوظيف",
+    "articles": "المقالات"
   },
   "Header": {
     "theme": "المظهر",
@@ -891,7 +896,22 @@
     "featuredHint": "المشروع المميز مع الأرقام.",
     "featuredProject": "دراسة الحالة",
     "ctaLabel": "الزر",
-    "summary": "الملخص"
+    "summary": "الملخص",
+    "navRoles": "الوظائف",
+    "navApplications": "الطلبات",
+    "navArticles": "المقالات",
+    "rolesTitle": "الوظائف المتاحة",
+    "rolesHint": "أعلى قائمة الوظائف.",
+    "applyTitle": "نموذج التقديم",
+    "applyHint": "النموذج الذي يستخدمه المتقدمون.",
+    "countries": "الدول",
+    "countriesHint": "الخيارات في قائمة الدول بالنموذج.",
+    "successMessage": "رسالة الشكر",
+    "featuredArticleTitle": "المقال المميز",
+    "featuredArticleHint": "المقال الكبير في الأعلى: أحدث مقال مميز.",
+    "postsTitle": "كل المقالات",
+    "postsHint": "أعلى شبكة المقالات القابلة للتصفية.",
+    "allPostsHint": "الفلتر الذي يعرض كل المقالات."
   },
   "ContactEditor": {
     "tabs": {
@@ -1055,7 +1075,10 @@
       "enquiries": "الاستفسارات",
       "users": "المستخدمون",
       "settings": "الإعدادات",
-      "auth": "تسجيل الدخول"
+      "auth": "تسجيل الدخول",
+      "jobs": "الوظائف",
+      "insights": "المقالات",
+      "applications": "طلبات التوظيف"
     },
     "columns": {
       "when": "الوقت",
@@ -1143,7 +1166,9 @@
       "layout": "القائمة والتذييل",
       "solutions": "صفحة الحلول",
       "services": "صفحة الخدمات",
-      "work": "صفحة الأعمال"
+      "work": "صفحة الأعمال",
+      "careers": "صفحة الوظائف",
+      "insights": "صفحة المقالات"
     },
     "lists": {
       "solutions": "الحلول",
@@ -1151,7 +1176,9 @@
       "projects": "المشاريع",
       "clients": "العملاء",
       "partners": "الشركاء",
-      "offices": "المكاتب"
+      "offices": "المكاتب",
+      "jobs": "الوظائف المتاحة",
+      "insights": "المقالات"
     },
     "actions": {
       "create": "أنشأ",
@@ -1161,6 +1188,119 @@
       "discard": "تجاهل تغييرات",
       "delete": "حذف",
       "login": "سجّل الدخول:"
+    }
+  },
+  "Jobs": {
+    "title": "الوظائف المتاحة",
+    "description": "الوظائف المعروضة في صفحة الوظائف.",
+    "newTitle": "وظيفة جديدة",
+    "editTitle": "تعديل الوظيفة",
+    "new": "وظيفة جديدة",
+    "pageTitle": "صفحة الوظائف",
+    "pageDescription": "نصوص صفحة ‎/careers ونموذج التقديم.",
+    "columns": {
+      "title": "الوظيفة",
+      "location": "الموقع"
+    },
+    "form": {
+      "detailsTitle": "الوظيفة",
+      "detailsHint": "كيف تظهر الوظيفة في القائمة.",
+      "title": "المسمى الوظيفي",
+      "location": "الموقع",
+      "locationHint": "مثال: الرياض، السعودية · حضوري",
+      "groupsTitle": "التفاصيل",
+      "groupsHint": "تظهر عند فتح الوظيفة، مثل المتطلبات والمسؤوليات.",
+      "groups": "المجموعات",
+      "addGroup": "إضافة مجموعة",
+      "groupHeading": "العنوان",
+      "groupHeadingHint": "مثال: المتطلبات",
+      "points": "النقاط",
+      "addPoint": "إضافة نقطة"
+    }
+  },
+  "Applications": {
+    "title": "طلبات التوظيف",
+    "description": "الطلبات المرسلة من صفحة الوظائف.",
+    "updated": "تم تحديث {count, plural, one {الطلب} other {# طلبات}}.",
+    "updateError": "تعذر التحديث. حاول مرة أخرى.",
+    "deleted": "تم حذف {count, plural, one {الطلب} other {# طلبات}}.",
+    "deleteError": "تعذر الحذف. حاول مرة أخرى.",
+    "columns": {
+      "received": "تاريخ الاستلام",
+      "applicant": "المتقدم",
+      "position": "الوظيفة",
+      "country": "الدولة",
+      "cv": "السيرة",
+      "status": "الحالة",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "mobile": "الجوال",
+      "coverLetter": "خطاب التقديم"
+    },
+    "status": {
+      "new": "جديد",
+      "read": "مقروء",
+      "archived": "مؤرشف"
+    },
+    "open": "فتح",
+    "openApplication": "طلب عام",
+    "hasCv": "مرفق سيرة ذاتية",
+    "downloadCv": "تنزيل {name}",
+    "noCv": "لا توجد سيرة ذاتية مرفقة.",
+    "cvError": "تعذر تنزيل السيرة الذاتية.",
+    "loadError": "تعذر تحميل الطلبات.",
+    "search": "ابحث بالاسم أو البريد أو الوظيفة",
+    "empty": "لا توجد طلبات بعد.",
+    "markRead": "تعليم كمقروء",
+    "markUnread": "تعليم كغير مقروء",
+    "archive": "أرشفة",
+    "delete": "حذف",
+    "replySubject": "Your application to Spark Systems: {position}",
+    "reply": "الرد بالبريد",
+    "deleteTitle": "حذف {count, plural, one {هذا الطلب} other {# طلبات}}؟",
+    "deleteDescription": "ستُحذف السير الذاتية أيضًا. لا يمكن التراجع.",
+    "deleteConfirm": "حذف",
+    "cancel": "إلغاء"
+  },
+  "Insights": {
+    "title": "المقالات",
+    "description": "مقالات صفحة الرؤى، ولكل مقال صفحته.",
+    "newTitle": "مقال جديد",
+    "editTitle": "تعديل المقال",
+    "new": "مقال جديد",
+    "pageTitle": "صفحة المقالات",
+    "pageDescription": "النصوص حول المقالات في ‎/insights.",
+    "columns": {
+      "title": "العنوان",
+      "cover": "الغلاف",
+      "category": "التصنيف",
+      "date": "التاريخ",
+      "featured": "مميز",
+      "slug": "الرابط",
+      "summary": "الملخص"
+    },
+    "tabs": {
+      "details": "التفاصيل",
+      "body": "المقال"
+    },
+    "form": {
+      "detailsTitle": "التفاصيل",
+      "detailsHint": "كيف يظهر المقال في القائمة.",
+      "slugHint": "عنوان صفحته: ‎/insights/this-url. تغييره يعطل الروابط القديمة.",
+      "category": "التصنيف",
+      "categoryHint": "تُصفّى المقالات حسب التصنيف، مثل Cloud.",
+      "date": "التاريخ",
+      "dateHint": "تُعرض المقالات من الأحدث.",
+      "featured": "تمييز هذا المقال",
+      "featuredHint": "يظهر أحدث مقال مميز بحجم كبير في الأعلى.",
+      "summary": "الملخص",
+      "summaryHint": "جملة أو اثنتان للبطاقة.",
+      "coverTitle": "الغلاف",
+      "coverHint": "صورة عريضة (1600 بكسل على الأقل)، حتى 4 ميجابايت.",
+      "cover": "صورة الغلاف",
+      "bodyTitle": "المقال",
+      "bodyHint": "استخدم العناوين لتقسيمه. تُرفع الصور عند إضافتها.",
+      "body": "النص"
     }
   }
 }

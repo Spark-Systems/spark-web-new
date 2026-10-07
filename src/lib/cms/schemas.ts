@@ -2,6 +2,10 @@ import { z } from "zod";
 
 import type {
   AboutContent,
+  CareersPageContent,
+  InsightRecord,
+  InsightsPageContent,
+  JobRecord,
   AdvancedSettingsRecord,
   CaseStudyContent,
   ContactPageContent,
@@ -221,6 +225,29 @@ export const officeSchema = z.object({
   order,
 }) satisfies z.ZodType<OfficeRecord>;
 
+export const jobSchema = z.object({
+  title: text(120),
+  location: text(120),
+  groups: z
+    .array(z.object({ heading: text(80), items: z.array(text(400)).min(1).max(20) }))
+    .min(1)
+    .max(6),
+  order,
+}) satisfies z.ZodType<JobRecord>;
+
+export const insightSchema = z.object({
+  slug,
+  title: text(200),
+  category: text(60),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Use the format YYYY-MM-DD"),
+  summary: optionalText(400),
+  image: imageSource,
+  featured: z.boolean(),
+  /** Rich text HTML. */
+  body: z.string().max(200_000),
+  order,
+}) satisfies z.ZodType<InsightRecord>;
+
 // ---- Pages ------------------------------------------------------------------
 
 export const homeContentSchema = z.object({
@@ -395,6 +422,25 @@ export const layoutContentSchema = z.object({
   contact: contactContent,
 }) satisfies z.ZodType<LayoutContent>;
 
+export const careersPageSchema = z.object({
+  seo,
+  hero: pageHero,
+  roles: sectionIntro,
+  apply: sectionIntro.extend({
+    lead: text(400),
+    countries: tags(30, 60),
+    submitLabel: text(60),
+    successMessage: text(300),
+  }),
+}) satisfies z.ZodType<CareersPageContent>;
+
+export const insightsPageSchema = z.object({
+  seo,
+  hero: pageHero,
+  featured: z.object({ eyebrow: text(60), ctaLabel: text(60) }),
+  posts: sectionIntro.extend({ allLabel: text(40) }),
+}) satisfies z.ZodType<InsightsPageContent>;
+
 /** Content schema of each page, by API path. */
 export const pageSchemas = {
   home: homeContentSchema,
@@ -403,6 +449,8 @@ export const pageSchemas = {
   services: servicesPageSchema,
   work: workPageSchema,
   contact: contactPageSchema,
+  careers: careersPageSchema,
+  insights: insightsPageSchema,
   layout: layoutContentSchema,
 } satisfies { [K in PageKey]: z.ZodType<PageContentMap[K]> };
 
@@ -478,6 +526,18 @@ export const enquirySubmitSchema = z.object({
   /** Honeypot: hidden from people, so only bots fill it in. */
   website: z.string().max(0).optional(),
   source: optionalText(300).optional(),
+});
+
+/** The careers form (the CV file is sent alongside, as multipart form data). */
+export const applicationSubmitSchema = z.object({
+  name: text(120),
+  email: z.email(),
+  mobile: text(40),
+  country: optionalText(80),
+  position: optionalText(160),
+  cover_letter: optionalText(5000),
+  /** Honeypot: hidden from people, so only bots fill it in. */
+  website: z.string().max(0).optional(),
 });
 
 export const enquiryStatusSchema = z.object({ status: z.enum(["new", "read", "archived"]) });

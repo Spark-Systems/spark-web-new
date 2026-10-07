@@ -1,0 +1,74 @@
+{
+  "draft": {
+    "seo": {
+      "title": "Insights",
+      "description": "News, case studies and cloud notes from the Spark Systems team."
+    },
+    "hero": {
+      "eyebrow": "Insights",
+      "titleLines": [
+        "Notes from",
+        "the build",
+        "floor."
+      ],
+      "image": {
+        "src": {
+          "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "alt": ""
+      }
+    },
+    "featured": {
+      "eyebrow": "Latest",
+      "ctaLabel": "Read article"
+    },
+    "posts": {
+      "eyebrow": "Our blog",
+      "title": "All posts.",
+      "allLabel": "All"
+    }
+  },
+  "published": {
+    "seo": {
+      "title": "Insights",
+      "description": "News, case studies and cloud notes from the Spark Systems team."
+    },
+    "hero": {
+      "eyebrow": "Insights",
+      "titleLines": [
+        "Notes from",
+        "the build",
+        "floor."
+      ],
+      "image": {
+        "src": {
+          "src": "/uploads/images/work/ticketmx-f4eb8210.webp",
+          "width": 2400,
+          "height": 1350,
+          "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAAAwAQCdASoKAAYAA4BaJaQAA3AA/vTSCnrW/hceYVcb19CyZ9YoAAAA",
+          "blurWidth": 10,
+          "blurHeight": 6
+        },
+        "alt": ""
+      }
+    },
+    "featured": {
+      "eyebrow": "Latest",
+      "ctaLabel": "Read article"
+    },
+    "posts": {
+      "eyebrow": "Our blog",
+      "title": "All posts.",
+      "allLabel": "All"
+    }
+  },
+  "created_at": "2026-10-07T09:34:05.143Z",
+  "updated_at": "2026-10-07T09:34:05.143Z",
+  "published_at": "2026-10-07T09:34:05.143Z",
+  "updated_by": "Initial content"
+}

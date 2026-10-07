@@ -5,16 +5,14 @@ import { useMotion } from "@/components/providers/motion-provider";
 import { useScrollController } from "@/components/providers/smooth-scroll-provider";
 import { useFrame } from "@/hooks/use-frame";
 import { useViewport } from "@/hooks/use-viewport";
-import { clamp, easeInOutCubic, easeOutCubic, lerp } from "@/lib/motion/math";
-import type { BallSwarm } from "@/lib/three/ball-swarm";
+import { ParticleSphere } from "@/lib/canvas/particle-sphere";
+import { clamp, easeOutCubic } from "@/lib/motion/math";
 import { cn } from "@/lib/utils";
 import type { AiCapability } from "@/types/content";
 
 const SCENE_LENGTH = 3.1; // in viewport heights, when pinned
-/** Formation "order" at each anchor (0 = scattered cloud, 1 = grid). */
-const ORDER_AT_STEP = [0, 0.4, 0.74, 1];
-/** How quickly the formation catches up with its scroll target (higher = snappier). */
-const FOLLOW_RATE = 7;
+/** Steps (scroll progress) by which the cloud has fully become a sphere. */
+const SPHERE_AT = 2.5;
 /** How quickly card reveals catch up with scroll (higher = snappier). */
 const REVEAL_RATE = 9;
 /** Share of a step (0–1) over which a card fades in while the swarm flies to it. */
@@ -24,34 +22,20 @@ const STEP_THRESHOLD = 0.04;
 /** Duration (s) of the glide to a step; input is locked meanwhile. */
 const STEP_SECONDS = 0.8;
 
-interface Anchor {
-  x: number;
-  y: number;
-  size: number;
-}
-
-/** Centre and size of `el`, relative to `origin`. */
-function anchorOf(el: Element, origin: DOMRect): Anchor {
-  const r = el.getBoundingClientRect();
-  return { x: r.left - origin.left + r.width / 2, y: r.top - origin.top + r.height / 2, size: r.width };
-}
-
 interface AiSceneProps {
   heading: ReactNode;
   capabilities: AiCapability[];
 }
 
 /**
- * A three.js swarm of spheres that starts as a loose cloud beside the heading.
- * As the user scrolls and each capability card appears, the swarm flies to
- * that card's top-right corner, tightening into a grid as it goes.
+ * Glowing red particles behind the heading that start as a loose, drifting
+ * cloud and gather into a rotating sphere as the capability cards appear.
  *
- * On desktop the section pins and works as a stepper: scroll doesn't scrub
- * the swarm — a small scroll steps it to the next (or previous) card, and the
- * page glides, input locked, to that step's scroll position. Past either end
- * the page scrolls normally. On mobile (or when the content is taller than
- * the screen) it scrolls normally and progress follows the cards entering
- * the viewport.
+ * On desktop the section pins and works as a stepper: a small scroll steps to
+ * the next (or previous) card, and the page glides, input locked, to that
+ * step's scroll position. Past either end the page scrolls normally. On mobile
+ * (or when the content is taller than the screen) it scrolls normally and the
+ * sphere forms as the last card comes into view.
  */
 export function AiScene({ heading, capabilities }: AiSceneProps) {
   const motion = useMotion();
@@ -60,58 +44,34 @@ export function AiScene({ heading, capabilities }: AiSceneProps) {
   const seqRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const heroSlotRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const cornerRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const swarmRef = useRef<BallSwarm | null>(null);
-  const follow = useRef<(Anchor & { order: number }) | null>(null);
+  const sphereRef = useRef<ParticleSphere | null>(null);
   const reveals = useRef<number[]>(capabilities.map(() => 1));
   const lastTime = useRef(0);
   const stepper = useRef({ step: 0, lockedUntil: 0 });
   const [pinned, setPinned] = useState(false);
   const steps = capabilities.length;
 
-  // three.js is loaded on demand so it stays out of the initial bundle.
   useEffect(() => {
     const canvas = canvasRef.current;
     const section = sectionRef.current;
     if (!canvas || !section) return;
+    const sphere = new ParticleSphere(canvas);
+    sphereRef.current = sphere;
 
-    let disposed = false;
-    let cleanup = () => {};
-
-    import("@/lib/three/ball-swarm").then(({ BallSwarm }) => {
-      if (disposed) return;
-      const swarm = new BallSwarm(canvas);
-      swarmRef.current = swarm;
-
-      const resize = () => swarm.setSize(section.clientWidth, section.clientHeight);
-      const observer = new ResizeObserver(resize);
-      observer.observe(section);
-      resize();
-
-      const onMove = (e: PointerEvent) => {
-        const r = section.getBoundingClientRect();
-        swarm.setPointer(e.clientX - r.left, e.clientY - r.top);
-      };
-      const onLeave = () => swarm.clearPointer();
-      section.addEventListener("pointermove", onMove);
-      section.addEventListener("pointerdown", onMove);
-      section.addEventListener("pointerleave", onLeave);
-
-      cleanup = () => {
-        observer.disconnect();
-        section.removeEventListener("pointermove", onMove);
-        section.removeEventListener("pointerdown", onMove);
-        section.removeEventListener("pointerleave", onLeave);
-        swarm.dispose();
-        swarmRef.current = null;
-      };
-    });
-
+    const onMove = (e: PointerEvent) => {
+      const r = canvas.getBoundingClientRect();
+      sphere.setPointer(e.clientX - r.left, e.clientY - r.top);
+    };
+    const onLeave = () => sphere.clearPointer();
+    section.addEventListener("pointermove", onMove);
+    section.addEventListener("pointerdown", onMove);
+    section.addEventListener("pointerleave", onLeave);
     return () => {
-      disposed = true;
-      cleanup();
+      section.removeEventListener("pointermove", onMove);
+      section.removeEventListener("pointerdown", onMove);
+      section.removeEventListener("pointerleave", onLeave);
+      sphereRef.current = null;
     };
   }, []);
 
@@ -132,8 +92,7 @@ export function AiScene({ heading, capabilities }: AiSceneProps) {
   useFrame((now) => {
     const seq = seqRef.current;
     const section = sectionRef.current;
-    const heroSlot = heroSlotRef.current;
-    if (!seq || !section || !heroSlot) return;
+    if (!seq || !section) return;
 
     const winH = window.innerHeight;
     const shouldPin = motion && !isMobile && section.scrollHeight <= winH + 2;
@@ -188,37 +147,14 @@ export function AiScene({ heading, capabilities }: AiSceneProps) {
       card.style.filter = e > 0.999 ? "none" : `blur(${((1 - e) * 6).toFixed(2)}px)`;
     });
 
-    const swarm = swarmRef.current;
-    if (!swarm) return;
-
-    // Anchor 0 is the slot beside the heading; anchor k is card k's top-right corner.
-    const anchors = [heroSlot, ...cornerRefs.current].map((el) => (el ? anchorOf(el, box) : null));
-    const k = Math.min(steps - 1, Math.floor(progress));
-    const t = easeInOutCubic(progress - k);
-    const from = anchors[k];
-    const to = anchors[k + 1] ?? from;
-    if (!from || !to) return;
-
-    const target = {
-      x: lerp(from.x, to.x, t),
-      y: lerp(from.y, to.y, t),
-      size: lerp(from.size, to.size, t),
-      order: lerp(ORDER_AT_STEP[k], ORDER_AT_STEP[k + 1] ?? 1, t),
-    };
-
-    // Ease towards the target so the swarm glides instead of tracking scroll 1:1.
-    const cur = follow.current;
-    if (!cur || !motion) {
-      follow.current = target;
-    } else {
-      const a = 1 - Math.exp(-dt * FOLLOW_RATE);
-      cur.x += (target.x - cur.x) * a;
-      cur.y += (target.y - cur.y) * a;
-      cur.size += (target.size - cur.size) * a;
-      cur.order += (target.order - cur.order) * a;
+    // The sphere forms over the first steps (pinned) or as the last card comes into view.
+    let order = 1;
+    if (motion && pinned) order = clamp(progress / SPHERE_AT);
+    else if (motion) {
+      const last = cardRefs.current.at(-1);
+      order = last ? clamp((winH * 0.95 - last.getBoundingClientRect().top) / (winH * 0.5)) : 1;
     }
-
-    swarm.render({ ...follow.current!, time: motion ? now / 1000 : 0, dt, still: !motion });
+    sphereRef.current?.render({ order, time: now / 1000, scroll: window.scrollY, still: !motion });
   });
 
   return (
@@ -231,12 +167,19 @@ export function AiScene({ heading, capabilities }: AiSceneProps) {
           pinned ? "sticky h-screen" : "relative",
         )}
       >
-        <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 z-[3] size-full" />
-
-        <div className="mb-[clamp(20px,4vh,56px)] flex items-center justify-between gap-[clamp(24px,4cqw,64px)]">
-          <div className="flex min-w-0 max-w-[980px] flex-1 flex-col gap-7">{heading}</div>
-          {/* Where the swarm starts; the canvas above draws it here. */}
-          <div ref={heroSlotRef} aria-hidden="true" className="aspect-square w-[clamp(160px,min(34cqw,42vh),480px)] flex-none" />
+        <div className="relative mb-[clamp(20px,4vh,48px)] flex min-h-[clamp(260px,44vh,560px)] flex-auto flex-col items-center justify-center gap-6 text-center">
+          {/* Spans the section's full width and top padding, so the sphere sits behind the heading. */}
+          <canvas
+            ref={canvasRef}
+            aria-hidden="true"
+            className="bleed-gutter pointer-events-none absolute inset-x-0 -top-[clamp(32px,6vh,80px)] bottom-0 block h-[calc(100%+clamp(32px,6vh,80px))] w-[calc(100%+2*clamp(20px,5.5cqw,88px))]"
+          />
+          {/* Darkens the middle so the heading reads over the particles. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_42%_at_50%_50%,rgba(0,0,0,0.6),rgba(0,0,0,0))]"
+          />
+          <div className="relative flex flex-col items-center gap-6">{heading}</div>
         </div>
 
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-[clamp(12px,2cqw,28px)]">
@@ -246,13 +189,7 @@ export function AiScene({ heading, capabilities }: AiSceneProps) {
               ref={(el) => void (cardRefs.current[i] = el)}
               className="relative flex flex-col gap-[clamp(14px,3vh,48px)] rounded-card border border-white/12 bg-white/2.5 p-[clamp(18px,min(2.6cqw,3.4vh),40px)] will-change-[opacity,transform,filter]"
             >
-              {/* Landing spot for the swarm: overhangs the card's top-right corner. */}
-              <span
-                ref={(el) => void (cornerRefs.current[i] = el)}
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-[clamp(12px,2.6cqw,40px)] -top-[clamp(12px,2.6cqw,40px)] block size-[clamp(96px,10cqw,152px)]"
-              />
-              <div className="flex flex-col gap-3.5 pr-[clamp(84px,8.4cqw,124px)]">
+              <div className="flex flex-col gap-3.5">
                 <span className="block h-0.5 w-7 bg-brand" />
                 <span className="text-[clamp(24px,2cqw,30px)] font-medium tracking-[-0.02em]">{cap.title}</span>
               </div>

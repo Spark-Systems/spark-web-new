@@ -1,0 +1,240 @@
+{
+  "items": [
+    {
+      "id": "job_001",
+      "draft": {
+        "title": "UX/UI Designer",
+        "location": "Sheikh Zayed, Giza",
+        "groups": [
+          {
+            "heading": "Requirements",
+            "items": [
+              "3 years' experience as a UX/UI designer",
+              "Proficient in design software",
+              "Portfolio of design projects",
+              "Excellent communication skills"
+            ]
+          },
+          {
+            "heading": "What you'll do",
+            "items": [
+              "Create UX/UI designs for mobile and web based on client requirements",
+              "Present design concepts and deliverables on the agreed timeline",
+              "Collaborate with designers, clients, executives, developers and product managers to improve the user experience",
+              "Study design briefs and determine requirements"
+            ]
+          }
+        ],
+        "order": 10
+      },
+      "published": {
+        "title": "UX/UI Designer",
+        "location": "Sheikh Zayed, Giza",
+        "groups": [
+          {
+            "heading": "Requirements",
+            "items": [
+              "3 years' experience as a UX/UI designer",
+              "Proficient in design software",
+              "Portfolio of design projects",
+              "Excellent communication skills"
+            ]
+          },
+          {
+            "heading": "What you'll do",
+            "items": [
+              "Create UX/UI designs for mobile and web based on client requirements",
+              "Present design concepts and deliverables on the agreed timeline",
+              "Collaborate with designers, clients, executives, developers and product managers to improve the user experience",
+              "Study design briefs and determine requirements"
+            ]
+          }
+        ],
+        "order": 10
+      },
+      "created_at": "2026-10-07T09:34:05.143Z",
+      "updated_at": "2026-10-07T09:34:05.143Z",
+      "published_at": "2026-10-07T09:34:05.143Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "job_002",
+      "draft": {
+        "title": "Back-end .NET Core Developer",
+        "location": "5th Settlement, New Cairo",
+        "groups": [
+          {
+            "heading": "Job requirements",
+            "items": [
+              "3 years of .NET experience",
+              ".NET Core 2.2 or 3.1 is a must",
+              "Microservices with good Docker knowledge",
+              "AWS or Azure infrastructure knowledge",
+              "Familiar with modern CI/CD pipelines"
+            ]
+          },
+          {
+            "heading": "Responsibilities",
+            "items": [
+              "Review and analyse programming systems, including coding, testing and debugging, to deliver client requirements",
+              "Deliver development tasks within agreed timelines",
+              "Work with the project manager and consultants to understand the business and application requirements of each task",
+              "Write technical documentation for all customisations and integrations"
+            ]
+          }
+        ],
+        "order": 20
+      },
+      "published": {
+        "title": "Back-end .NET Core Developer",
+        "location": "5th Settlement, New Cairo",
+        "groups": [
+          {
+            "heading": "Job requirements",
+            "items": [
+              "3 years of .NET experience",
+              ".NET Core 2.2 or 3.1 is a must",
+              "Microservices with good Docker knowledge",
+              "AWS or Azure infrastructure knowledge",
+              "Familiar with modern CI/CD pipelines"
+            ]
+          },
+          {
+            "heading": "Responsibilities",
+            "items": [
+              "Review and analyse programming systems, including coding, testing and debugging, to deliver client requirements",
+              "Deliver development tasks within agreed timelines",
+              "Work with the project manager and consultants to understand the business and application requirements of each task",
+              "Write technical documentation for all customisations and integrations"
+            ]
+          }
+        ],
+        "order": 20
+      },
+      "created_at": "2026-10-07T09:34:05.143Z",
+      "updated_at": "2026-10-07T09:34:05.143Z",
+      "published_at": "2026-10-07T09:34:05.143Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "job_003",
+      "draft": {
+        "title": "Flutter Developer",
+        "location": "5th Settlement, New Cairo",
+        "groups": [
+          {
+            "heading": "Job description",
+            "items": [
+              "Deliver software products in a collaborative, agile environment",
+              "Build responsive, multi-platform mobile apps",
+              "Build and maintain iOS and Android applications",
+              "Work within project teams and support the customer"
+            ]
+          },
+          {
+            "heading": "Job requirements",
+            "items": [
+              "3+ years of mobile application development experience",
+              "Involved in at least one Flutter app project",
+              "Solid understanding of mobile application design patterns",
+              "Experience calling RESTful services",
+              "Knowledge of mobile app ecosystems (app store submission, etc.)"
+            ]
+          }
+        ],
+        "order": 30
+      },
+      "published": {
+        "title": "Flutter Developer",
+        "location": "5th Settlement, New Cairo",
+        "groups": [
+          {
+            "heading": "Job description",
+            "items": [
+              "Deliver software products in a collaborative, agile environment",
+              "Build responsive, multi-platform mobile apps",
+              "Build and maintain iOS and Android applications",
+              "Work within project teams and support the customer"
+            ]
+          },
+          {
+            "heading": "Job requirements",
+            "items": [
+              "3+ years of mobile application development experience",
+              "Involved in at least one Flutter app project",
+              "Solid understanding of mobile application design patterns",
+              "Experience calling RESTful services",
+              "Knowledge of mobile app ecosystems (app store submission, etc.)"
+            ]
+          }
+        ],
+        "order": 30
+      },
+      "created_at": "2026-10-07T09:34:05.143Z",
+      "updated_at": "2026-10-07T09:34:05.143Z",
+      "published_at": "2026-10-07T09:34:05.143Z",
+      "updated_by": "Initial content"
+    },
+    {
+      "id": "job_004",
+      "draft": {
+        "title": "Sales Executive",
+        "location": "Nasr City, Cairo",
+        "groups": [
+          {
+            "heading": "Responsibilities",
+            "items": [
+              "Understand our business needs and product specifications",
+              "Win new clients and deals",
+              "Schedule and attend meetings with new customers",
+              "Negotiate and close deals",
+              "Report daily and monthly to the Business Development department"
+            ]
+          },
+          {
+            "heading": "Job requirements",
+            "items": [
+              "Proven experience in selling",
+              "Experience in outdoor sales",
+              "Excellent communication, negotiation and selling skills",
+              "Good spoken and written English",
+              "Bachelor's degree"
+            ]
+          }
+        ],
+        "order": 40
+      },
+      "published": {
+        "title": "Sales Executive",
+        "location": "Nasr City, Cairo",
+        "groups": [
+          {
+            "heading": "Responsibilities",
+            "items": [
+              "Understand our business needs and product specifications",
+              "Win new clients and deals",
+              "Schedule and attend meetings with new customers",
+              "Negotiate and close deals",
+              "Report daily and monthly to the Business Development department"
+            ]
+          },
+          {
+            "heading": "Job requirements",
+            "items": [
+              "Proven experience in selling",
+              "Experience in outdoor sales",
+              "Excellent communication, negotiation and selling skills",
+              "Good spoken and written English",
+              "Bachelor's degree"
+            ]
+          }
+        ],
+        "order": 40
+      },
+      "created_at": "2026-10-07T09:34:05.143Z",
+      "updated_at": "2026-10-07T09:34:05.143Z",
+      "published_at": "2026-10-07T09:34:05.143Z",
+      "updated_by": "Initial content"
+    }
+  ]
+}

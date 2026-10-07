@@ -10,14 +10,14 @@ export function AiSection({ title, lead, capabilities }: HomeAiSection) {
         <>
           <Reveal
             as="h2"
-            className="m-0 text-balance text-[clamp(36px,min(5.6cqw,9vh),88px)] font-medium leading-none tracking-[-0.04em] text-snow"
+            className="m-0 max-w-[18ch] text-balance text-[clamp(36px,min(5.6cqw,9vh),88px)] font-medium leading-none tracking-[-0.04em] text-snow"
           >
             {title}
           </Reveal>
           <Reveal
             as="p"
             delay={120}
-            className="m-0 text-pretty text-[clamp(22px,2.4cqw,36px)] leading-[1.3] tracking-[-0.02em] text-lavender-100"
+            className="m-0 max-w-[34ch] text-pretty text-[clamp(22px,2.4cqw,36px)] leading-[1.3] tracking-[-0.02em] text-lavender-100"
           >
             {lead}
           </Reveal>

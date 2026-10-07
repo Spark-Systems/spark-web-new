@@ -7,6 +7,8 @@ import {
   Layers,
   LayoutDashboard,
   Mail,
+  Newspaper,
+  UserRoundSearch,
   type LucideIcon,
 } from "lucide-react"
 import type { Messages } from "next-intl"
@@ -18,7 +20,7 @@ import { adminPaths } from "@admin/lib/paths"
 export type NavLabelKey = Exclude<keyof Messages["Nav"], "main" | "toggleSidebar" | "breadcrumb">
 
 /** Live counts a menu item can show as a pill (see useNavBadge). */
-export type NavBadge = "newEnquiries"
+export type NavBadge = "newEnquiries" | "newApplications"
 
 export interface NavItem {
   labelKey: NavLabelKey
@@ -70,6 +72,24 @@ export const mainNav: NavItem[] = [
     children: [
       { labelKey: "projects", href: adminPaths.work },
       { labelKey: "pageText", href: adminPaths.workPage },
+    ],
+  },
+  {
+    labelKey: "insights",
+    icon: Newspaper,
+    children: [
+      { labelKey: "articles", href: adminPaths.insights },
+      { labelKey: "pageText", href: adminPaths.insightsPage },
+    ],
+  },
+  {
+    labelKey: "careers",
+    icon: UserRoundSearch,
+    badge: "newApplications",
+    children: [
+      { labelKey: "openRoles", href: adminPaths.careers },
+      { labelKey: "applications", href: adminPaths.applications, badge: "newApplications" },
+      { labelKey: "pageText", href: adminPaths.careersPage },
     ],
   },
   {

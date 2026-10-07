@@ -35,11 +35,11 @@ const SEED_PREFIX = "seed:";
 
 /**
  * Documents that belong to one environment and never come from the deployed
- * data folder: user accounts (password hashes), messages, the activity log
- * and backups. A fresh store starts with these empty, so the first admin is
+ * data folder: user accounts (password hashes), messages, job applications
+ * and CVs, the activity log and backups. A fresh store starts with these empty, so the first admin is
  * created from ADMIN_EMAIL / ADMIN_PASSWORD.
  */
-const NOT_SEEDED = /^(users|enquiries|activity|backups\/)/;
+const NOT_SEEDED = /^(users|enquiries|applications|activity|backups\/|cvs\/)/;
 
 /** A private operation on a public store (some SDK calls throw a plain Error for it). */
 const isPublicStoreError = (error: unknown) =>

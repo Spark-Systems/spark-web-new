@@ -1,0 +1,76 @@
+{
+  "draft": {
+    "seo": {
+      "title": "Careers",
+      "description": "Join Spark Systems: open roles in design, engineering and sales across our offices in Cairo, Giza, Dubai and Riyadh."
+    },
+    "hero": {
+      "eyebrow": "Careers",
+      "titleLines": [
+        "Build what",
+        "the region",
+        "runs on."
+      ],
+      "image": {
+        "src": "https://images.pexels.com/photos/946312/pexels-photo-946312.jpeg?auto=compress&cs=tinysrgb&w=1600",
+        "alt": ""
+      }
+    },
+    "roles": {
+      "eyebrow": "Available vacancies",
+      "title": "Open roles."
+    },
+    "apply": {
+      "eyebrow": "Apply",
+      "title": "Join Us Now",
+      "lead": "Send your CV and tell us which role you are applying for.",
+      "countries": [
+        "Egypt",
+        "Saudi Arabia",
+        "United Arab Emirates",
+        "Other"
+      ],
+      "submitLabel": "Send application",
+      "successMessage": "Thanks for applying. We'll review your application and get back to you."
+    }
+  },
+  "published": {
+    "seo": {
+      "title": "Careers",
+      "description": "Join Spark Systems: open roles in design, engineering and sales across our offices in Cairo, Giza, Dubai and Riyadh."
+    },
+    "hero": {
+      "eyebrow": "Careers",
+      "titleLines": [
+        "Build what",
+        "the region",
+        "runs on."
+      ],
+      "image": {
+        "src": "https://images.pexels.com/photos/946312/pexels-photo-946312.jpeg?auto=compress&cs=tinysrgb&w=1600",
+        "alt": ""
+      }
+    },
+    "roles": {
+      "eyebrow": "Available vacancies",
+      "title": "Open roles."
+    },
+    "apply": {
+      "eyebrow": "Apply",
+      "title": "Join Us Now",
+      "lead": "Send your CV and tell us which role you are applying for.",
+      "countries": [
+        "Egypt",
+        "Saudi Arabia",
+        "United Arab Emirates",
+        "Other"
+      ],
+      "submitLabel": "Send application",
+      "successMessage": "Thanks for applying. We'll review your application and get back to you."
+    }
+  },
+  "created_at": "2026-10-07T09:34:05.143Z",
+  "updated_at": "2026-10-07T09:34:05.143Z",
+  "published_at": "2026-10-07T09:34:05.143Z",
+  "updated_by": "Initial content"
+}

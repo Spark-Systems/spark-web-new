@@ -61,7 +61,12 @@
     "allServices": "All services",
     "projects": "Projects",
     "pageText": "Page text",
-    "site": "Site"
+    "site": "Site",
+    "careers": "Careers",
+    "insights": "Insights",
+    "openRoles": "Open roles",
+    "applications": "Applications",
+    "articles": "Articles"
   },
   "Header": {
     "theme": "Theme",
@@ -891,7 +896,22 @@
     "featuredHint": "The highlighted project with figures.",
     "featuredProject": "Case study",
     "ctaLabel": "Button",
-    "summary": "Summary"
+    "summary": "Summary",
+    "navRoles": "Roles",
+    "navApplications": "Applications",
+    "navArticles": "Articles",
+    "rolesTitle": "Open roles",
+    "rolesHint": "Above the list of roles.",
+    "applyTitle": "Application form",
+    "applyHint": "The form people use to apply.",
+    "countries": "Countries",
+    "countriesHint": "Choices in the form's country list.",
+    "successMessage": "Thank-you message",
+    "featuredArticleTitle": "Featured article",
+    "featuredArticleHint": "The large article at the top: the newest one marked as featured.",
+    "postsTitle": "All articles",
+    "postsHint": "Above the filterable grid of articles.",
+    "allPostsHint": "The filter that shows every article."
   },
   "ContactEditor": {
     "tabs": {
@@ -1055,7 +1075,10 @@
       "enquiries": "Enquiries",
       "users": "Users",
       "settings": "Settings",
-      "auth": "Sign-in"
+      "auth": "Sign-in",
+      "jobs": "Careers",
+      "insights": "Insights",
+      "applications": "Applications"
     },
     "columns": {
       "when": "When",
@@ -1143,7 +1166,9 @@
       "layout": "Menu & footer",
       "solutions": "Solutions page",
       "services": "Services page",
-      "work": "Work page"
+      "work": "Work page",
+      "careers": "Careers page",
+      "insights": "Insights page"
     },
     "lists": {
       "solutions": "Solutions",
@@ -1151,7 +1176,9 @@
       "projects": "Projects",
       "clients": "Clients",
       "partners": "Partners",
-      "offices": "Offices"
+      "offices": "Offices",
+      "jobs": "Open roles",
+      "insights": "Articles"
     },
     "actions": {
       "create": "created",
@@ -1161,6 +1188,119 @@
       "discard": "discarded changes to",
       "delete": "deleted",
       "login": "signed in:"
+    }
+  },
+  "Jobs": {
+    "title": "Open roles",
+    "description": "Jobs listed on the careers page.",
+    "newTitle": "New role",
+    "editTitle": "Edit role",
+    "new": "New role",
+    "pageTitle": "Careers page",
+    "pageDescription": "The copy and application form on /careers.",
+    "columns": {
+      "title": "Role",
+      "location": "Location"
+    },
+    "form": {
+      "detailsTitle": "Role",
+      "detailsHint": "How the role appears in the list.",
+      "title": "Job title",
+      "location": "Location",
+      "locationHint": "e.g. Riyadh, Saudi Arabia · On-site",
+      "groupsTitle": "Details",
+      "groupsHint": "Shown when the role is opened, e.g. Requirements and Responsibilities.",
+      "groups": "Groups",
+      "addGroup": "Add group",
+      "groupHeading": "Heading",
+      "groupHeadingHint": "e.g. Requirements",
+      "points": "Points",
+      "addPoint": "Add point"
+    }
+  },
+  "Applications": {
+    "title": "Applications",
+    "description": "Job applications sent from the careers page.",
+    "updated": "{count, plural, one {Application} other {# applications}} updated.",
+    "updateError": "Couldn't update. Please try again.",
+    "deleted": "{count, plural, one {Application} other {# applications}} deleted.",
+    "deleteError": "Couldn't delete. Please try again.",
+    "columns": {
+      "received": "Received",
+      "applicant": "Applicant",
+      "position": "Position",
+      "country": "Country",
+      "cv": "CV",
+      "status": "Status",
+      "name": "Name",
+      "email": "Email",
+      "mobile": "Mobile",
+      "coverLetter": "Cover letter"
+    },
+    "status": {
+      "new": "New",
+      "read": "Read",
+      "archived": "Archived"
+    },
+    "open": "Open",
+    "openApplication": "General application",
+    "hasCv": "CV attached",
+    "downloadCv": "Download {name}",
+    "noCv": "No CV attached.",
+    "cvError": "Couldn't download the CV.",
+    "loadError": "Couldn't load applications.",
+    "search": "Search name, email or position",
+    "empty": "No applications yet.",
+    "markRead": "Mark as read",
+    "markUnread": "Mark as unread",
+    "archive": "Archive",
+    "delete": "Delete",
+    "replySubject": "Your application to Spark Systems: {position}",
+    "reply": "Reply by email",
+    "deleteTitle": "Delete {count, plural, one {this application} other {# applications}}?",
+    "deleteDescription": "Their CVs are deleted too. This can't be undone.",
+    "deleteConfirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "Insights": {
+    "title": "Articles",
+    "description": "Posts on the insights page, each with its own page.",
+    "newTitle": "New article",
+    "editTitle": "Edit article",
+    "new": "New article",
+    "pageTitle": "Insights page",
+    "pageDescription": "The copy around the articles on /insights.",
+    "columns": {
+      "title": "Title",
+      "cover": "Cover",
+      "category": "Category",
+      "date": "Date",
+      "featured": "Featured",
+      "slug": "URL",
+      "summary": "Summary"
+    },
+    "tabs": {
+      "details": "Details",
+      "body": "Article"
+    },
+    "form": {
+      "detailsTitle": "Details",
+      "detailsHint": "How the article appears in the list.",
+      "slugHint": "Its page address: /insights/this-url. Changing it breaks old links.",
+      "category": "Category",
+      "categoryHint": "Articles are filtered by category, e.g. Cloud.",
+      "date": "Date",
+      "dateHint": "Articles are listed newest first.",
+      "featured": "Feature this article",
+      "featuredHint": "The newest featured article is shown large at the top.",
+      "summary": "Summary",
+      "summaryHint": "A sentence or two for the card.",
+      "coverTitle": "Cover",
+      "coverHint": "A wide picture (at least 1600px), up to 4 MB.",
+      "cover": "Cover picture",
+      "bodyTitle": "Article",
+      "bodyHint": "Use headings to break it up. Pictures are uploaded as you add them.",
+      "body": "Text"
     }
   }
 }

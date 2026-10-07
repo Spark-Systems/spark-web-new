@@ -9,6 +9,7 @@ import { PageEditor } from "@admin/components/cms/page-editor"
 import { FormInput } from "@admin/components/form/form-input"
 import { FormSection } from "@admin/components/form/form-section"
 import { FormSelect } from "@admin/components/form/form-select"
+import { FormTagInput } from "@admin/components/form/form-tag-input"
 import { FormTextarea } from "@admin/components/form/form-textarea"
 import { projectsResource } from "@admin/lib/api/services/site-content"
 
@@ -138,6 +139,77 @@ export function WorkPageEditor() {
             </div>
           ),
         },
+        ]
+      }}
+    />
+  )
+}
+
+export function CareersPageEditor() {
+  const t = useTranslations("ListingPages")
+  const tf = useTranslations("Fields")
+  return (
+    <PageEditor
+      page="careers"
+      previewPath="/careers"
+      tabs={(form) => {
+        const control = looseControl(form.control)
+        return [
+          {
+            value: "page",
+            label: t("tab"),
+            keys: ["seo", "hero", "roles", "apply"],
+            content: (
+              <div className="flex flex-col gap-4">
+                <SeoFields control={control} name="seo" />
+                <HeroFields control={control} name="hero" />
+                <FormSection title={t("rolesTitle")} description={t("rolesHint")}>
+                  <IntroFields control={control} name="roles" />
+                </FormSection>
+                <FormSection title={t("applyTitle")} description={t("applyHint")}>
+                  <IntroFields control={control} name="apply" lead />
+                  <FormInput control={control} name="apply.submitLabel" label={tf("submitLabel")} required maxLength={60} />
+                  <FormTagInput control={control} name="apply.countries" label={t("countries")} description={t("countriesHint")} maxTags={30} maxTagLength={60} />
+                  <FormTextarea control={control} name="apply.successMessage" label={t("successMessage")} required rows={2} maxLength={300} className="lg:col-span-2" />
+                </FormSection>
+              </div>
+            ),
+          },
+        ]
+      }}
+    />
+  )
+}
+
+export function InsightsPageEditor() {
+  const t = useTranslations("ListingPages")
+  const tf = useTranslations("Fields")
+  return (
+    <PageEditor
+      page="insights"
+      previewPath="/insights"
+      tabs={(form) => {
+        const control = looseControl(form.control)
+        return [
+          {
+            value: "page",
+            label: t("tab"),
+            keys: ["seo", "hero", "featured", "posts"],
+            content: (
+              <div className="flex flex-col gap-4">
+                <SeoFields control={control} name="seo" />
+                <HeroFields control={control} name="hero" />
+                <FormSection title={t("featuredArticleTitle")} description={t("featuredArticleHint")}>
+                  <FormInput control={control} name="featured.eyebrow" label={tf("eyebrow")} required maxLength={60} />
+                  <FormInput control={control} name="featured.ctaLabel" label={t("ctaLabel")} required maxLength={60} />
+                </FormSection>
+                <FormSection title={t("postsTitle")} description={t("postsHint")}>
+                  <IntroFields control={control} name="posts" />
+                  <FormInput control={control} name="posts.allLabel" label={t("allLabel")} description={t("allPostsHint")} required maxLength={40} />
+                </FormSection>
+              </div>
+            ),
+          },
         ]
       }}
     />

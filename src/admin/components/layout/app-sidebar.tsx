@@ -40,7 +40,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "@admin/components/ui/sidebar";
-import { enquiriesQueries } from "@admin/lib/api/services/records";
+import { applicationsQueries, enquiriesQueries } from "@admin/lib/api/services/records";
 import { useAuth } from "@admin/lib/auth/auth-provider";
 import { HOME_PATH } from "@admin/lib/auth/constants";
 import { cn } from "@admin/lib/utils";
@@ -54,8 +54,11 @@ import {
 
 /** The live count behind a menu badge (0 hides it). */
 function useNavBadge(badge: NavBadge | undefined) {
-  const { data } = useQuery({ ...enquiriesQueries.stats(), enabled: badge === "newEnquiries" });
-  return badge === "newEnquiries" ? (data?.new ?? 0) : 0;
+  const enquiries = useQuery({ ...enquiriesQueries.stats(), enabled: badge === "newEnquiries" });
+  const applications = useQuery({ ...applicationsQueries.stats(), enabled: badge === "newApplications" });
+  if (badge === "newEnquiries") return enquiries.data?.new ?? 0;
+  if (badge === "newApplications") return applications.data?.new ?? 0;
+  return 0;
 }
 
 /** Inline count pill for parent and sub items (top-level links use SidebarMenuBadge). */

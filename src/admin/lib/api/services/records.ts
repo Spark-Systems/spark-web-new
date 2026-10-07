@@ -3,7 +3,10 @@ import { keepPreviousData, queryOptions } from "@tanstack/react-query"
 import type { DataTableQuery } from "@admin/components/data-table/use-data-table-query"
 import { apiClient } from "../client"
 import { toListParams } from "../list-params"
-import type { ActivityEntry, Enquiry, EnquiryStats, EnquiryStatus, Paginated, User, UserInput } from "../types"
+import { refreshSession } from "../client"
+import type { ActivityEntry, Application, Enquiry, EnquiryStats, EnquiryStatus, Paginated, User, UserInput } from "../types"
+import { API_BASE_URL } from "../config"
+import { tokenStorage } from "@admin/lib/auth/token-storage"
 
 const listOptions = <T>(key: string, base: string) => (query: DataTableQuery) =>
   queryOptions({
@@ -28,6 +31,40 @@ export const enquiriesQueries = {
       queryKey: ["enquiries", "stats"],
       queryFn: () => apiClient.get<EnquiryStats>("/enquiries/stats"),
       // Keeps the sidebar's unread badge current.
+      refetchInterval: 60_000,
+    }),
+}
+
+// ---- Job applications -------------------------------------------------------
+
+export const applicationsApi = {
+  setStatus: (id: string, status: EnquiryStatus) =>
+    apiClient.patch<Application>(`/applications/${encodeURIComponent(id)}`, { status }),
+  remove: (id: string) => apiClient.delete<void>(`/applications/${encodeURIComponent(id)}`),
+  list: (query: DataTableQuery) => apiClient.get<Paginated<Application>>("/applications", { query: { ...toListParams(query) } }),
+  /** Downloads the CV as a file (fetched with the session token, then saved). */
+  downloadCv: async (application: Application) => {
+    if (!tokenStorage.getAccessToken()) await refreshSession()
+    const res = await fetch(`${API_BASE_URL}/applications/${encodeURIComponent(application.id)}/cv`, {
+      headers: { Authorization: `Bearer ${tokenStorage.getAccessToken() ?? ""}` },
+    })
+    if (!res.ok) throw new Error(`CV download failed (${res.status})`)
+    const url = URL.createObjectURL(await res.blob())
+    const link = document.createElement("a")
+    link.href = url
+    link.download = application.cv?.name ?? "cv"
+    link.click()
+    setTimeout(() => URL.revokeObjectURL(url), 10_000)
+  },
+}
+
+export const applicationsQueries = {
+  all: ["applications"] as const,
+  list: listOptions<Application>("applications", "/applications"),
+  stats: () =>
+    queryOptions({
+      queryKey: ["applications", "stats"],
+      queryFn: () => apiClient.get<EnquiryStats>("/applications/stats"),
       refetchInterval: 60_000,
     }),
 }

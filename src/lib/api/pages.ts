@@ -5,9 +5,13 @@ import { unstable_cache } from "next/cache";
 
 import {
   getAboutData,
+  getCareersData,
   getContactData,
   getDetailSlugs,
   getHomeData,
+  getInsightData,
+  getInsightSlugs,
+  getInsightsData,
   getLayoutData,
   getNextProjectData,
   getProjectData,
@@ -40,6 +44,11 @@ export const getSolutionsPage = cachedGetter("solutions", getSolutionsData);
 export const getServicesPage = cachedGetter("services", getServicesData);
 export const getWorkPage = cachedGetter("work", getWorkData);
 export const getContactPage = cachedGetter("contact", getContactData);
+export const getCareersPage = cachedGetter("careers", getCareersData);
+export const getInsightsPage = cachedGetter("insights", getInsightsData);
+
+/** An article, or null when there is none for `slug`. */
+export const getInsight = cachedGetter<[slug: string], Awaited<ReturnType<typeof getInsightData>>>("insight", getInsightData);
 
 /** A solution's detail page, or null when there is none for `slug`. */
 export const getSolution = cachedGetter<[slug: string], Awaited<ReturnType<typeof getSolutionData>>>(
@@ -77,3 +86,4 @@ export const getServiceSlugs = unstable_cache(() => getDetailSlugs("services"), 
 export const getProjectSlugs = unstable_cache(() => getDetailSlugs("projects"), ["content:project-slugs"], {
   tags: [CONTENT_TAG],
 });
+export const getArticleSlugs = unstable_cache(() => getInsightSlugs(), ["content:insight-slugs"], { tags: [CONTENT_TAG] });

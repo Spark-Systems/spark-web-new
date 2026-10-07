@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   // The site and the admin have separate root layouts, so unmatched URLs get one global 404 page.
   experimental: {
     globalNotFound: true,
+    // The careers form sends a CV (up to 4 MB) through a Server Action; the default limit is 1 MB.
+    serverActions: { bodySizeLimit: "4.4mb" },
   },
   // gRPC-based Google Analytics client (admin dashboard); load it from node_modules at runtime.
   serverExternalPackages: ["@google-analytics/data"],

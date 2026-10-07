@@ -2,7 +2,7 @@ import "server-only";
 
 import type { z } from "zod";
 
-import { logoSchema, officeSchema, projectSchema, serviceSchema, solutionSchema } from "@/lib/cms/schemas";
+import { insightSchema, jobSchema, logoSchema, officeSchema, projectSchema, serviceSchema, solutionSchema } from "@/lib/cms/schemas";
 import { requireSession } from "@/server/auth";
 import { revalidateContent } from "@/server/content/revalidate";
 import { collections } from "@/server/db";
@@ -39,6 +39,16 @@ const config: { [K in CollectionKey]: { schema: z.ZodType<CollectionMap[K]>; lis
   clients: { schema: logoSchema, list: { search: (r) => [r.name], defaultSort: "order" } },
   partners: { schema: logoSchema, list: { search: (r) => [r.name], defaultSort: "order" } },
   offices: { schema: officeSchema, list: { search: (r) => [r.city, r.country, r.address], defaultSort: "order" } },
+  jobs: { schema: jobSchema, list: { search: (r) => [r.title, r.location], defaultSort: "order" } },
+  insights: {
+    schema: insightSchema,
+    list: {
+      search: (r) => [r.title, r.slug, r.category],
+      defaultSort: "date",
+      defaultOrder: "desc",
+      facets: { category: (r, v) => r.category === v, featured: (r, v) => yesNo(r.featured, v) },
+    },
+  },
 };
 
 const ACTIONS: PublishAction[] = ["publish", "unpublish", "discard"];

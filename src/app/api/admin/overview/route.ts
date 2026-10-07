@@ -11,6 +11,8 @@ const titleOf: Record<CollectionKey, (row: Record<string, unknown>) => string> =
   clients: (r) => String(r.name),
   partners: (r) => String(r.name),
   offices: (r) => String(r.city),
+  jobs: (r) => String(r.title),
+  insights: (r) => String(r.title),
 };
 
 export interface OverviewPending {

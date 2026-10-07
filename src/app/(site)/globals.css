@@ -250,3 +250,30 @@ html.has-custom-cursor * {
   outline: 2px solid var(--color-tbc);
   outline-offset: 3px;
 }
+/* Insights cards: a red wash sweeping up through the picture on hover. */
+@keyframes insight-wipe {
+  0% { clip-path: inset(100% 0 0 0); }
+  50% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 100% 0); }
+}
+
+/* Insights cards entering after a category change. */
+@keyframes insight-in {
+  from { opacity: 0; transform: translate3d(-40px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Article body (rich text from the admin). */
+.insight-prose { font-size: clamp(17px, 1.35cqw, 20px); line-height: 1.7; color: var(--color-fog-200); }
+.insight-prose > * + * { margin-top: 1.1em; }
+.insight-prose h2 { font-size: clamp(26px, 2.4cqw, 36px); line-height: 1.15; letter-spacing: -0.03em; font-weight: 500; color: var(--color-snow); margin-top: 1.8em; }
+.insight-prose h3 { font-size: clamp(21px, 1.8cqw, 26px); line-height: 1.25; letter-spacing: -0.02em; font-weight: 500; color: var(--color-snow); margin-top: 1.6em; }
+.insight-prose a { color: var(--color-brand-bright); text-decoration: underline; text-underline-offset: 3px; }
+.insight-prose ul, .insight-prose ol { padding-inline-start: 1.3em; }
+.insight-prose ul { list-style: disc; }
+.insight-prose ol { list-style: decimal; }
+.insight-prose li + li { margin-top: 0.4em; }
+.insight-prose li::marker { color: var(--color-brand); }
+.insight-prose blockquote { border-inline-start: 2px solid var(--color-brand); padding-inline-start: 1.2em; color: var(--color-snow); font-size: 1.15em; }
+.insight-prose img { border-radius: 18px; max-width: 100%; height: auto; }
+.insight-prose strong { color: var(--color-snow); font-weight: 600; }

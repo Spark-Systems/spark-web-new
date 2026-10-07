@@ -2,6 +2,7 @@ import { ContactSection } from "@/features/contact";
 import {
   AiSection,
   ClientsSection,
+  HeroIntroSection,
   HeroSection,
   ServicesSection,
   SolutionsSection,
@@ -16,6 +17,7 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection {...page.hero} />
+      <HeroIntroSection {...page.hero} />
       <SolutionsSection {...page.solutions} />
       <ServicesSection {...page.services} />
       <ClientsSection {...page.clients} />

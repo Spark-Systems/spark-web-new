@@ -4,9 +4,11 @@ import { routes } from "@/config/site";
 import { collections, readPage, readSettings } from "@/server/db";
 import type { WithId } from "@/server/db/collection";
 import type { AboutPageData } from "@/types/about";
-import type { CollectionKey, CollectionMap } from "@/types/cms";
+import type { CareersPageData } from "@/types/careers";
+import type { CollectionKey, CollectionMap, InsightRecord } from "@/types/cms";
 import type { ContactPageData } from "@/types/contact";
 import type { HomePageData } from "@/types/home";
+import type { InsightArticle, InsightSummary, InsightsPageData } from "@/types/insights";
 import type { SiteLayoutData } from "@/types/layout";
 import type { ServiceDetail, ServicesPageData } from "@/types/services";
 import type { SolutionDetail, SolutionsPageData } from "@/types/solutions";
@@ -197,4 +199,64 @@ export async function getContactData(options: ReadOptions = {}): Promise<Contact
 /** Slugs of the published pages with their own route, for prerendering. */
 export async function getDetailSlugs(key: "solutions" | "services" | "projects"): Promise<string[]> {
   return (await collections[key].published()).filter((r) => r.has_detail && r.detail).map((r) => r.slug);
+}
+
+// ---- Careers & insights -----------------------------------------------------
+
+export async function getCareersData(options: ReadOptions = {}): Promise<CareersPageData> {
+  const [page, jobs] = await Promise.all([readPage("careers", options), items("jobs", options)]);
+  return {
+    seo: page.seo,
+    hero: page.hero,
+    roles: { ...page.roles, items: jobs.map((j) => ({ id: j.id, title: j.title, location: j.location, groups: j.groups })) },
+    apply: page.apply,
+  };
+}
+
+/** Published articles, newest first. */
+async function articles(options: ReadOptions) {
+  return (await items("insights", options)).sort((a, b) => b.date.localeCompare(a.date));
+}
+
+const toInsightSummary = (a: InsightRecord): InsightSummary => ({
+  slug: a.slug,
+  title: a.title,
+  category: a.category,
+  date: a.date,
+  summary: a.summary,
+  image: { src: a.image, alt: a.title },
+});
+
+export async function getInsightsData(options: ReadOptions = {}): Promise<InsightsPageData> {
+  const [page, layout, list] = await Promise.all([readPage("insights", options), readPage("layout", options), articles(options)]);
+  const lead = list.find((a) => a.featured) ?? list[0];
+  return {
+    seo: page.seo,
+    hero: page.hero,
+    featured: lead ? { ...toInsightSummary(lead), ...page.featured } : null,
+    posts: {
+      ...page.posts,
+      categories: [...new Set(list.map((a) => a.category))],
+      items: list.map(toInsightSummary),
+    },
+    contact: layout.contact,
+  };
+}
+
+export async function getInsightData(slug: string, options: ReadOptions = {}): Promise<InsightArticle | null> {
+  const [layout, list] = await Promise.all([readPage("layout", options), articles(options)]);
+  const article = list.find((a) => a.slug === slug);
+  if (!article) return null;
+  return {
+    ...toInsightSummary(article),
+    seo: { title: article.title, description: article.summary || article.title },
+    body: article.body,
+    more: list.filter((a) => a.slug !== slug).slice(0, 3).map(toInsightSummary),
+    contact: layout.contact,
+  };
+}
+
+/** Slugs of every published article, for prerendering. */
+export async function getInsightSlugs(): Promise<string[]> {
+  return (await collections.insights.published()).map((a) => a.slug);
 }

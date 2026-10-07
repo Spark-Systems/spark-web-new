@@ -19,6 +19,9 @@ export const routes = {
   contact: "/contact",
   work: "/work",
   project: (slug: string) => `/work/${slug}`,
+  careers: "/careers",
+  insights: "/insights",
+  insight: (slug: string) => `/insights/${slug}`,
 } as const;
 
 /** Inline links shown in the header and floating nav on desktop. */
@@ -32,16 +35,16 @@ export const contactCta: NavLink = { label: "Talk to us", href: "#contact" };
 
 /** Smaller links listed under the main menu entries. */
 export const menuSecondaryNav: NavLink[] = [
-  { label: "Insights", href: "#" },
-  { label: "Careers", href: "#" },
+  { label: "Insights", href: routes.insights },
+  { label: "Careers", href: routes.careers },
 ];
 
 export const companyNav: NavLink[] = [
   { label: "About", href: routes.about },
   { label: "Work", href: routes.work },
   { label: "Services", href: routes.services },
-  { label: "Insights", href: "#" },
-  { label: "Careers", href: "#" },
+  { label: "Insights", href: routes.insights },
+  { label: "Careers", href: routes.careers },
   { label: "Contact", href: routes.contact },
 ];
 
