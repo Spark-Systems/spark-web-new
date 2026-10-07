@@ -1,6 +1,7 @@
 "use client"
 
-import { ArrowDown, ArrowUp, ChevronDown, Plus, Trash2 } from "lucide-react"
+import { ChevronDown, Plus, Trash2 } from "lucide-react"
+import { useSortable } from "@dnd-kit/sortable"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { useFieldArray, useFormState, useWatch, type ArrayPath, type Control, type FieldValues } from "react-hook-form"
@@ -9,6 +10,7 @@ import { Button } from "@admin/components/ui/button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@admin/components/ui/collapsible"
 import { FieldDescription, FieldError } from "@admin/components/ui/field"
 import { cn } from "@admin/lib/utils"
+import { DragHandle, draggingClass, SortableList, sortableStyle } from "./sortable-list"
 
 /** Reads a nested form error by dotted path ("detail.features.items"). */
 function errorAt(errors: unknown, path: string): { message?: string; root?: { message?: string } } | undefined {
@@ -36,9 +38,73 @@ export interface FormRepeaterProps<T extends FieldValues> {
   className?: string
 }
 
+/** One collapsible card, dragged by the handle in its header. */
+function RepeaterItem({
+  id,
+  number,
+  title,
+  open,
+  onOpenChange,
+  hasError,
+  canDrag,
+  canRemove,
+  onRemove,
+  children,
+}: {
+  id: string
+  number: number
+  title: string
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  hasError: boolean
+  canDrag: boolean
+  canRemove: boolean
+  onRemove: () => void
+  children: React.ReactNode
+}) {
+  const t = useTranslations("Repeater")
+  const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } = useSortable({ id, disabled: !canDrag })
+  return (
+    <Collapsible
+      ref={setNodeRef}
+      style={sortableStyle(transform, transition)}
+      open={open}
+      onOpenChange={onOpenChange}
+      className={cn("bg-card rounded-xl border", hasError && "border-destructive", isDragging && draggingClass)}
+    >
+      <div className="flex items-center gap-1 p-2">
+        <DragHandle ref={setActivatorNodeRef} {...attributes} {...listeners} aria-label={t("dragItem", { title })} disabled={!canDrag} />
+        <CollapsibleTrigger
+          render={<button type="button" />}
+          className="flex min-w-0 flex-1 items-center gap-2 text-start text-sm font-medium"
+        >
+          <ChevronDown className={cn("text-muted-foreground size-4 shrink-0 transition-transform", !open && "-rotate-90 rtl:rotate-90")} />
+          <span className="text-muted-foreground tabular-nums">{number}.</span>
+          <span className="truncate">{title}</span>
+          {hasError && <span className="bg-destructive size-2 shrink-0 rounded-full" aria-label={t("hasErrors")} />}
+        </CollapsibleTrigger>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          aria-label={t("remove")}
+          disabled={!canRemove}
+          onClick={onRemove}
+          className="hover:text-destructive"
+        >
+          <Trash2 />
+        </Button>
+      </div>
+      <CollapsibleContent>
+        <div className="grid gap-5 border-t p-4 lg:grid-cols-2">{children}</div>
+      </CollapsibleContent>
+    </Collapsible>
+  )
+}
+
 /**
  * An editable list of grouped fields (features, steps, stats…): add, remove,
- * reorder, and collapse each item. Items flow in a two-column grid like
+ * drag to reorder, and collapse each item. Items flow in a two-column grid like
  * FormSection; give a field `lg:col-span-2` to span both.
  *
  * @example
@@ -81,59 +147,28 @@ export function FormRepeater<T extends FieldValues>({
         </span>
       </div>
 
-      {fields.map((field, index) => {
-        const path = `${name}.${index}`
-        const isOpen = open[field.id] ?? (startsOpen || index === addedIndex)
-        const title = itemTitle?.(values[index] ?? {}, index)?.trim() || t("item", { number: index + 1 })
-        const hasError = Boolean(errorAt(errors, path))
-        return (
-          <Collapsible
-            key={field.id}
-            open={isOpen}
-            onOpenChange={(next) => setOpen((state) => ({ ...state, [field.id]: next }))}
-            className={cn("bg-card rounded-xl border", hasError && "border-destructive")}
-          >
-            <div className="flex items-center gap-1 p-2 ps-3">
-              <CollapsibleTrigger
-                render={<button type="button" />}
-                className="flex min-w-0 flex-1 items-center gap-2 text-start text-sm font-medium"
-              >
-                <ChevronDown className={cn("text-muted-foreground size-4 shrink-0 transition-transform", !isOpen && "-rotate-90 rtl:rotate-90")} />
-                <span className="text-muted-foreground tabular-nums">{index + 1}.</span>
-                <span className="truncate">{title}</span>
-                {hasError && <span className="bg-destructive size-2 shrink-0 rounded-full" aria-label={t("hasErrors")} />}
-              </CollapsibleTrigger>
-              <Button type="button" variant="ghost" size="icon-sm" aria-label={t("moveUp")} disabled={index === 0} onClick={() => move(index, index - 1)}>
-                <ArrowUp />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                aria-label={t("moveDown")}
-                disabled={index === fields.length - 1}
-                onClick={() => move(index, index + 1)}
-              >
-                <ArrowDown />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                aria-label={t("remove")}
-                disabled={fields.length <= min}
-                onClick={() => remove(index)}
-                className="hover:text-destructive"
-              >
-                <Trash2 />
-              </Button>
-            </div>
-            <CollapsibleContent>
-              <div className="grid gap-5 border-t p-4 lg:grid-cols-2">{children(path, index)}</div>
-            </CollapsibleContent>
-          </Collapsible>
-        )
-      })}
+      <SortableList ids={fields.map((field) => field.id)} onMove={move}>
+        {fields.map((field, index) => {
+          const path = `${name}.${index}`
+          const isOpen = open[field.id] ?? (startsOpen || index === addedIndex)
+          return (
+            <RepeaterItem
+              key={field.id}
+              id={field.id}
+              number={index + 1}
+              title={itemTitle?.(values[index] ?? {}, index)?.trim() || t("item", { number: index + 1 })}
+              open={isOpen}
+              onOpenChange={(next) => setOpen((state) => ({ ...state, [field.id]: next }))}
+              hasError={Boolean(errorAt(errors, path))}
+              canDrag={fields.length > 1}
+              canRemove={fields.length > min}
+              onRemove={() => remove(index)}
+            >
+              {children(path, index)}
+            </RepeaterItem>
+          )
+        })}
+      </SortableList>
 
       {fields.length === 0 && (
         <p className="text-muted-foreground rounded-xl border border-dashed p-4 text-center text-sm">{t("empty")}</p>

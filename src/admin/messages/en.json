@@ -562,10 +562,16 @@
     "count": "{count, plural, =0 {None} one {# item} other {# items}}",
     "item": "Item {number}",
     "hasErrors": "Has errors",
-    "moveUp": "Move up",
-    "moveDown": "Move down",
     "remove": "Remove",
-    "empty": "Nothing here yet."
+    "empty": "Nothing here yet.",
+    "dragItem": "Drag to reorder: {title}",
+    "drag": {
+      "instructions": "To reorder, press Space or Enter to pick the item up, use the arrow keys to move it, then press Space or Enter again to drop it. Press Escape to cancel.",
+      "start": "Picked up item {position}.",
+      "over": "Moved to position {position}.",
+      "end": "Dropped at position {position}.",
+      "cancel": "Reorder cancelled."
+    }
   },
   "Fields": {
     "seoSection": "Search engines",
