@@ -35,8 +35,8 @@ export class ConflictError extends Error {
 
 /** Writes aren't possible here (e.g. on Vercel without a Blob store). */
 export class ReadOnlyStorageError extends Error {
-  constructor() {
-    super("Content storage is read-only here. Connect a Vercel Blob store (BLOB_READ_WRITE_TOKEN) to save changes.");
+  constructor(reason = "Connect the Vercel Blob stores to save changes.") {
+    super(`Content storage is read-only here. ${reason}`);
     this.name = "ReadOnlyStorageError";
   }
 }

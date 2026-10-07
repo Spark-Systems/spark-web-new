@@ -3,24 +3,35 @@ import "server-only";
 import { BlobError, BlobPreconditionFailedError, del, get, list, put } from "@vercel/blob";
 
 import { readJsonFile } from "./fs-driver";
-import { assertKey, ConflictError, type StorageDriver } from "./types";
+import { assertKey, ConflictError, ReadOnlyStorageError, type StorageDriver } from "./types";
 
 const jsonPath = (key: string) => {
   assertKey(key);
   return `db/${key}.json`;
 };
 
+/** Where an uploaded file lives in a private store, and the site URL that serves it (app/media). */
+export const privateUploadPath = (filePath: string) => `uploads/${filePath}`;
+export const MEDIA_ROUTE = "/media";
+
 /**
- * Vercel Blob stores are either public or private, so this uses two:
- * - content (the JSON documents, incl. users and settings): a PRIVATE store,
- *   connected with the env prefix BLOB_DB → BLOB_DB_READ_WRITE_TOKEN
- * - uploads (pictures): a PUBLIC store → BLOB_READ_WRITE_TOKEN, or
- *   BLOB_READ_WRITE_TOKEN_READ_WRITE_TOKEN as this project's store was connected.
+ * Blob store tokens. One PRIVATE store is enough: content (JSON) and uploads
+ * both go there, and uploads are served through the site at /media/…
+ * Its token is BLOB_READ_WRITE_TOKEN, or <PREFIX>_READ_WRITE_TOKEN when the
+ * store was connected with a custom prefix (this project's:
+ * BLOB_READ_WRITE_TOKEN_READ_WRITE_TOKEN).
+ *
+ * Optional two-store setup: a private store connected with the prefix BLOB_DB
+ * holds the content, and the store above (then PUBLIC) holds uploads, served
+ * straight from Blob's CDN.
  */
-export const blobTokens = () => ({
-  content: process.env.BLOB_DB_READ_WRITE_TOKEN || undefined,
-  uploads: process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN_READ_WRITE_TOKEN || undefined,
-});
+export function blobTokens() {
+  const main = process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN_READ_WRITE_TOKEN || undefined;
+  const contentStore = process.env.BLOB_DB_READ_WRITE_TOKEN || undefined;
+  return contentStore
+    ? { content: contentStore, publicUploads: main }
+    : { content: main, publicUploads: undefined };
+}
 
 /** Etag given to a document read from the bundled data folder (never saved to Blob yet). */
 const SEED_PREFIX = "seed:";
@@ -33,22 +44,40 @@ const SEED_PREFIX = "seed:";
  */
 const NOT_SEEDED = /^(users|enquiries|activity|backups\/)/;
 
+const isPublicStoreError = (error: unknown) =>
+  error instanceof BlobError && /private access on a public store|400 Bad Request/i.test(error.message);
+
+/** Turns "this store is public" into a clear, actionable error. */
+function explainPublicStore(error: unknown): never {
+  if (isPublicStoreError(error)) {
+    throw new ReadOnlyStorageError(
+      "The connected Vercel Blob store is PUBLIC, but content (user accounts, settings) must be stored privately. " +
+        "Create a Blob store with Private access, connect it to the project, and redeploy.",
+    );
+  }
+  throw error;
+}
+
 /**
- * Vercel Blob. Documents are private blobs under db/ (in the private store),
- * read past the CDN cache so a save is visible straight away, and written
- * with the etag they were read with so two people saving at once can't
- * overwrite each other. Uploaded files are public blobs under uploads/ (in
- * the public store).
+ * Vercel Blob. Documents are private blobs under db/, read past the CDN cache
+ * so a save is visible straight away, and written with the etag they were read
+ * with so two people saving at once can't overwrite each other. Uploads are
+ * public blobs (two-store setup) or private ones served at /media/…
  *
  * A document that has never been saved to Blob is read from the data folder
  * deployed with the site, so a fresh store starts out with the committed content.
  */
-export function createBlobDriver({ content: token, uploads: uploadsToken }: { content: string; uploads: string }): StorageDriver {
+export function createBlobDriver({ content: token, publicUploads }: { content: string; publicUploads?: string }): StorageDriver {
   return {
     kind: "blob",
 
     async readJson<T>(key: string) {
-      const result = await get(jsonPath(key), { access: "private", useCache: false, token });
+      const result = await get(jsonPath(key), { access: "private", useCache: false, token }).catch((error) => {
+        // A public store can't hold private documents: keep the website up on the
+        // deployed content; saving reports the problem (see explainPublicStore).
+        if (isPublicStoreError(error)) return null;
+        throw error;
+      });
       if (result?.statusCode === 200) {
         const text = await new Response(result.stream).text();
         return { data: JSON.parse(text) as T, etag: result.blob.etag };
@@ -77,7 +106,7 @@ export function createBlobDriver({ content: token, uploads: uploadsToken }: { co
         if (createOnly && error instanceof BlobError && /already exists/i.test(error.message)) {
           throw new ConflictError(key);
         }
-        throw error;
+        return explainPublicStore(error);
       }
     },
 
@@ -98,15 +127,24 @@ export function createBlobDriver({ content: token, uploads: uploadsToken }: { co
 
     async saveFile(filePath, body, contentType) {
       assertKey(filePath);
-      const result = await put(`uploads/${filePath}`, body, {
-        access: "public",
-        token: uploadsToken,
+      if (publicUploads) {
+        const result = await put(`uploads/${filePath}`, body, {
+          access: "public",
+          token: publicUploads,
+          contentType,
+          addRandomSuffix: false,
+          // Names are unique per upload, so the file never changes: cache it for a year.
+          cacheControlMaxAge: 60 * 60 * 24 * 365,
+        });
+        return result.url;
+      }
+      await put(privateUploadPath(filePath), body, {
+        access: "private",
+        token,
         contentType,
         addRandomSuffix: false,
-        // Names are unique per upload, so the file never changes: cache it for a year.
-        cacheControlMaxAge: 60 * 60 * 24 * 365,
-      });
-      return result.url;
+      }).catch(explainPublicStore);
+      return `${MEDIA_ROUTE}/${filePath}`;
     },
   };
 }

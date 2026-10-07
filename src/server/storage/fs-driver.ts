@@ -52,9 +52,9 @@ function serialize<T>(key: string, task: () => Promise<T>): Promise<T> {
  * target, so a crash mid-write never leaves a half-written document. On a
  * serverless host (Vercel) the disk is read-only: reads work, writes throw.
  */
-export function createFsDriver({ readOnly = false } = {}): StorageDriver {
+export function createFsDriver({ readOnly = false, reason }: { readOnly?: boolean; reason?: string } = {}): StorageDriver {
   const assertWritable = () => {
-    if (readOnly) throw new ReadOnlyStorageError();
+    if (readOnly) throw new ReadOnlyStorageError(reason);
   };
 
   return {
