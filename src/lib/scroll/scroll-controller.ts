@@ -14,6 +14,8 @@ const GLIDE_SECONDS = 0.8;
 export class ScrollController {
   private lenis: Lenis | null = null;
   private unsubscribeFrame: (() => void) | null = null;
+  /** Set by Back/Forward, whose scroll position the browser restores. */
+  private historyNavigation = false;
 
   /** True while a programmatic glide is running. */
   gliding = false;
@@ -23,6 +25,7 @@ export class ScrollController {
    * browser's native scrolling is left untouched and glides jump.
    */
   attach({ smooth }: { smooth: boolean }) {
+    window.addEventListener("popstate", this.onPopState);
     if (!smooth) return;
 
     this.lenis = new Lenis({ lerp: 0.1, autoRaf: false });
@@ -37,6 +40,7 @@ export class ScrollController {
   }
 
   detach() {
+    window.removeEventListener("popstate", this.onPopState);
     document.removeEventListener("click", this.onClick);
     this.unsubscribeFrame?.();
     this.unsubscribeFrame = null;
@@ -82,6 +86,26 @@ export class ScrollController {
       },
     });
   }
+
+  /**
+   * Call after the route changes. A new page opens at the top: Lenis keeps
+   * easing toward its own target, so without this it would drag the new page
+   * back to where the old one was scrolled. Back/Forward keep the position
+   * the browser restored, and `#hash` links are left to scroll to their target.
+   */
+  routeChanged() {
+    const restore = this.historyNavigation;
+    this.historyNavigation = false;
+    this.gliding = false;
+    if (!restore && location.hash) return;
+    const y = restore ? window.scrollY : 0;
+    if (!restore) window.scrollTo(0, 0);
+    this.lenis?.scrollTo(y, { immediate: true, force: true });
+  }
+
+  private onPopState = () => {
+    this.historyNavigation = true;
+  };
 
   /** Smooth-scroll same-page `#hash` links instead of jumping. */
   private onClick = (e: MouseEvent) => {

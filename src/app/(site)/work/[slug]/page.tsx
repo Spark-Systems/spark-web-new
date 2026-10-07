@@ -45,7 +45,8 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
       <CaseResults {...project.results} />
       {project.testimonial && <CaseTestimonial {...project.testimonial} />}
       <ContactSection content={project.contact} />
-      <NextProjectPanel next={next} />
+      {/* Keyed so moving between case studies starts a fresh panel, not one mid-exit. */}
+      <NextProjectPanel key={next.href} next={next} />
     </>
   );
 }
