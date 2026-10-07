@@ -40,17 +40,19 @@ function GeneralFields({ form }: { form: UseFormReturn<SolutionRecord> }) {
   const { control } = form
   return (
     <div className="flex flex-col gap-4">
+      <FormSection title={t("flagshipTitle")} description={t("flagshipHint")}>
+        <FormTextarea control={control} name="description" label={tf("description")} rows={2} maxLength={400} className="lg:col-span-2" />
+        <FormTagInput control={control} name="tags" label={t("tags")} maxTags={8} maxTagLength={60} className="lg:col-span-2" />
+      </FormSection>
       <FormSection title={t("detailsTitle")} description={t("detailsHint")}>
         <FormInput control={control} name="name" label={tf("name")} required maxLength={120} autoFocus />
         <FormInput control={control} name="slug" label={tf("slug")} description={t("slugHint")} required dir="ltr" maxLength={SLUG_MAX} />
         <IconField control={control} name="icon" />
         <FormImage control={control} name="image" label={tf("image")} description={t("imageHint")} required className="lg:col-span-2" />
       </FormSection>
-      <FormSection title={t("flagshipTitle")} description={t("flagshipHint")}>
+      <FormSection title={t("placementTitle")} description={t("placementHint")}>
         <FormCheckbox control={control} name="flagship" label={t("flagship")} description={t("flagshipCheckHint")} className="lg:pt-8" />
         <FormNumberInput control={control} name="order" label={tf("order")} description={tf("orderHint")} required min={-9999} max={9999} />
-        <FormTextarea control={control} name="description" label={tf("description")} rows={2} maxLength={400} className="lg:col-span-2" />
-        <FormTagInput control={control} name="tags" label={t("tags")} maxTags={8} maxTagLength={60} className="lg:col-span-2" />
       </FormSection>
     </div>
   )
@@ -74,7 +76,7 @@ export function SolutionEditor({ row }: { row?: CollectionRow<SolutionRecord> })
         {
           value: "general",
           label: t("tabs.general"),
-          keys: ["name", "slug", "icon", "order", "image", "flagship", "description", "tags"],
+          keys: ["description", "tags", "name", "slug", "icon", "image", "flagship", "order"],
           content: <GeneralFields form={form} />,
         },
         {
