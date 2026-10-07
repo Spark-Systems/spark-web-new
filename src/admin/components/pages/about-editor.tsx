@@ -8,7 +8,6 @@ import { useWatch, type UseFormReturn } from "react-hook-form"
 import { HeroFields, IconField, ImageAssetFields, IntroFields, looseControl, SeoFields, StatsField } from "@admin/components/cms/content-fields"
 import { FormRepeater } from "@admin/components/cms/form-repeater"
 import { PageEditor } from "@admin/components/cms/page-editor"
-import { FormCheckbox } from "@admin/components/form/form-checkbox"
 import { FormInput } from "@admin/components/form/form-input"
 import { FormSection } from "@admin/components/form/form-section"
 import { FormSelect } from "@admin/components/form/form-select"
@@ -101,7 +100,7 @@ function StoryTab({ form }: { form: Form }) {
         addLabel={t("addMilestone")}
         min={1}
         max={20}
-        newItem={() => ({ year: "", tbc: false, icon: "flag", title: "", body: "" })}
+        newItem={() => ({ year: "", icon: "flag", title: "", body: "" })}
         itemTitle={(item) => [item.year, item.title].filter(Boolean).join(" · ")}
       >
         {(path) => (
@@ -110,7 +109,6 @@ function StoryTab({ form }: { form: Form }) {
             <IconField control={control} name={`${path}.icon`} />
             <FormInput control={control} name={`${path}.title`} label={tf("title")} required maxLength={120} className="lg:col-span-2" />
             <FormTextarea control={control} name={`${path}.body`} label={tf("body")} required rows={2} maxLength={500} className="lg:col-span-2" />
-            <FormCheckbox control={control} name={`${path}.tbc`} label={t("yearTbc")} description={t("yearTbcHint")} className="lg:col-span-2" />
           </>
         )}
       </FormRepeater>

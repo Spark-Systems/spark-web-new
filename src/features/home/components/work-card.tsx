@@ -1,13 +1,11 @@
 import Image from "next/image";
 import { pillClassName } from "@/components/ui/pill";
 import { SmartLink } from "@/components/ui/smart-link";
-import { MonoLabel, TagList, Tbc } from "@/components/ui/typography";
+import { MonoLabel, TagList } from "@/components/ui/typography";
 import type { Project } from "@/types/content";
 
 /** Project card in the horizontal work track. Width comes from --work-card-w. */
 export function WorkCard({ project, index }: { project: Project; index: number }) {
-  const Subtitle = project.subtitleTbc ? Tbc : "span";
-
   return (
     <SmartLink
       href={project.href}
@@ -42,7 +40,7 @@ export function WorkCard({ project, index }: { project: Project; index: number }
           <h3 className="m-0 text-[clamp(26px,2.8cqw,46px)] font-medium leading-none tracking-[-0.04em]">
             {project.title}
           </h3>
-          <Subtitle className="text-[clamp(15px,1.2cqw,18px)] text-fog-500">{project.subtitle}</Subtitle>
+          <span className="text-[clamp(15px,1.2cqw,18px)] text-fog-500">{project.subtitle}</span>
         </div>
         <div className="flex items-baseline gap-2 text-brand">
           <span className="text-[clamp(34px,3.4cqw,56px)] font-medium leading-[0.95] tracking-[-0.05em]">

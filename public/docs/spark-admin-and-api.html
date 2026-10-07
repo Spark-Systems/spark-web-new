@@ -737,8 +737,6 @@ export interface ClientLogo {
 export interface Project {
   title: string;
   subtitle: string;
-  /** Marks copy still awaiting client confirmation. */
-  subtitleTbc?: boolean;
   tags: string[];
   metric: { value: string; label: string };
   image: StaticImageData;
@@ -748,7 +746,7 @@ export interface Project {
 export interface Testimonial {
   quote: string;
   author: string;
-  /** Omit while the job title is unconfirmed; renders a TBC marker. */
+  /** Job title; when omitted only the company is shown. */
   role?: string;
   company: string;
   logo?: StaticImageData;
@@ -791,8 +789,8 @@ export interface HomeHero {
 
 export interface HomeSolutionsSection {
   title: string;
-  /** Headline figure beside the title; `tbc` marks it as awaiting confirmation. */
-  highlight: { value: string; label: string; tbc: string };
+  /** Headline figure beside the title. */
+  highlight: { value: string; label: string };
   cta: NavLink;
   items: Solution[];
 }
@@ -857,8 +855,6 @@ export interface Milestone {
   title: string;
   body: string;
   icon: IconName;
-  /** Marks a year still awaiting client confirmation. */
-  tbc?: boolean;
 }
 
 export interface CompanyValue {
@@ -1540,7 +1536,7 @@ export const homeContentSchema = z.object({
   }),
   solutions: z.object({
     title: text(200),
-    highlight: z.object({ value: text(20), label: text(80), tbc: optionalText(80) }),
+    highlight: z.object({ value: text(20), label: text(80) }),
     cta: navLink,
     items: z
       .array(
@@ -1572,7 +1568,6 @@ export const homeContentSchema = z.object({
         z.object({
           title: text(120),
           subtitle: text(200),
-          subtitleTbc: z.boolean().optional(),
           tags: tags(6),
           metric: z.object({ value: text(30), label: text(80) }),
           image: uploadedImage,
@@ -1629,7 +1624,7 @@ export const aboutContentSchema = z.object({
   }),
   story: sectionIntro.extend({
     milestones: z
-      .array(z.object({ year: text(10), title: text(120), body: text(500), icon, tbc: z.boolean().optional() }))
+      .array(z.object({ year: text(10), title: text(120), body: text(500), icon }))
       .min(1)
       .max(20),
   }),

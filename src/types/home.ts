@@ -23,8 +23,8 @@ export interface HomeHero {
 
 export interface HomeSolutionsSection {
   title: string;
-  /** Headline figure beside the title; `tbc` marks it as awaiting confirmation. */
-  highlight: { value: string; label: string; tbc: string };
+  /** Headline figure beside the title. */
+  highlight: { value: string; label: string };
   cta: NavLink;
   items: Solution[];
 }

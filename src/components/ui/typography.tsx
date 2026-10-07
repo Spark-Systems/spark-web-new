@@ -13,14 +13,6 @@ export function Eyebrow({ className, ...props }: ComponentPropsWithoutRef<"span"
   );
 }
 
-/**
- * Copy that is still awaiting confirmation from the client. Outlined when
- * NEXT_PUBLIC_HIGHLIGHT_TBC=true so it is easy to spot during review.
- */
-export function Tbc({ className, ...props }: ComponentPropsWithoutRef<"span">) {
-  return <span data-tbc="" className={className} {...props} />;
-}
-
 /** Row of uppercase tags, each led by a small brand dot. */
 export function TagList({ tags, className }: { tags: string[]; className?: string }) {
   return (

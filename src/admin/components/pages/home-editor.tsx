@@ -9,7 +9,6 @@ import { FormImage } from "@admin/components/cms/form-image"
 import { FormRepeater } from "@admin/components/cms/form-repeater"
 import { FormStringList } from "@admin/components/cms/form-string-list"
 import { PageEditor } from "@admin/components/cms/page-editor"
-import { FormCheckbox } from "@admin/components/form/form-checkbox"
 import { FormInput } from "@admin/components/form/form-input"
 import { FormSection } from "@admin/components/form/form-section"
 import { FormSelect } from "@admin/components/form/form-select"
@@ -48,7 +47,6 @@ function SolutionsTab({ form }: { form: Form }) {
       <FormInput control={control} name="solutions.title" label={tf("title")} required maxLength={200} className="lg:col-span-2" />
       <FormInput control={control} name="solutions.highlight.value" label={t("highlightValue")} required maxLength={20} />
       <FormInput control={control} name="solutions.highlight.label" label={t("highlightLabel")} required maxLength={80} />
-      <FormInput control={control} name="solutions.highlight.tbc" label={t("highlightNote")} description={t("highlightNoteHint")} maxLength={80} className="lg:col-span-2" />
       <LinkFields control={control} name="solutions.cta" label={t("ctaLabel")} />
       <FormRepeater
         control={control}
@@ -148,7 +146,7 @@ function WorkTab({ form }: { form: Form }) {
           addLabel={t("addCard")}
           min={1}
           max={8}
-          newItem={() => ({ title: "", subtitle: "", subtitleTbc: false, tags: [], metric: { value: "", label: "" }, image: null, href: "/work" })}
+          newItem={() => ({ title: "", subtitle: "", tags: [], metric: { value: "", label: "" }, image: null, href: "/work" })}
           itemTitle={(item) => String(item.title ?? "")}
         >
           {(path) => (
@@ -160,7 +158,6 @@ function WorkTab({ form }: { form: Form }) {
               <FormTagInput control={control} name={`${path}.tags`} label={tf("tags")} maxTags={6} maxTagLength={60} />
               <FormInput control={control} name={`${path}.href`} label={tf("linkHref")} description={tf("linkHrefHint")} required dir="ltr" maxLength={500} />
               <FormImage control={control} name={`${path}.image`} label={tf("image")} required />
-              <FormCheckbox control={control} name={`${path}.subtitleTbc`} label={t("subtitleTbc")} description={t("subtitleTbcHint")} />
             </>
           )}
         </FormRepeater>

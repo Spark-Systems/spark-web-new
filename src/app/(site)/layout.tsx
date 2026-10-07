@@ -53,7 +53,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
 
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
-      <body data-highlight-tbc={process.env.NEXT_PUBLIC_HIGHLIGHT_TBC === "true" ? "" : undefined}>
+      <body>
         <AppProviders>
           <div className="@container relative overflow-clip bg-ink text-snow">
             <SiteHeader menu={menu} />

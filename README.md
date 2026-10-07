@@ -10,12 +10,6 @@ npm run build    # production build
 npm run lint
 ```
 
-Optional `.env.local`:
-
-```bash
-# Outline copy that still needs client confirmation ([title TBC], [figure to confirm], …)
-NEXT_PUBLIC_HIGHLIGHT_TBC=true
-```
 
 ## Project structure
 

@@ -260,7 +260,7 @@ export const homeContentSchema = z.object({
   }),
   solutions: z.object({
     title: text(200),
-    highlight: z.object({ value: text(20), label: text(80), tbc: optionalText(80) }),
+    highlight: z.object({ value: text(20), label: text(80) }),
     cta: navLink,
     items: z
       .array(
@@ -292,7 +292,6 @@ export const homeContentSchema = z.object({
         z.object({
           title: text(120),
           subtitle: text(200),
-          subtitleTbc: z.boolean().optional(),
           tags: tags(6),
           metric: z.object({ value: text(30), label: text(80) }),
           image: uploadedImage,
@@ -349,7 +348,7 @@ export const aboutContentSchema = z.object({
   }),
   story: sectionIntro.extend({
     milestones: z
-      .array(z.object({ year: text(10), title: text(120), body: text(500), icon, tbc: z.boolean().optional() }))
+      .array(z.object({ year: text(10), title: text(120), body: text(500), icon }))
       .min(1)
       .max(20),
   }),

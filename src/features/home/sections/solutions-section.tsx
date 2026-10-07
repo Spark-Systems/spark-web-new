@@ -1,11 +1,14 @@
 import { PillLink } from "@/components/ui/pill";
 import { Reveal } from "@/components/ui/reveal";
-import { Tbc } from "@/components/ui/typography";
 import type { HomeSolutionsSection } from "@/types/home";
 import { SolutionsScene } from "../components/solutions-scene";
 
-export function SolutionsSection({ title, highlight, cta, items: solutions }: HomeSolutionsSection) {
-
+export function SolutionsSection({
+  title,
+  highlight,
+  cta,
+  items: solutions,
+}: HomeSolutionsSection) {
   return (
     <SolutionsScene
       solutions={solutions}
@@ -22,8 +25,7 @@ export function SolutionsSection({ title, highlight, cta, items: solutions }: Ho
               {highlight.value}
             </div>
             <div className="text-base text-fog-300">
-              {highlight.label}{" "}
-              {highlight.tbc && <Tbc className="font-mono text-xs text-fog-600">{highlight.tbc}</Tbc>}
+              {highlight.label}
             </div>
           </Reveal>
         </>

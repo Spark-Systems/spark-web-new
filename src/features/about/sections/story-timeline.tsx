@@ -1,7 +1,6 @@
 import { SectionHeading } from "@/components/blocks/section-heading";
 import { Icon } from "@/components/ui/icon";
 import { Reveal } from "@/components/ui/reveal";
-import { Tbc } from "@/components/ui/typography";
 import type { AboutPageData } from "@/types/about";
 
 /**
@@ -26,11 +25,7 @@ export function StoryTimeline({ eyebrow, title, milestones }: AboutPageData["sto
                   <Icon name={m.icon} />
                 </span>
               </div>
-              {m.tbc ? (
-                <Tbc className="self-start font-mono text-[13px] text-brand-bright">{m.year}</Tbc>
-              ) : (
-                <span className="self-start font-mono text-[13px] text-brand-bright">{m.year}</span>
-              )}
+              <span className="self-start font-mono text-[13px] text-brand-bright">{m.year}</span>
               <span className="max-w-[14ch] text-balance text-[clamp(16px,1.3cqw,19px)] font-medium leading-[1.25] tracking-[-0.015em] text-snow">
                 {m.title}
               </span>

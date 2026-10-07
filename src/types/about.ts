@@ -11,13 +11,11 @@ import type {
 
 /** A point on the "Our story" timeline. */
 export interface Milestone {
-  /** Display year; may be a placeholder like "20XX" while unconfirmed. */
+  /** Display year. */
   year: string;
   title: string;
   body: string;
   icon: IconName;
-  /** Marks a year still awaiting client confirmation. */
-  tbc?: boolean;
 }
 
 export interface CompanyValue {

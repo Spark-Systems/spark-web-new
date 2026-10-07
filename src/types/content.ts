@@ -138,8 +138,6 @@ export interface ClientLogo {
 export interface Project {
   title: string;
   subtitle: string;
-  /** Marks copy still awaiting client confirmation. */
-  subtitleTbc?: boolean;
   tags: string[];
   metric: { value: string; label: string };
   image: StaticImageData;
@@ -149,7 +147,7 @@ export interface Project {
 export interface Testimonial {
   quote: string;
   author: string;
-  /** Omit while the job title is unconfirmed; renders a TBC marker. */
+  /** Job title; when omitted only the company is shown. */
   role?: string;
   company: string;
   logo?: StaticImageData;
