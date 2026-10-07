@@ -4,7 +4,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 // Translations for the admin (/admin); the public site doesn't use next-intl.
 const withNextIntl = createNextIntlPlugin("./src/admin/i18n/request.ts");
 
-/** The content backend (backend/). Read when the site is built: set BACKEND_URL before `next build`. */
+/** The content backend (the separate spark-backend project). Read when the site is built: set BACKEND_URL before `next build`. */
 const backend = (process.env.BACKEND_URL || "http://127.0.0.1:4000").replace(/\/+$/, "");
 
 const nextConfig: NextConfig = {

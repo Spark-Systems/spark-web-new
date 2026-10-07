@@ -1,7 +1,7 @@
 import "server-only";
 
 /**
- * The content backend (backend/): where the website's server reads pages and
+ * The content backend (the separate spark-backend project): where the website's server reads pages and
  * sends form submissions. Browsers never call it directly: /api/admin, /api/v1
  * and /uploads on this site are forwarded to it (next.config.ts rewrites).
  */

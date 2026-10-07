@@ -41,12 +41,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# content backups written on every save (local storage driver)
-/backend/data/backups/
 
-# per-environment CMS data: user accounts (password hashes), messages, activity log
-/backend/data/users.json
-/backend/data/enquiries.json
-/backend/data/activity.json
-/backend/data/applications.json
-/backend/data/cvs/

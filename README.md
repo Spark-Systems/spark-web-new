@@ -3,25 +3,18 @@
 The Spark Systems marketing site, built with **Next.js 16 (App Router)**, **React 19**, **TypeScript** and **Tailwind CSS 4**.
 It is a component-based port of the `Spark design v2/Spark Homepage.dc.html` design.
 
-The project is two apps:
+This project is the **website**: the public site and the admin screens (`/admin`).
+All content, sign-in, uploads and form submissions are handled by the **backend**, a separate project (`spark-backend`).
+The website reads content from the backend's API. It also forwards `/api/admin`, `/api/v1` and `/uploads` to the backend, so browsers only ever talk to this site.
 
-- **Website** (this folder): the public site and the admin screens (`/admin`).
-- **Backend** (`backend/`): the admin API, public API, sign-in, uploads and the content files. The website reads everything from it over HTTP.
-
-Settings: copy `.env.example` to `.env.local` and `backend/.env.example` to `backend/.env`. Use the same `SPARK_SHARED_SECRET` in both.
+Settings: copy `.env.example` to `.env.local` (see that file). Run the backend first, because the website needs it in development and when building.
 
 ```bash
-npm install && npm install --prefix backend
-
-npm run dev:backend   # terminal 1: backend on http://127.0.0.1:4000
-npm run dev           # terminal 2: website on http://localhost:3000
-
-npm run build:backend # production builds (the website build needs the backend running)
-npm run build
-npm run lint          # lints both
+npm install
+npm run dev      # http://localhost:3000 (backend running on BACKEND_URL)
+npm run build    # production build: pre-renders pages from the backend
+npm run lint
 ```
-
-Deploying on Windows Server (IIS + two Windows services): see [deploy/windows/README.md](deploy/windows/README.md).
 
 
 ## Project structure
