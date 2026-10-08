@@ -5,13 +5,24 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./src/admin/i18n/request.ts");
 
 /** The content backend (the separate spark-backend project). Read when the site is built: set BACKEND_URL before `next build`. */
-const backend = (process.env.BACKEND_URL || "http://127.0.0.1:4000").replace(/\/+$/, "");
+const configured = (process.env.BACKEND_URL || "http://127.0.0.1:4000").replace(
+  /\/+$/,
+  "",
+);
 
 // A remote backend over plain http answers the forwarded requests below with a
-// redirect to https, which reaches the browser and fails there (CORS).
-if (/^http:\/\//.test(backend) && !/^http:\/\/(localhost|127\.0\.0\.1)(:|$)/.test(backend)) {
-  console.warn(`\n⚠ BACKEND_URL is ${backend}: use https:// for a remote backend, or the admin's requests will fail with CORS errors.\n`);
-}
+// redirect to https, which reaches the browser and fails there (CORS). So a
+// remote http:// address is upgraded to https:// (local addresses stay as they are).
+const isRemoteHttp =
+  /^http:\/\//.test(configured) &&
+  !/^http:\/\/(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/.test(configured);
+const backend = isRemoteHttp
+  ? configured.replace(/^http:/, "https:")
+  : configured;
+if (isRemoteHttp)
+  console.warn(
+    `\n⚠ BACKEND_URL is ${configured}: using ${backend} instead. Set it to https:// to silence this.\n`,
+  );
 
 const nextConfig: NextConfig = {
   // Part of the content cache keys (src/lib/api/pages.ts): a new build never reads data cached by an older one.
@@ -28,7 +39,10 @@ const nextConfig: NextConfig = {
   // /api/revalidate) are matched first.
   async rewrites() {
     return [
-      { source: "/api/admin/:path*", destination: `${backend}/api/admin/:path*` },
+      {
+        source: "/api/admin/:path*",
+        destination: `${backend}/api/admin/:path*`,
+      },
       { source: "/api/v1/:path*", destination: `${backend}/api/v1/:path*` },
       { source: "/uploads/:path*", destination: `${backend}/uploads/:path*` },
     ];
@@ -37,6 +51,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       // Stock photography used in some page heroes.
       { protocol: "https", hostname: "images.pexels.com" },
+      {
+        protocol: "https",
+        hostname: "https://master.d1mxtm26pthhdd.amplifyapp.com",
+      },
     ],
   },
 };

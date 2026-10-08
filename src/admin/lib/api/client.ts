@@ -133,6 +133,8 @@ async function send(config: ClientConfig, path: string, options: InternalOptions
   }
 
   const res = await config.transport(buildUrl(config.baseUrl, path, query), {
+    // Always ask the API: never a stored answer or a remembered (301) redirect.
+    cache: "no-store",
     ...init,
     headers: finalHeaders,
     body: finalBody,

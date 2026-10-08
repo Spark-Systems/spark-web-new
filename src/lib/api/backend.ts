@@ -5,7 +5,10 @@ import "server-only";
  * sends form submissions. Browsers never call it directly: /api/admin, /api/v1
  * and /uploads on this site are forwarded to it (next.config.ts rewrites).
  */
-export const BACKEND_URL = (process.env.BACKEND_URL || "http://127.0.0.1:4000").replace(/\/+$/, "");
+export const BACKEND_URL = (process.env.BACKEND_URL || "http://127.0.0.1:4000")
+  .replace(/\/+$/, "")
+  // A remote backend redirects http to https (a POST would arrive as a GET), so use https directly, as next.config.ts does.
+  .replace(/^http:\/\/(?!(localhost|127\.0\.0\.1|\[::1\])(:|\/|$))/, "https://");
 
 /** Shared with the backend: proves requests (and the backend's refresh calls) come from our own servers. */
 export const SHARED_SECRET = process.env.SPARK_SHARED_SECRET || "";
