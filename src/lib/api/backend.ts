@@ -35,6 +35,26 @@ export function visitorHeaders(headers: Headers): Record<string, string> {
   return ip ? { "x-forwarded-for": ip } : {};
 }
 
+/**
+ * Uploaded pictures come from the backend as "/uploads/...". On a host whose
+ * image optimizer only reads the site's own files (AWS Amplify), next/image
+ * can't load those through the /uploads rewrite, so they're linked from the
+ * backend directly (allowed in next.config.ts images.remotePatterns). A local
+ * backend keeps them relative: the optimizer refuses local addresses.
+ */
+const UPLOADS_ORIGIN = /^http:\/\/(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/.test(BACKEND_URL) ? "" : BACKEND_URL;
+
+/** Every "/uploads/..." string in the backend's answer, made absolute (see UPLOADS_ORIGIN). */
+function absoluteUploads(value: unknown): unknown {
+  if (!UPLOADS_ORIGIN) return value;
+  if (typeof value === "string") return value.startsWith("/uploads/") ? UPLOADS_ORIGIN + value : value;
+  if (Array.isArray(value)) return value.map(absoluteUploads);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, absoluteUploads(item)]));
+  }
+  return value;
+}
+
 /** Calls the backend and returns its JSON, or throws a BackendError with its message. */
 export async function backendFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const response = await fetch(`${BACKEND_URL}${path}`, {
@@ -47,7 +67,7 @@ export async function backendFetch<T>(path: string, init: RequestInit = {}): Pro
     const body = (await response.json().catch(() => null)) as { message?: string; code?: string } | null;
     throw new BackendError(response.status, body?.message ?? `The backend answered ${response.status}`, body?.code);
   }
-  return (await response.json()) as T;
+  return absoluteUploads(await response.json()) as T;
 }
 
 /** Like backendFetch, but a 404 is null (a page or item that doesn't exist). */

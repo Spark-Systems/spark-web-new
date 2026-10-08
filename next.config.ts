@@ -24,6 +24,8 @@ if (isRemoteHttp)
     `\n⚠ BACKEND_URL is ${configured}: using ${backend} instead. Set it to https:// to silence this.\n`,
   );
 
+const isLocalBackend = /^http:\/\/(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/.test(backend);
+
 const nextConfig: NextConfig = {
   // Part of the content cache keys (src/lib/api/pages.ts): a new build never reads data cached by an older one.
   env: { CONTENT_CACHE_BUILD: Date.now().toString(36) },
@@ -51,10 +53,16 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       // Stock photography used in some page heroes.
       { protocol: "https", hostname: "images.pexels.com" },
-      {
-        protocol: "https",
-        hostname: "https://master.d1mxtm26pthhdd.amplifyapp.com",
-      },
+      // Uploaded pictures, linked from a remote backend directly (src/lib/api/backend.ts).
+      ...(isLocalBackend
+        ? []
+        : [
+            {
+              protocol: new URL(backend).protocol.replace(":", "") as "http" | "https",
+              hostname: new URL(backend).hostname,
+              pathname: "/uploads/**",
+            },
+          ]),
     ],
   },
 };
