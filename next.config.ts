@@ -7,6 +7,12 @@ const withNextIntl = createNextIntlPlugin("./src/admin/i18n/request.ts");
 /** The content backend (the separate spark-backend project). Read when the site is built: set BACKEND_URL before `next build`. */
 const backend = (process.env.BACKEND_URL || "http://127.0.0.1:4000").replace(/\/+$/, "");
 
+// A remote backend over plain http answers the forwarded requests below with a
+// redirect to https, which reaches the browser and fails there (CORS).
+if (/^http:\/\//.test(backend) && !/^http:\/\/(localhost|127\.0\.0\.1)(:|$)/.test(backend)) {
+  console.warn(`\n⚠ BACKEND_URL is ${backend}: use https:// for a remote backend, or the admin's requests will fail with CORS errors.\n`);
+}
+
 const nextConfig: NextConfig = {
   // Part of the content cache keys (src/lib/api/pages.ts): a new build never reads data cached by an older one.
   env: { CONTENT_CACHE_BUILD: Date.now().toString(36) },
