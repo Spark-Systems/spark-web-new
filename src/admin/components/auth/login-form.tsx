@@ -43,7 +43,9 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
   async function onSubmit(values: z.infer<typeof schema>) {
     try {
       await login(values)
-      router.replace(callbackUrl)
+      // Back to an API route (e.g. /api/preview) takes a full page load; pages use the router.
+      if (callbackUrl.startsWith("/api/")) window.location.assign(callbackUrl)
+      else router.replace(callbackUrl)
     } catch (error) {
       form.setError("root", {
         message:
