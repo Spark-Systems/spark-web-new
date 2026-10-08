@@ -25,11 +25,17 @@ import { CONTENT_TAG } from "./revalidate";
 const BUILD = process.env.CONTENT_CACHE_BUILD ?? "dev";
 const key = (name: string) => [`content:${name}`, BUILD];
 
+/**
+ * Safety net (seconds): cached content is also refreshed this often, so the
+ * site catches up even if the backend's "publish" call never arrives.
+ */
+const MAX_AGE = 300;
+
 const enc = encodeURIComponent;
 
 /** `read(path)` cached by URL, or fresh with drafts (`?preview=1`) in preview mode. */
 function cachedGetter<A extends string[], R>(name: string, pathOf: (...args: A) => string, read: (path: string) => Promise<R>) {
-  const live = unstable_cache((...args: A) => read(pathOf(...args)), key(name), { tags: [CONTENT_TAG] });
+  const live = unstable_cache((...args: A) => read(pathOf(...args)), key(name), { tags: [CONTENT_TAG], revalidate: MAX_AGE });
   return async (...args: A): Promise<R> => {
     if ((await draftMode()).isEnabled) {
       const path = pathOf(...args);
@@ -99,7 +105,7 @@ export async function getNextProject(slug: string): Promise<NextProject> {
 // Slugs feed generateStaticParams, which runs at build time outside any request
 // (so no draft mode). Pages published later render on first visit.
 const slugs = (kind: "solutions" | "services" | "work" | "insights") =>
-  unstable_cache(() => backendFetch<string[]>(`/api/v1/slugs/${kind}`), key(`${kind}-slugs`), { tags: [CONTENT_TAG] });
+  unstable_cache(() => backendFetch<string[]>(`/api/v1/slugs/${kind}`), key(`${kind}-slugs`), { tags: [CONTENT_TAG], revalidate: MAX_AGE });
 
 export const getSolutionSlugs = slugs("solutions");
 export const getServiceSlugs = slugs("services");

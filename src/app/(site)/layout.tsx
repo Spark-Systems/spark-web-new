@@ -21,6 +21,10 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400"],
 });
 
+// Pre-rendered pages are rebuilt at most every 5 minutes, even if the backend's
+// "publish" call (app/api/revalidate) never arrives. Keep in step with lib/api/pages.
+export const revalidate = 120;
+
 export async function generateMetadata(): Promise<Metadata> {
   const { company, keywords } = await getSiteLayout();
   return {
@@ -43,7 +47,10 @@ export const viewport: Viewport = {
  * type, and the parent the floating nav sticks in.
  */
 export default async function SiteLayout({ children }: LayoutProps<"/">) {
-  const [layout, { isEnabled: preview }] = await Promise.all([getSiteLayout(), draftMode()]);
+  const [layout, { isEnabled: preview }] = await Promise.all([
+    getSiteLayout(),
+    draftMode(),
+  ]);
   const menu = {
     items: layout.menu,
     cities: layout.offices.map((o) => o.city),
@@ -52,7 +59,11 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
   };
 
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <AppProviders>
           <div className="@container relative overflow-clip bg-ink text-snow">
