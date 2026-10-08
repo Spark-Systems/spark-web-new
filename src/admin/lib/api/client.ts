@@ -40,6 +40,17 @@ export function onUnauthorized(listener: UnauthorizedListener) {
   }
 }
 
+// Several requests failing together (a page's queries) send you to the login page once.
+let lastSignOut = 0
+
+/** Ends the session and tells the app to show the login page. */
+function signOut() {
+  tokenStorage.clear()
+  if (Date.now() - lastSignOut < 3000) return
+  lastSignOut = Date.now()
+  unauthorizedListeners.forEach((listener) => listener())
+}
+
 // ---- Token refresh ----------------------------------------------------------
 
 let refreshPromise: Promise<boolean> | null = null
@@ -97,12 +108,12 @@ function errorMessage(data: unknown, fallback: string) {
   return fallback
 }
 
-async function request<T>(
-  config: ClientConfig,
-  path: string,
-  options: InternalOptions,
-  isRetry = false
-): Promise<T> {
+/**
+ * Sends a request with the session token. On a 401 it refreshes the session
+ * once and retries; if that can't fix it, the session ends and the app goes
+ * back to the login page. Every admin call goes through here.
+ */
+async function send(config: ClientConfig, path: string, options: InternalOptions, isRetry = false): Promise<Response> {
   const { body, query, auth = true, headers, ...init } = options
 
   const finalHeaders = new Headers(headers)
@@ -128,13 +139,14 @@ async function request<T>(
   })
 
   if (res.status === 401 && auth) {
-    if (!isRetry && (await refreshSession())) {
-      return request<T>(config, path, options, true)
-    }
-    tokenStorage.clear()
-    unauthorizedListeners.forEach((listener) => listener())
+    if (!isRetry && (await refreshSession())) return send(config, path, options, true)
+    signOut()
   }
+  return res
+}
 
+async function request<T>(config: ClientConfig, path: string, options: InternalOptions): Promise<T> {
+  const res = await send(config, path, options)
   const data = await parseBody(res)
   if (!res.ok) {
     throw new ApiError(res.status, errorMessage(data, res.statusText || "Request failed"), data)
@@ -154,6 +166,15 @@ function createClient(config: ClientConfig) {
       request<T>(config, path, { ...options, body, method: "PATCH" }),
     delete: <T>(path: string, options?: RequestOptions) =>
       request<T>(config, path, { ...options, method: "DELETE" }),
+    /** A file (e.g. a CV), with the same session handling as every other call. */
+    download: async (path: string, options?: RequestOptions): Promise<Blob> => {
+      const res = await send(config, path, { ...options, method: "GET" })
+      if (!res.ok) {
+        const data = await parseBody(res)
+        throw new ApiError(res.status, errorMessage(data, res.statusText || "Download failed"), data)
+      }
+      return res.blob()
+    },
   }
 }
 
