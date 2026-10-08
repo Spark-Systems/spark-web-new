@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Spark Project Guide</title>
+<meta name="description" content="How the Spark Systems website, admin and backend fit together: setup, configuration, publishing, deployment, security and troubleshooting.">
+<style>
+:root{--bg:#f7f7f8;--panel:#fff;--text:#16161a;--muted:#5b5b66;--line:#e4e4e9;--accent:#d81f26;--accent-soft:#fdecec;--code:#f1f1f4;--ok:#1a7f4b;--ok-soft:#e6f5ec;--warn:#9a6200;--warn-soft:#fdf3dc;--info:#1f5fbf;--info-soft:#e8f0fc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0e11;--panel:#16161b;--text:#ececf1;--muted:#a1a1ad;--line:#2a2a33;--accent:#ff4d52;--accent-soft:#2a1416;--code:#1d1d24;--ok:#5fd394;--ok-soft:#12291d;--warn:#f5c060;--warn-soft:#2b220f;--info:#7fb0ff;--info-soft:#121d2e}}
+:root[data-theme="dark"]{--bg:#0e0e11;--panel:#16161b;--text:#ececf1;--muted:#a1a1ad;--line:#2a2a33;--accent:#ff4d52;--accent-soft:#2a1416;--code:#1d1d24;--ok:#5fd394;--ok-soft:#12291d;--warn:#f5c060;--warn-soft:#2b220f;--info:#7fb0ff;--info-soft:#121d2e}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1260px;margin:0 auto;gap:40px;padding:32px 24px 96px}
+nav.toc{position:sticky;top:24px;align-self:start;display:flex;flex-direction:column;gap:1px;font-size:14px;max-height:calc(100vh - 48px);overflow:auto}
+nav.toc .brand{font-weight:700;margin:0 10px 12px;letter-spacing:.02em}
+nav.toc a{color:var(--muted);text-decoration:none;padding:5px 10px;border-radius:8px}
+nav.toc a.sub{padding-left:24px;font-size:13px}
+nav.toc a:hover{background:var(--panel);color:var(--text)}
+main{min-width:0}
+section,.hero{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px 32px;margin-bottom:24px}
+.hero{background:linear-gradient(135deg,var(--accent-soft),var(--panel) 60%)}
+.eyebrow{color:var(--accent);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 6px}
+h1{font-size:34px;line-height:1.2;margin:0 0 12px;text-wrap:balance}
+h2{font-size:24px;line-height:1.3;margin:0 0 14px;text-wrap:balance}
+h3{font-size:18px;margin:26px 0 10px}
+h4{font-size:15px;margin:18px 0 6px}
+p,ul,ol{margin:0 0 14px}
+li{margin:3px 0}
+a{color:var(--accent)}
+code{font:13.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:1px 6px;border-radius:5px;overflow-wrap:anywhere}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;margin:0 0 16px}
+pre code{background:none;padding:0;overflow-wrap:normal}
+.table-wrap{overflow-x:auto;margin:0 0 16px;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--code);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.note,.warn,.ok{border-radius:10px;padding:12px 16px;margin:0 0 16px;border:1px solid}
+.note{background:var(--info-soft);border-color:color-mix(in srgb,var(--info) 30%,transparent)}
+.warn{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 35%,transparent)}
+.ok{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 30%,transparent)}
+.note b:first-child,.warn b:first-child,.ok b:first-child{display:block;margin-bottom:2px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--code);border:1px solid var(--line);white-space:nowrap}
+.pill.get{color:var(--ok)}.pill.post{color:var(--info)}.pill.put{color:var(--warn)}.pill.del{color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0 0 16px}
+.card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--bg)}
+.card h4{margin:0 0 4px}
+.card p{margin:0;color:var(--muted);font-size:14.5px}
+.muted{color:var(--muted)}
+.meta{color:var(--muted);font-size:14px;margin:0}
+figure{margin:0 0 16px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{color:var(--muted);font-size:13.5px;margin-top:8px}
+.diagram text{font:13px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;fill:var(--text)}
+.diagram .small{font-size:11.5px;fill:var(--muted)}
+.diagram .box{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+.diagram .box.accent{stroke:var(--accent)}
+.diagram .arrow{stroke:var(--muted);stroke-width:1.5;fill:none;marker-end:url(#arrowhead)}
+.diagram .arrow.dashed{stroke-dasharray:5 4}
+.diagram #arrowhead path{fill:var(--muted)}
+ol.steps{counter-reset:s;list-style:none;padding:0}
+ol.steps>li{counter-increment:s;position:relative;padding-left:38px;margin:0 0 12px}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:grid;place-items:center}
+.theme-toggle{position:fixed;right:16px;bottom:16px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;padding:16px 16px 80px;gap:16px}
+  nav.toc{position:static;max-height:none;flex-direction:row;flex-wrap:wrap;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+  nav.toc .brand{width:100%;margin:0 4px 6px}
+  nav.toc a.sub{display:none}
+  nav.toc a{background:var(--bg);border:1px solid var(--line);font-size:13px;padding:4px 10px}
+  section,.hero{padding:20px 18px;border-radius:12px}
+  h1{font-size:27px}h2{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <div class="brand">Spark Project Guide</div>
+  <a href="#overview">1. Overview</a>
+  <a href="#architecture">2. Architecture</a>
+  <a href="#structure">3. Code structure</a>
+  <a href="#local">4. Running locally</a>
+  <a href="#config">5. Configuration</a>
+  <a class="sub" href="#config-backend">Backend settings</a>
+  <a class="sub" href="#config-web">Website settings</a>
+  <a href="#content">6. Content model</a>
+  <a href="#publishing">7. Publishing &amp; caching</a>
+  <a href="#images">8. Images &amp; uploads</a>
+  <a href="#api">9. API overview</a>
+  <a href="#security">10. Security</a>
+  <a href="#deploy">11. Deployment</a>
+  <a class="sub" href="#deploy-backend">Backend on Plesk</a>
+  <a class="sub" href="#deploy-web">Website on Amplify</a>
+  <a href="#operations">12. Operations</a>
+  <a href="#troubleshooting">13. Troubleshooting</a>
+  <a href="#reference">14. Quick reference</a>
+</nav>
+
+<main>
+<header class="hero">
+  <p class="eyebrow">Spark Systems</p>
+  <h1>Project guide: website, admin &amp; backend</h1>
+  <p>How the Spark Systems website and its content management fit together: what runs where, how to run and configure it, how content reaches the site, how it's deployed and secured, and how to fix the usual problems.</p>
+  <p class="meta">For developers and whoever maintains the servers. For every endpoint and data model in detail, see the <a href="spark-admin-and-api.html">Admin guide &amp; API specification</a>.</p>
+</header>
+
+<!-- 1 -->
+<section id="overview">
+  <h2>1. Overview</h2>
+  <p>The project is two applications that work as one:</p>
+  <div class="grid">
+    <div class="card"><h4>Website: <code>spark-web</code></h4><p>Next.js 16, React 19, TypeScript, Tailwind CSS 4. The public marketing site and the admin panel at <code>/admin</code>. Hosted on AWS Amplify.</p></div>
+    <div class="card"><h4>Backend: <code>backend</code> (spark-backend)</h4><p>Node.js 22 and TypeScript, no framework. Stores content, accounts, messages and pictures; serves the admin API and the public API. Hosted on Plesk (Windows, IIS + iisnode).</p></div>
+  </div>
+  <p>Everything shown on the site is managed in the admin: pages, solutions, services, projects (work), clients, partners, offices, jobs, insights and site settings. Visitors' contact messages and job applications land in the admin too.</p>
+  <div class="table-wrap"><table>
+    <tr><th></th><th>Development</th><th>Production</th></tr>
+    <tr><td>Website</td><td><code>http://localhost:3000</code></td><td><code>https://master.d1mxtm26pthhdd.amplifyapp.com</code></td></tr>
+    <tr><td>Admin</td><td><code>http://localhost:3000/admin</code></td><td><code>https://master.d1mxtm26pthhdd.amplifyapp.com/admin</code></td></tr>
+    <tr><td>Backend</td><td><code>http://127.0.0.1:4000</code></td><td><code>https://new-spark26.spark-sys.com</code></td></tr>
+  </table></div>
+</section>
+
+<!-- 2 -->
+<section id="architecture">
+  <h2>2. Architecture</h2>
+  <p>Browsers only ever talk to the website. The website forwards admin calls, public API calls and pictures to the backend, so everything appears on one domain: no CORS, and sign-in keeps working.</p>
+  <figure>
+    <svg class="diagram" viewBox="0 0 760 300" role="img" aria-labelledby="arch-title">
+      <title id="arch-title">Browser to website to backend, and the backend's refresh call back to the website</title>
+      <defs><marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker></defs>
+      <rect class="box" x="10" y="100" width="170" height="90" rx="12"/>
+      <text x="95" y="135" text-anchor="middle" font-weight="600">Browser</text>
+      <text class="small" x="95" y="156" text-anchor="middle">visitors &amp; admin users</text>
+      <rect class="box accent" x="290" y="60" width="190" height="170" rx="12"/>
+      <text x="385" y="92" text-anchor="middle" font-weight="600">Website (Next.js)</text>
+      <text class="small" x="385" y="114" text-anchor="middle">pages, cached</text>
+      <text class="small" x="385" y="132" text-anchor="middle">/admin screens</text>
+      <text class="small" x="385" y="150" text-anchor="middle">forwards /api/admin, /api/v1,</text>
+      <text class="small" x="385" y="166" text-anchor="middle">/uploads to the backend</text>
+      <text class="small" x="385" y="190" text-anchor="middle">/api/revalidate, /api/preview</text>
+      <text class="small" x="385" y="214" text-anchor="middle">AWS Amplify</text>
+      <rect class="box accent" x="580" y="60" width="170" height="170" rx="12"/>
+      <text x="665" y="92" text-anchor="middle" font-weight="600">Backend (Node)</text>
+      <text class="small" x="665" y="114" text-anchor="middle">/api/admin/*</text>
+      <text class="small" x="665" y="132" text-anchor="middle">/api/v1/*</text>
+      <text class="small" x="665" y="150" text-anchor="middle">/uploads/*</text>
+      <text class="small" x="665" y="172" text-anchor="middle">data/*.json, uploads/</text>
+      <text class="small" x="665" y="214" text-anchor="middle">Plesk · IIS · iisnode</text>
+      <path class="arrow" d="M180,130 L288,130"/>
+      <text class="small" x="234" y="122" text-anchor="middle">HTTPS</text>
+      <path class="arrow" d="M480,110 L578,110"/>
+      <text class="small" x="529" y="102" text-anchor="middle">server-side</text>
+      <path class="arrow dashed" d="M578,190 L482,190"/>
+      <text class="small" x="529" y="208" text-anchor="middle">refresh after publish</text>
+      <path class="arrow dashed" d="M290,250 C200,290 120,250 95,192"/>
+      <text class="small" x="210" y="292" text-anchor="middle">pages served from cache</text>
+    </svg>
+    <figcaption>Solid: requests. Dashed: the backend telling the website to refresh, and the website answering visitors from its cache.</figcaption>
+  </figure>
+  <h3>Who calls whom</h3>
+  <div class="table-wrap"><table>
+    <tr><th>From → to</th><th>What</th><th>How it's authorised</th></tr>
+    <tr><td>Browser → website</td><td>Pages; admin screens; <code>/api/admin/*</code>, <code>/api/v1/*</code>, <code>/uploads/*</code> (forwarded to the backend by <code>next.config.ts</code> rewrites)</td><td>Admin calls carry <code>Authorization: Bearer &lt;access token&gt;</code></td></tr>
+    <tr><td>Website server → backend</td><td>Page content (<code>/api/v1/pages/…</code>), detail pages, form submissions, drafts for preview mode</td><td><code>x-spark-secret</code> header (shared secret)</td></tr>
+    <tr><td>Backend → website</td><td><code>POST /api/revalidate</code> after every publish or delete, so the site rebuilds its pages</td><td><code>x-spark-secret</code> header (shared secret)</td></tr>
+    <tr><td>Browser → backend directly</td><td>Not used by default. Possible with <code>NEXT_PUBLIC_API_URL</code> (see <a href="#config-web">website settings</a>)</td><td>CORS allowlist on the backend</td></tr>
+  </table></div>
+</section>
+
+<!-- 3 -->
+<section id="structure">
+  <h2>3. Code structure</h2>
+  <h3>Website (<code>spark-web/</code>)</h3>
+<pre><code>src/
+├── app/
+│   ├── (site)/              Public pages: /, /about, /solutions[/slug], /services[/slug],
+│   │                        /work[/slug], /insights[/slug], /careers, /contact
+│   ├── (admin)/admin/       Admin panel: /admin/login, /admin/dashboard, one area per section
+│   └── api/
+│       ├── revalidate/      POST: the backend asks the site to refresh (shared secret)
+│       └── preview/         GET: turn on preview mode (drafts) / exit
+├── admin/                   Admin code: components, API client, auth, i18n (en, ar)
+│   └── lib/api/             client.ts (tokens, refresh, errors), config.ts, services/*
+├── features/                One folder per site area (home, about, solutions, work, …)
+├── components/              Shared UI, layout (header, footer), providers
+├── lib/api/                 backend.ts (server-side calls), pages.ts (cached content readers)
+└── proxy.ts                 Sends signed-out visitors of /admin to the login page
+public/docs/                 These documents</code></pre>
+  <h3>Backend (<code>backend/</code>)</h3>
+<pre><code>src/
+├── main.ts                  Starts the HTTP server (port or iisnode named pipe), timeouts
+├── env.ts                   Loads .env, then .env.production / .env.development
+├── config.ts                All settings, from the environment
+├── http/
+│   ├── app.ts               Every request: CORS preflight, uploads, /health, routing
+│   ├── node.ts              Node ⇄ web Request/Response, body size limit
+│   ├── security.ts          CORS allowlist and security headers
+│   ├── router.ts            File-based routing ([param] segments), like Next.js
+│   └── uploads.ts           Serves /uploads/* (pictures)
+├── routes/api/              One route.ts per endpoint, exporting GET/POST/PUT/DELETE
+│   ├── admin/…              Admin API (signed-in users)
+│   └── v1/…                 Public API (website and forms)
+├── routes.gen.ts            Generated route table (npm run routes)
+└── server/
+    ├── auth/                Sign-in, tokens (HS256), passwords (scrypt), roles
+    ├── content/             Builds each page from stored content; revalidate call
+    ├── db/                  Collections, pages, settings, users, activity, backups
+    ├── storage/             JSON files on disk (atomic writes, version checks)
+    ├── media.ts             Picture uploads (resize, WebP, SVG checks)
+    ├── enquiries.ts, applications.ts   Form submissions (+ flood limits)
+    └── rate-limit.ts        In-memory rate limiter
+shared/                      Types, schemas and site config shared with the website
+data/                        Content (JSON), accounts, messages, CVs, backups
+uploads/                     Uploaded pictures
+app.js, web.config           Startup file and IIS settings for Plesk</code></pre>
+  <div class="note"><b>Shared code</b><code>backend/shared/</code> mirrors files from the website's <code>src/</code> (types, Zod schemas, site config). When a content type or schema changes, change it in both places.</div>
+</section>
+
+<!-- 4 -->
+<section id="local">
+  <h2>4. Running locally</h2>
+  <p>Requires Node.js 22 or newer. Start the backend first: the website reads all its content from it, both while running and when building.</p>
+  <ol class="steps">
+    <li><b>Backend.</b> In <code>backend/</code>, copy <code>.env.example</code> to <code>.env</code> and fill in <code>SPARK_SHARED_SECRET</code>, <code>AUTH_SECRET</code>, <code>ADMIN_EMAIL</code> and <code>ADMIN_PASSWORD</code>. Then:
+<pre><code>npm install
+npm run dev        # http://127.0.0.1:4000 (restarts on changes)</code></pre></li>
+    <li><b>Website.</b> In <code>spark-web/</code>, copy <code>.env.example</code> to <code>.env.local</code> and set <code>SPARK_SHARED_SECRET</code> to <b>the same value</b> as the backend's. The backend address comes from <code>.env.development</code>. Then:
+<pre><code>npm install
+npm run dev        # http://localhost:3000</code></pre></li>
+    <li><b>Sign in</b> at <code>http://localhost:3000/admin</code>. With no users yet, signing in with <code>ADMIN_EMAIL</code> / <code>ADMIN_PASSWORD</code> creates the first admin. After that, manage accounts under <b>Users</b>.</li>
+  </ol>
+  <p>Generate a secret with:</p>
+<pre><code>node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"</code></pre>
+</section>
+
+<!-- 5 -->
+<section id="config">
+  <h2>5. Configuration</h2>
+  <p>Both apps read environment variables. Addresses that differ between development and production live in per-mode files that are committed. Secrets never go in those files.</p>
+  <div class="table-wrap"><table>
+    <tr><th>App</th><th>Order (first wins)</th><th>Mode chosen by</th></tr>
+    <tr><td>Backend</td><td>Real environment variables → <code>.env</code> → <code>.env.production</code> or <code>.env.development</code></td><td><code>NODE_ENV</code> (<code>web.config</code> sets <code>production</code> on Plesk)</td></tr>
+    <tr><td>Website</td><td>Real environment variables → <code>.env.local</code> → <code>.env.production</code> or <code>.env.development</code></td><td><code>next dev</code> = development, <code>next build</code>/<code>next start</code> = production</td></tr>
+  </table></div>
+  <div class="warn"><b>A value in <code>.env</code> / <code>.env.local</code> overrides the per-mode files</b>Don't put <code>FRONTEND_URL</code> (backend) or <code>BACKEND_URL</code> (website) in those files unless you mean to override the address for every mode.</div>
+
+  <h3 id="config-backend">Backend settings</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Variable</th><th>Where</th><th>Meaning</th></tr>
+    <tr><td><code>PORT</code>, <code>HOST</code></td><td><code>.env</code></td><td>Where it listens: <code>4000</code> and <code>127.0.0.1</code>. Under iisnode, PORT is a named pipe set by IIS.</td></tr>
+    <tr><td><code>SPARK_DATA_DIR</code>, <code>SPARK_UPLOADS_DIR</code></td><td><code>.env</code></td><td>Content and pictures folders (default <code>data</code>, <code>uploads</code>). On a server, prefer folders outside the app so deploys never touch them.</td></tr>
+    <tr><td><code>FRONTEND_URL</code></td><td><code>.env.development</code> / <code>.env.production</code></td><td>The website: told to refresh after each publish, and always allowed by CORS.</td></tr>
+    <tr><td><code>CORS_ORIGINS</code></td><td><code>.env</code> (optional)</td><td>Other browser origins allowed to call the API directly, comma-separated.</td></tr>
+    <tr><td><code>SPARK_SHARED_SECRET</code></td><td><code>.env</code> · secret</td><td>Same value as the website's. Signs refresh calls and preview reads. 32+ random characters.</td></tr>
+    <tr><td><code>AUTH_SECRET</code></td><td><code>.env</code> · secret</td><td>Signs sign-in tokens. 32+ characters; <b>required in production</b> (the backend won't start without it). Changing it signs everyone out.</td></tr>
+    <tr><td><code>ADMIN_EMAIL</code>, <code>ADMIN_PASSWORD</code></td><td><code>.env</code> · secret</td><td>Creates the first admin on first sign-in. Ignored once any user exists.</td></tr>
+    <tr><td><code>GA_PROPERTY_ID</code>, <code>GA_CLIENT_EMAIL</code>, <code>GA_PRIVATE_KEY</code></td><td><code>.env</code> · optional</td><td>Google Analytics 4 for the admin dashboard (service account with Viewer access).</td></tr>
+  </table></div>
+
+  <h3 id="config-web">Website settings</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Variable</th><th>Where</th><th>Meaning</th></tr>
+    <tr><td><code>BACKEND_URL</code></td><td><code>.env.development</code> / <code>.env.production</code></td><td>The backend. Used at build time (pages are pre-rendered, rewrites are set) and at runtime. A remote <code>http://</code> address is upgraded to <code>https://</code> automatically.</td></tr>
+    <tr><td><code>SPARK_SHARED_SECRET</code></td><td><code>.env.local</code>; Amplify console · secret</td><td>Must equal the backend's. Without it, publishing doesn't refresh the site and preview mode fails.</td></tr>
+    <tr><td><code>NEXT_PUBLIC_API_URL</code></td><td>optional, at build time</td><td>Empty (recommended): the admin calls <code>/api/admin</code> on the site. Set to the backend's HTTPS address to call it directly; the site's address must then be in the backend's CORS list.</td></tr>
+  </table></div>
+</section>
+
+<!-- 6 -->
+<section id="content">
+  <h2>6. Content model</h2>
+  <h3>Collections (lists with draft &amp; publish)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Collection</th><th>Admin section</th><th>Shown on the site</th></tr>
+    <tr><td><code>solutions</code></td><td>Solutions</td><td>/solutions, /solutions/[slug], menu and footer</td></tr>
+    <tr><td><code>services</code></td><td>Services</td><td>/services, /services/[slug]</td></tr>
+    <tr><td><code>projects</code></td><td>Work</td><td>/work, /work/[slug]</td></tr>
+    <tr><td><code>insights</code></td><td>Insights</td><td>/insights, /insights/[slug]</td></tr>
+    <tr><td><code>jobs</code></td><td>Careers</td><td>/careers</td></tr>
+    <tr><td><code>clients</code>, <code>partners</code></td><td>Clients, Partners</td><td>Logo walls on home and about; partners in the footer</td></tr>
+    <tr><td><code>offices</code></td><td>Offices</td><td>Footer, menu, contact</td></tr>
+  </table></div>
+  <h3>Pages and settings</h3>
+  <p><b>Pages</b> (the fixed text and pictures of each page, with draft &amp; publish): <code>home</code>, <code>about</code>, <code>solutions</code>, <code>services</code>, <code>work</code>, <code>contact</code>, <code>careers</code>, <code>insights</code>, and <code>layout</code> (menu, footer, company details).</p>
+  <p><b>Settings</b> (saved straight to the site, no draft): <code>meta</code> (site name, description, keywords), <code>social</code> (social links and icons), <code>advanced</code> (admins only; secrets in it are write-only).</p>
+  <h3>Inbox</h3>
+  <p><b>Enquiries</b> (contact form) and <b>Applications</b> (careers form, with an optional CV) have a status of <code>new</code>, <code>read</code> or <code>archived</code>. <b>Activity</b> logs who changed what.</p>
+  <h3>Roles</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Role</th><th>Can</th></tr>
+    <tr><td><code>viewer</code></td><td>See everything in the admin (except advanced settings and users); download CVs</td></tr>
+    <tr><td><code>editor</code></td><td>Plus: create, edit, publish and delete content; upload pictures</td></tr>
+    <tr><td><code>admin</code></td><td>Plus: manage users and all settings</td></tr>
+  </table></div>
+</section>
+
+<!-- 7 -->
+<section id="publishing">
+  <h2>7. Publishing &amp; caching</h2>
+  <p>Every item and page has a <b>draft</b> (what the admin edits) and a <b>published</b> copy (what the site shows). Its status is <code>draft</code> (never published), <code>published</code>, or <code>changed</code> (published, with unpublished edits).</p>
+  <div class="table-wrap"><table>
+    <tr><th>Admin action</th><th>Effect on the site</th></tr>
+    <tr><td>Save</td><td>None: only the draft changes</td></tr>
+    <tr><td>Create</td><td>None, unless created with <b>publish</b></td></tr>
+    <tr><td>Publish</td><td>The draft becomes the published copy; the site refreshes</td></tr>
+    <tr><td>Unpublish</td><td>Removed from the site; the site refreshes</td></tr>
+    <tr><td>Discard</td><td>The draft goes back to the published copy</td></tr>
+    <tr><td>Delete</td><td>Removed everywhere; the site refreshes</td></tr>
+    <tr><td>Save settings</td><td>The site refreshes</td></tr>
+  </table></div>
+  <h3>How the site refreshes</h3>
+  <ol class="steps">
+    <li>The website pre-renders its pages and caches the content it reads from <code>/api/v1</code> (cache tag <code>content</code>).</li>
+    <li>After a publish, the backend calls <code>POST {FRONTEND_URL}/api/revalidate</code> with <code>x-spark-secret</code>. It doesn't wait for the answer: the save has already succeeded.</li>
+    <li>The website checks the secret, drops its cached content and pages, and rebuilds them on the next visit.</li>
+    <li><b>Safety net:</b> cached content is refreshed every 5 minutes anyway (<code>MAX_AGE</code> in <code>lib/api/pages.ts</code>, <code>revalidate</code> in <code>app/(site)/layout.tsx</code>). If a refresh call is lost, changes still appear within a few minutes.</li>
+  </ol>
+  <div class="note"><b>Preview mode</b>From the admin, <code>/api/preview?path=/about</code> turns on Next.js draft mode for a signed-in user: the site then reads drafts fresh from the backend (with <code>?preview=1</code> and the shared secret) and shows a preview bar. <code>/api/preview/exit</code> turns it off.</div>
+  <p>Each deploy starts with a fresh cache, because the build time is part of every cache key.</p>
+</section>
+
+<!-- 8 -->
+<section id="images">
+  <h2>8. Images &amp; uploads</h2>
+  <ul>
+    <li>Pictures are uploaded with <code>POST /api/admin/uploads</code> (editors), at most 4 MB.</li>
+    <li>The file's contents decide its type, never its name. JPEG, PNG, WebP, GIF, AVIF and TIFF are scaled to fit 2400 px, converted to WebP (quality 82) and stored with a small blurred preview. SVGs are kept as they are, but only without scripts, event handlers or embedded content.</li>
+    <li>Pictures are stored under <code>uploads/images/&lt;folder&gt;/</code> with a unique name and served by the backend at <code>/uploads/…</code>, cached for a year.</li>
+    <li>Content stores pictures as <code>/uploads/…</code> paths. The site forwards <code>/uploads/*</code> to the backend.</li>
+  </ul>
+  <div class="warn"><b>Amplify's image optimizer</b>On Amplify, <code>next/image</code> uses Amplify's own optimizer, which can't read <code>/uploads/…</code> through the forwarding. In production, <code>lib/api/backend.ts</code> therefore turns those paths into <code>https://new-spark26.spark-sys.com/uploads/…</code>, and <code>next.config.ts</code> allows that host in <code>images.remotePatterns</code>. Locally they stay relative.</div>
+  <p>CVs from the careers form (PDF or Word, up to 4 MB) are stored in <code>data/cvs/</code>, never on a public URL. Signed-in users download them from the application's page.</p>
+</section>
+
+<!-- 9 -->
+<section id="api">
+  <h2>9. API overview</h2>
+  <p>JSON in and out. Errors look like <code>{"message": "…", "code"?: "…", "field"?: "…", "issues"?: [...]}</code>. Request and response shapes for every endpoint are in the <a href="spark-admin-and-api.html">API specification</a>.</p>
+  <h3>Public API (<code>/api/v1</code>)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Endpoint</th><th>Returns</th></tr>
+    <tr><td><span class="pill get">GET</span> <code>/api/v1/pages/:page</code></td><td>A whole page as the site renders it: <code>home</code>, <code>about</code>, <code>solutions</code>, <code>services</code>, <code>work</code>, <code>contact</code>, <code>careers</code>, <code>insights</code>, <code>layout</code></td></tr>
+    <tr><td><span class="pill get">GET</span> <code>/api/v1/solutions/:slug</code>, <code>/services/:slug</code>, <code>/work/:slug</code>, <code>/insights/:slug</code></td><td>A detail page (404 if not published)</td></tr>
+    <tr><td><span class="pill get">GET</span> <code>/api/v1/slugs/:kind</code></td><td>Published slugs of <code>solutions</code>, <code>services</code>, <code>work</code> or <code>insights</code></td></tr>
+    <tr><td><span class="pill post">POST</span> <code>/api/v1/enquiries</code></td><td>Contact form → Enquiries inbox</td></tr>
+    <tr><td><span class="pill post">POST</span> <code>/api/v1/applications</code></td><td>Careers form (multipart, optional <code>cv</code>) → Applications</td></tr>
+  </table></div>
+  <p>Only published content is returned. <code>?preview=1</code> returns drafts, and only to the website's server (shared secret).</p>
+  <h3>Admin API (<code>/api/admin</code>)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Area</th><th>Endpoints</th></tr>
+    <tr><td>Sign-in</td><td><span class="pill post">POST</span> <code>auth/login</code>, <code>auth/refresh</code>, <code>auth/logout</code> · <span class="pill get">GET</span>/<span class="pill put">PUT</span> <code>auth/me</code> · <span class="pill put">PUT</span> <code>auth/password</code></td></tr>
+    <tr><td>Collections<br><span class="muted">solutions, services, projects, clients, partners, offices, jobs, insights</span></td><td><span class="pill get">GET</span> <code>:collection</code> (search, filters, paging) · <span class="pill post">POST</span> <code>:collection[?publish=true]</code> · <span class="pill get">GET</span>/<span class="pill put">PUT</span>/<span class="pill del">DELETE</span> <code>:collection/:id</code> · <span class="pill post">POST</span> <code>:collection/:id/publish | unpublish | discard</code></td></tr>
+    <tr><td>Pages</td><td><span class="pill get">GET</span>/<span class="pill put">PUT</span> <code>pages/:page</code> · <span class="pill post">POST</span> <code>pages/:page/publish | discard</code></td></tr>
+    <tr><td>Settings</td><td><span class="pill get">GET</span>/<span class="pill put">PUT</span> <code>settings/meta | social | advanced</code></td></tr>
+    <tr><td>Inbox</td><td><code>enquiries</code>, <code>enquiries/stats</code>, <code>applications</code>, <code>applications/stats</code>, <code>applications/:id/cv</code></td></tr>
+    <tr><td>Other</td><td><code>users</code>, <code>activity</code>, <code>overview</code>, <code>analytics/overview</code>, <code>analytics/realtime</code>, <code>uploads</code></td></tr>
+  </table></div>
+  <h3>Website's own routes</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td><span class="pill post">POST</span> <code>/api/revalidate</code></td><td>Called by the backend after a publish. 403 without the right <code>x-spark-secret</code>.</td></tr>
+    <tr><td><span class="pill get">GET</span> <code>/api/preview?path=…</code>, <code>/api/preview/exit</code></td><td>Turn preview mode on / off</td></tr>
+  </table></div>
+  <p>The backend also answers <span class="pill get">GET</span> <code>/health</code> with <code>{"ok":true}</code> for monitoring.</p>
+</section>
+
+<!-- 10 -->
+<section id="security">
+  <h2>10. Security</h2>
+  <h3>Sign-in</h3>
+  <ul>
+    <li>Passwords are hashed with scrypt (salted, cost stored with each hash).</li>
+    <li>Sign-in returns an <b>access token</b> (15 minutes) and a <b>refresh token</b> (7 days), both HS256-signed with <code>AUTH_SECRET</code>. The admin keeps them in cookies and sends the access token as <code>Authorization: Bearer</code>; on a 401 it refreshes once, then signs out.</li>
+    <li>Changing a password signs out every other session (tokens carry a version).</li>
+    <li>Brute-force brake: 8 failed attempts per email, or 30 per address, block further attempts for 15 minutes. Response times don't reveal whether an email exists.</li>
+    <li>Roles are checked on every admin endpoint (see <a href="#content">Roles</a>).</li>
+  </ul>
+  <h3>HTTP protection (backend)</h3>
+  <ul>
+    <li><b>CORS allowlist:</b> only <code>FRONTEND_URL</code> and <code>CORS_ORIGINS</code> (plus <code>localhost:3000</code> in development). Preflights from other origins get a 403. <code>x-spark-secret</code> is never accepted from browsers.</li>
+    <li><b>Headers on every response:</b> <code>X-Content-Type-Options: nosniff</code>, <code>X-Frame-Options: DENY</code>, <code>Referrer-Policy: no-referrer</code>, <code>Strict-Transport-Security</code>, <code>Content-Security-Policy: default-src 'none'</code>, <code>Cross-Origin-Resource-Policy</code>; admin answers are <code>Cache-Control: no-store</code>.</li>
+    <li><b>Limits:</b> request bodies up to 10 MB (enforced while reading, chunked or not); uploads and CVs up to 4 MB; header and request timeouts against slow clients; malformed hosts and paths get a 400.</li>
+    <li><b>Forms:</b> 5 submissions per sender per 10 minutes, plus a hidden honeypot field (<code>website</code>) that silently drops bots.</li>
+    <li><b>Files:</b> storage keys are validated so no path can leave the data or uploads folder; uploaded SVGs can't run scripts.</li>
+    <li><b>IIS:</b> <code>web.config</code> hides <code>.env*</code>, <code>data</code>, <code>dist</code>, <code>node_modules</code> and removes <code>X-Powered-By</code>.</li>
+  </ul>
+  <div class="warn"><b>Known limits</b>
+    <ul style="margin:6px 0 0">
+      <li>Rate limits are kept in memory, per server instance, and are keyed by <code>X-Forwarded-For</code>, which a client can fake unless a proxy in front overwrites it.</li>
+      <li>Logging out doesn't revoke refresh tokens; only a password change (or a new <code>AUTH_SECRET</code>) does.</li>
+      <li>Tokens are in cookies readable by page scripts, so a cross-site scripting bug on the site could expose them.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="deploy">
+  <h2>11. Deployment</h2>
+  <h3 id="deploy-backend">Backend on Plesk (Windows, IIS + iisnode)</h3>
+  <ol class="steps">
+    <li>Build and package locally:
+<pre><code>cd backend
+npm run package     # builds dist/server.mjs and spark-backend-update.zip</code></pre>
+      The zip holds <code>app.js</code>, <code>web.config</code>, <code>.env.production</code>, <code>package.json</code>, <code>package-lock.json</code> and <code>dist/</code>.</li>
+    <li>Upload and extract the zip into the site's folder. <b>Never overwrite</b> <code>.env</code>, <code>data/</code> or <code>uploads/</code> on the server.</li>
+    <li>Install runtime packages (sharp, Google Analytics) on the server: <code>npm ci --omit=dev</code>.</li>
+    <li>In Plesk → Node.js, the Application Startup File is <code>app.js</code>. Restart the app (or touch <code>web.config</code>).</li>
+    <li>Check <code>https://new-spark26.spark-sys.com/health</code> returns <code>{"ok":true}</code>.</li>
+  </ol>
+  <p>The server's own <code>.env</code> must contain <code>AUTH_SECRET</code>, <code>SPARK_SHARED_SECRET</code> (same as Amplify's), and the first-admin settings if needed. Leave <code>FRONTEND_URL</code> out so <code>.env.production</code> supplies it.</p>
+
+  <h3 id="deploy-web">Website on AWS Amplify</h3>
+  <ol class="steps">
+    <li>In Amplify → Hosting → Environment variables, set <code>SPARK_SHARED_SECRET</code> (same value as the backend's). Optionally set <code>BACKEND_URL</code> to override <code>.env.production</code>.</li>
+    <li>Push to the connected branch. <code>amplify.yml</code> writes the secret into <code>.env.production</code> before <code>npm run build</code>, because Amplify only gives console variables to the build, not to the running site.</li>
+    <li>The backend must be up during the build: pages are pre-rendered from its content.</li>
+    <li>After deploying, publish something in the admin and check it appears on the site.</li>
+  </ol>
+  <div class="note"><b><code>amplify.yml</code> replaces the console's build settings</b>If you've customised the build in the Amplify console, merge your changes into the file.</div>
+</section>
+
+<!-- 12 -->
+<section id="operations">
+  <h2>12. Operations</h2>
+  <ul>
+    <li><b>Data:</b> all content is JSON in <code>SPARK_DATA_DIR</code>, written atomically (temporary file, then rename) with version checks, so two people saving the same document can't overwrite each other silently (409 conflict).</li>
+    <li><b>Backups:</b> before each change, the previous version of a document is copied to <code>data/backups/&lt;key&gt;/</code>; the latest 10 are kept. Back up the whole data and uploads folders regularly too.</li>
+    <li><b>Logs:</b> on Plesk, the backend's output is in the <code>iisnode/</code> folder next to <code>app.js</code>. Crashes before start-up go to <code>startup-error.log</code>. Look for <code>[revalidate]</code>, <code>[api]</code> and <code>[http]</code> lines.</li>
+    <li><b>On start-up</b> the backend logs its data folder, uploads folder and allowed CORS origins, and warns when <code>SPARK_SHARED_SECRET</code> is missing or short.</li>
+  </ul>
+</section>
+
+<!-- 13 -->
+<section id="troubleshooting">
+  <h2>13. Troubleshooting</h2>
+
+  <h3>“Blocked by CORS policy … redirected from http://localhost:3000/api/admin/…”</h3>
+  <p><b>Cause:</b> <code>BACKEND_URL</code> was a remote <code>http://</code> address. The server redirected to <code>https://</code>, the redirect reached the browser, and the browser called the backend cross-origin. Browsers remember permanent redirects, so it can continue after the setting is fixed.</p>
+  <p><b>Fix:</b> use <code>https://</code> for a remote backend (now automatic), restart <code>next dev</code>, and clear the browser cache: in DevTools, right-click reload → <i>Empty Cache and Hard Reload</i>, or try a private window.</p>
+
+  <h3>Changes in the admin don't appear on the site</h3>
+  <ul>
+    <li>Was the item <b>published</b>? Saving and creating without publish only change the draft.</li>
+    <li>Is <code>SPARK_SHARED_SECRET</code> identical on both sides, and available to the running site on Amplify (see <code>amplify.yml</code>)? Test it: <code>POST {site}/api/revalidate</code> with the header <code>x-spark-secret</code> should return <code>{"revalidated":true}</code>, not 403.</li>
+    <li>Is the backend's <code>FRONTEND_URL</code> the site's real address? Check the backend log for <code>[revalidate] the website answered …</code> or <code>couldn't reach the website</code>.</li>
+    <li>Changes still appear within about 5 minutes thanks to the safety net.</li>
+  </ul>
+
+  <h3>Pictures return 404 through <code>/_next/image</code></h3>
+  <p>On Amplify, the optimizer can't follow the <code>/uploads</code> forwarding (response header <code>x-amplify-optimized: true</code>). Uploaded pictures must use the backend's full address, and the backend host must be in <code>images.remotePatterns</code> (done in <code>lib/api/backend.ts</code> and <code>next.config.ts</code>). <code>hostname</code> there is a bare host name, without <code>https://</code>. Redeploy the site after changing it.</p>
+
+  <h3>The backend won't start on Plesk</h3>
+  <ul>
+    <li>Read <code>startup-error.log</code>. <i>“AUTH_SECRET must be set…”</i>: add a 32+ character <code>AUTH_SECRET</code> to the server's <code>.env</code>.</li>
+    <li>IIS error 500.19 (<code>0x800700b7</code>): a duplicate <code>web.config</code> entry; every <code>&lt;add&gt;</code> must be preceded by a <code>&lt;remove&gt;</code> of the same name.</li>
+    <li>Picture uploads fail but everything else works: <code>sharp</code> isn't installed on the server; run <code>npm ci --omit=dev</code>.</li>
+  </ul>
+
+  <h3>Signed out all the time / 401 everywhere</h3>
+  <p><code>AUTH_SECRET</code> changed (it signs all tokens), or the clocks are wrong. Sign in again; keep <code>AUTH_SECRET</code> stable.</p>
+
+  <h3>“Too many failed attempts”</h3>
+  <p>The brute-force brake: wait 15 minutes, or restart the backend (the counters are in memory).</p>
+</section>
+
+<!-- 14 -->
+<section id="reference">
+  <h2>14. Quick reference</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Where</th><th>Command</th><th>Does</th></tr>
+    <tr><td>backend</td><td><code>npm run dev</code></td><td>Development server with reload (port 4000)</td></tr>
+    <tr><td>backend</td><td><code>npm run build</code></td><td>Regenerates the route table, bundles <code>dist/server.mjs</code></td></tr>
+    <tr><td>backend</td><td><code>npm start</code></td><td>Runs the built server</td></tr>
+    <tr><td>backend</td><td><code>npm run package</code></td><td>Build plus the deploy zip for Plesk</td></tr>
+    <tr><td>backend</td><td><code>npm run typecheck</code></td><td>TypeScript check</td></tr>
+    <tr><td>backend</td><td><code>npm run routes</code></td><td>Regenerates <code>src/routes.gen.ts</code> after adding a route file</td></tr>
+    <tr><td>spark-web</td><td><code>npm run dev</code></td><td>Development server (port 3000)</td></tr>
+    <tr><td>spark-web</td><td><code>npm run build</code> / <code>npm start</code></td><td>Production build (backend must be running) / serve it</td></tr>
+    <tr><td>spark-web</td><td><code>npm run lint</code></td><td>ESLint</td></tr>
+  </table></div>
+  <h3>Adding an API endpoint (backend)</h3>
+  <ol>
+    <li>Create <code>src/routes/api/…/route.ts</code>; folders like <code>[id]</code> become parameters.</li>
+    <li>Export <code>GET</code>, <code>POST</code>, … wrapped in <code>handle()</code>; use <code>requireSession(request, "editor")</code> for admin endpoints and <code>readBody(request, schema)</code> for input.</li>
+    <li>Run <code>npm run routes</code> (or <code>dev</code>/<code>build</code>, which run it).</li>
+    <li>If it changes published content, call <code>revalidateContent()</code>.</li>
+  </ol>
+</section>
+</main>
+</div>
+<button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch light or dark theme">Theme</button>
+<script>
+(function () {
+  var root = document.documentElement, key = "spark-doc-theme";
+  try { var saved = localStorage.getItem(key); if (saved) root.setAttribute("data-theme", saved); } catch (e) {}
+  document.getElementById("theme-toggle").addEventListener("click", function () {
+    var dark = root.getAttribute("data-theme")
+      ? root.getAttribute("data-theme") === "dark"
+      : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = dark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
